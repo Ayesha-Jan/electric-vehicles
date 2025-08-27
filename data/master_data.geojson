@@ -1,0 +1,4925 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          133.7751,
+          -25.2744
+        ]
+      },
+      "properties": {
+        "Country": "Australia",
+        "Year": 2012,
+        "EV": "250",
+        "EV_norm": 2.525252525252525,
+        "CleanElec": 14.234191865,
+        "CleanElec_norm": 0.13200224614939723,
+        "CarbonIntensity": 73.78909026900402,
+        "Coal_fraction": 101.10282216651918,
+        "Oil_fraction": 36.72369298348676,
+        "Gas_fraction": 26.963481117923482,
+        "Renewables_fraction": 10.52958781,
+        "WindSolar_fraction": 3.704604055
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          133.7751,
+          -25.2744
+        ]
+      },
+      "properties": {
+        "Country": "Australia",
+        "Year": 2013,
+        "EV": "290",
+        "EV_norm": 2.9292929292929295,
+        "CleanElec": 17.762361151,
+        "CleanElec_norm": 0.16472108786267178,
+        "CarbonIntensity": 72.13623869343353,
+        "Coal_fraction": 91.04956549293537,
+        "Oil_fraction": 37.30366853075536,
+        "Gas_fraction": 28.23933591808166,
+        "Renewables_fraction": 13.17640454,
+        "WindSolar_fraction": 4.585956611
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          133.7751,
+          -25.2744
+        ]
+      },
+      "properties": {
+        "Country": "Australia",
+        "Year": 2014,
+        "EV": "1320",
+        "EV_norm": 13.333333333333334,
+        "CleanElec": 20.391107732000002,
+        "CleanElec_norm": 0.1890990403689027,
+        "CarbonIntensity": 70.66782134294859,
+        "Coal_fraction": 87.50399065897186,
+        "Oil_fraction": 37.18470274381429,
+        "Gas_fraction": 28.95414036726846,
+        "Renewables_fraction": 14.6271383,
+        "WindSolar_fraction": 5.763969432
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          133.7751,
+          -25.2744
+        ]
+      },
+      "properties": {
+        "Country": "Australia",
+        "Year": 2015,
+        "EV": "1760",
+        "EV_norm": 17.77777777777778,
+        "CleanElec": 19.901358316,
+        "CleanElec_norm": 0.18455729865462128,
+        "CarbonIntensity": 71.80665591029428,
+        "Coal_fraction": 91.5525594903491,
+        "Oil_fraction": 36.63523390281228,
+        "Gas_fraction": 29.315466730957613,
+        "Renewables_fraction": 13.34208381,
+        "WindSolar_fraction": 6.559274506
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          133.7751,
+          -25.2744
+        ]
+      },
+      "properties": {
+        "Country": "Australia",
+        "Year": 2016,
+        "EV": "1370",
+        "EV_norm": 13.83838383838384,
+        "CleanElec": 21.770871094,
+        "CleanElec_norm": 0.2018944181933707,
+        "CarbonIntensity": 73.75604042547728,
+        "Coal_fraction": 93.54489780067573,
+        "Oil_fraction": 36.86565402143277,
+        "Gas_fraction": 30.140436335728815,
+        "Renewables_fraction": 14.59602515,
+        "WindSolar_fraction": 7.174845944
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          133.7751,
+          -25.2744
+        ]
+      },
+      "properties": {
+        "Country": "Australia",
+        "Year": 2017,
+        "EV": "2300",
+        "EV_norm": 23.232323232323232,
+        "CleanElec": 23.689443023000003,
+        "CleanElec_norm": 0.21968649282810318,
+        "CarbonIntensity": 73.6464156938722,
+        "Coal_fraction": 89.32152064652692,
+        "Oil_fraction": 37.11085669456542,
+        "Gas_fraction": 30.69561998348547,
+        "Renewables_fraction": 15.67893527,
+        "WindSolar_fraction": 8.010507753
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          133.7751,
+          -25.2744
+        ]
+      },
+      "properties": {
+        "Country": "Australia",
+        "Year": 2018,
+        "EV": "3600",
+        "EV_norm": 36.36363636363637,
+        "CleanElec": 26.714764100000004,
+        "CleanElec_norm": 0.24774211981940858,
+        "CarbonIntensity": 73.15273613587867,
+        "Coal_fraction": 82.17726033873706,
+        "Oil_fraction": 37.83069506992098,
+        "Gas_fraction": 31.61178126259455,
+        "Renewables_fraction": 17.10051418,
+        "WindSolar_fraction": 9.61424992
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          133.7751,
+          -25.2744
+        ]
+      },
+      "properties": {
+        "Country": "Australia",
+        "Year": 2019,
+        "EV": "9200",
+        "EV_norm": 92.92929292929293,
+        "CleanElec": 32.03323471,
+        "CleanElec_norm": 0.2970635054841475,
+        "CarbonIntensity": 71.90274058466042,
+        "Coal_fraction": 79.77046195002056,
+        "Oil_fraction": 37.622172549147905,
+        "Gas_fraction": 32.16434245420863,
+        "Renewables_fraction": 19.70336856,
+        "WindSolar_fraction": 12.32986615
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          133.7751,
+          -25.2744
+        ]
+      },
+      "properties": {
+        "Country": "Australia",
+        "Year": 2020,
+        "EV": "6900",
+        "EV_norm": 69.6969696969697,
+        "CleanElec": 38.22635001,
+        "CleanElec_norm": 0.35449599887861516,
+        "CarbonIntensity": 70.41398964411223,
+        "Coal_fraction": 78.35864067699087,
+        "Oil_fraction": 36.885249052271995,
+        "Gas_fraction": 31.76639897627903,
+        "Renewables_fraction": 22.97536903,
+        "WindSolar_fraction": 15.25098098
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.4699,
+          50.5039
+        ]
+      },
+      "properties": {
+        "Country": "Belgium",
+        "Year": 2010,
+        "EV": "56",
+        "EV_norm": 0.5656565656565656,
+        "CleanElec": 10.192354158,
+        "CleanElec_norm": 0.09451984736234609,
+        "CarbonIntensity": 45.60738102481438,
+        "Coal_fraction": 9.546329258941366,
+        "Oil_fraction": 36.0029116850838,
+        "Gas_fraction": 38.86937199337335,
+        "Renewables_fraction": 8.2467512,
+        "WindSolar_fraction": 1.945602958
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.4699,
+          50.5039
+        ]
+      },
+      "properties": {
+        "Country": "Belgium",
+        "Year": 2011,
+        "EV": "296",
+        "EV_norm": 2.98989898989899,
+        "CleanElec": 14.500060948,
+        "CleanElec_norm": 0.13446781050812806,
+        "CarbonIntensity": 45.06569144876705,
+        "Coal_fraction": 9.598071296812416,
+        "Oil_fraction": 35.96569412515981,
+        "Gas_fraction": 38.27940542346978,
+        "Renewables_fraction": 10.64261256,
+        "WindSolar_fraction": 3.857448388
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.4699,
+          50.5039
+        ]
+      },
+      "properties": {
+        "Country": "Belgium",
+        "Year": 2012,
+        "EV": "910",
+        "EV_norm": 9.191919191919192,
+        "CleanElec": 20.089721793000002,
+        "CleanElec_norm": 0.1863041067834093,
+        "CarbonIntensity": 44.271773086983885,
+        "Coal_fraction": 9.539824994593584,
+        "Oil_fraction": 37.6602513089973,
+        "Gas_fraction": 35.02181636656066,
+        "Renewables_fraction": 14.18183134,
+        "WindSolar_fraction": 5.907890453
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.4699,
+          50.5039
+        ]
+      },
+      "properties": {
+        "Country": "Belgium",
+        "Year": 2013,
+        "EV": "560",
+        "EV_norm": 5.656565656565657,
+        "CleanElec": 23.139852431999998,
+        "CleanElec_norm": 0.2145898078063873,
+        "CarbonIntensity": 42.91159491206015,
+        "Coal_fraction": 9.762370601652226,
+        "Oil_fraction": 37.293316757067764,
+        "Gas_fraction": 33.50884156468623,
+        "Renewables_fraction": 15.56990226,
+        "WindSolar_fraction": 7.569950172
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.4699,
+          50.5039
+        ]
+      },
+      "properties": {
+        "Country": "Belgium",
+        "Year": 2014,
+        "EV": "1950",
+        "EV_norm": 19.696969696969695,
+        "CleanElec": 28.83434739,
+        "CleanElec_norm": 0.26739829403950566,
+        "CarbonIntensity": 42.432002559057025,
+        "Coal_fraction": 9.887433788079163,
+        "Oil_fraction": 39.43425575613184,
+        "Gas_fraction": 31.3634546153412,
+        "Renewables_fraction": 18.49792143,
+        "WindSolar_fraction": 10.33642596
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.4699,
+          50.5039
+        ]
+      },
+      "properties": {
+        "Country": "Belgium",
+        "Year": 2015,
+        "EV": "3900",
+        "EV_norm": 39.39393939393939,
+        "CleanElec": 34.73540995,
+        "CleanElec_norm": 0.32212240623188493,
+        "CarbonIntensity": 45.300936631697056,
+        "Coal_fraction": 9.645943818294743,
+        "Oil_fraction": 40.278488307218865,
+        "Gas_fraction": 35.27902830648192,
+        "Renewables_fraction": 22.36018618,
+        "WindSolar_fraction": 12.37522377
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.4699,
+          50.5039
+        ]
+      },
+      "properties": {
+        "Country": "Belgium",
+        "Year": 2016,
+        "EV": "9200",
+        "EV_norm": 92.92929292929293,
+        "CleanElec": 27.98643562,
+        "CleanElec_norm": 0.2595350968002073,
+        "CarbonIntensity": 41.38137958670525,
+        "Coal_fraction": 8.465256258709516,
+        "Oil_fraction": 37.40584696703914,
+        "Gas_fraction": 31.800178000033867,
+        "Renewables_fraction": 18.02990223,
+        "WindSolar_fraction": 9.95653339
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.4699,
+          50.5039
+        ]
+      },
+      "properties": {
+        "Country": "Belgium",
+        "Year": 2017,
+        "EV": "14700",
+        "EV_norm": 148.4848484848485,
+        "CleanElec": 30.915753870000003,
+        "CleanElec_norm": 0.2867004316751157,
+        "CarbonIntensity": 41.39105097450196,
+        "Coal_fraction": 8.258810614458996,
+        "Oil_fraction": 36.43758100439193,
+        "Gas_fraction": 32.77511650073539,
+        "Renewables_fraction": 19.58559732,
+        "WindSolar_fraction": 11.33015655
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.4699,
+          50.5039
+        ]
+      },
+      "properties": {
+        "Country": "Belgium",
+        "Year": 2018,
+        "EV": "13200",
+        "EV_norm": 133.33333333333334,
+        "CleanElec": 39.339712840000004,
+        "CleanElec_norm": 0.36482088389724565,
+        "CarbonIntensity": 43.85189035996107,
+        "Coal_fraction": 8.568011320086038,
+        "Oil_fraction": 38.08708098070698,
+        "Gas_fraction": 36.10406815882143,
+        "Renewables_fraction": 24.19095381,
+        "WindSolar_fraction": 15.14875903
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.4699,
+          50.5039
+        ]
+      },
+      "properties": {
+        "Country": "Belgium",
+        "Year": 2019,
+        "EV": "17700",
+        "EV_norm": 178.78787878787878,
+        "CleanElec": 35.46045219,
+        "CleanElec_norm": 0.3288461602139091,
+        "CarbonIntensity": 42.60768213794351,
+        "Coal_fraction": 8.103182131372405,
+        "Oil_fraction": 35.01571029608696,
+        "Gas_fraction": 34.90528439245136,
+        "Renewables_fraction": 21.13508346,
+        "WindSolar_fraction": 14.32536873
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.4699,
+          50.5039
+        ]
+      },
+      "properties": {
+        "Country": "Belgium",
+        "Year": 2020,
+        "EV": "47000",
+        "EV_norm": 474.74747474747477,
+        "CleanElec": 47.19200626,
+        "CleanElec_norm": 0.4376399366889112,
+        "CarbonIntensity": 42.1636350151475,
+        "Coal_fraction": 7.032833700263928,
+        "Oil_fraction": 35.44715209175359,
+        "Gas_fraction": 37.82007498153705,
+        "Renewables_fraction": 27.19453327,
+        "WindSolar_fraction": 19.99747299
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -51.9253,
+          -14.235
+        ]
+      },
+      "properties": {
+        "Country": "Brazil",
+        "Year": 2012,
+        "EV": "40",
+        "EV_norm": 0.40404040404040403,
+        "CleanElec": 83.43593473600001,
+        "CleanElec_norm": 0.7737517450363885,
+        "CarbonIntensity": 36.47160337059847,
+        "Coal_fraction": 9.0526648936944,
+        "Oil_fraction": 41.136241986940256,
+        "Gas_fraction": 11.750114001830106,
+        "Renewables_fraction": 82.52211268,
+        "WindSolar_fraction": 0.913822056
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -51.9253,
+          -14.235
+        ]
+      },
+      "properties": {
+        "Country": "Brazil",
+        "Year": 2013,
+        "EV": "72",
+        "EV_norm": 0.7272727272727273,
+        "CleanElec": 77.906418864,
+        "CleanElec_norm": 0.7224732093706236,
+        "CarbonIntensity": 37.48637984925787,
+        "Coal_fraction": 9.51016992260129,
+        "Oil_fraction": 40.735107694764785,
+        "Gas_fraction": 13.179786392663278,
+        "Renewables_fraction": 76.75355193,
+        "WindSolar_fraction": 1.152866934
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -51.9253,
+          -14.235
+        ]
+      },
+      "properties": {
+        "Country": "Brazil",
+        "Year": 2015,
+        "EV": "89",
+        "EV_norm": 0.898989898989899,
+        "CleanElec": 77.805801405,
+        "CleanElec_norm": 0.7215401229884945,
+        "CarbonIntensity": 37.170705594429954,
+        "Coal_fraction": 10.008128157485089,
+        "Oil_fraction": 38.72951570379129,
+        "Gas_fraction": 14.145880035609764,
+        "Renewables_fraction": 74.07762717,
+        "WindSolar_fraction": 3.728174235
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -51.9253,
+          -14.235
+        ]
+      },
+      "properties": {
+        "Country": "Brazil",
+        "Year": 2016,
+        "EV": "177",
+        "EV_norm": 1.7878787878787878,
+        "CleanElec": 86.198390368,
+        "CleanElec_norm": 0.7993696622157037,
+        "CarbonIntensity": 35.80602695720962,
+        "Coal_fraction": 9.329471654131627,
+        "Oil_fraction": 38.23234290224634,
+        "Gas_fraction": 12.604817939424354,
+        "Renewables_fraction": 80.39883294,
+        "WindSolar_fraction": 5.799557428
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -51.9253,
+          -14.235
+        ]
+      },
+      "properties": {
+        "Country": "Brazil",
+        "Year": 2017,
+        "EV": "430",
+        "EV_norm": 4.343434343434343,
+        "CleanElec": 86.50405859899999,
+        "CleanElec_norm": 0.8022043080776668,
+        "CarbonIntensity": 35.705297380770425,
+        "Coal_fraction": 9.353655318754852,
+        "Oil_fraction": 37.87595859911949,
+        "Gas_fraction": 13.176270973921342,
+        "Renewables_fraction": 79.17373984,
+        "WindSolar_fraction": 7.330318759
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -51.9253,
+          -14.235
+        ]
+      },
+      "properties": {
+        "Country": "Brazil",
+        "Year": 2018,
+        "EV": "410",
+        "EV_norm": 4.141414141414141,
+        "CleanElec": 90.917981638,
+        "CleanElec_norm": 0.8431372785620137,
+        "CarbonIntensity": 34.088751175192,
+        "Coal_fraction": 9.185769241067865,
+        "Oil_fraction": 36.000724276423746,
+        "Gas_fraction": 12.326017714596627,
+        "Renewables_fraction": 82.28162216,
+        "WindSolar_fraction": 8.636359478
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -51.9253,
+          -14.235
+        ]
+      },
+      "properties": {
+        "Country": "Brazil",
+        "Year": 2019,
+        "EV": "1940",
+        "EV_norm": 19.595959595959595,
+        "CleanElec": 92.23040231,
+        "CleanElec_norm": 0.8553081470061072,
+        "CarbonIntensity": 33.70586208633064,
+        "Coal_fraction": 8.708203895954224,
+        "Oil_fraction": 35.8203380729755,
+        "Gas_fraction": 12.228283595593794,
+        "Renewables_fraction": 82.22933148,
+        "WindSolar_fraction": 10.00107083
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -51.9253,
+          -14.235
+        ]
+      },
+      "properties": {
+        "Country": "Brazil",
+        "Year": 2020,
+        "EV": "2600",
+        "EV_norm": 26.262626262626263,
+        "CleanElec": 94.70492447999999,
+        "CleanElec_norm": 0.878255883532664,
+        "CarbonIntensity": 32.162401561344865,
+        "Coal_fraction": 7.876545292348751,
+        "Oil_fraction": 35.04785791031406,
+        "Gas_fraction": 11.558670708454887,
+        "Renewables_fraction": 84.1006446,
+        "WindSolar_fraction": 10.60427988
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -106.3468,
+          56.1304
+        ]
+      },
+      "properties": {
+        "Country": "Canada",
+        "Year": 2011,
+        "EV": "520",
+        "EV_norm": 5.252525252525253,
+        "CleanElec": 64.586846014,
+        "CleanElec_norm": 0.598952776976162,
+        "CarbonIntensity": 49.91204978817802,
+        "Coal_fraction": 18.157432119985597,
+        "Oil_fraction": 38.839567047365705,
+        "Gas_fraction": 40.22354522311329,
+        "Renewables_fraction": 62.48397588,
+        "WindSolar_fraction": 2.102870134
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -106.3468,
+          56.1304
+        ]
+      },
+      "properties": {
+        "Country": "Canada",
+        "Year": 2012,
+        "EV": "1920",
+        "EV_norm": 19.393939393939394,
+        "CleanElec": 66.013023296,
+        "CleanElec_norm": 0.6121785790741472,
+        "CarbonIntensity": 49.63726517416837,
+        "Coal_fraction": 16.464020419198246,
+        "Oil_fraction": 39.517509442842695,
+        "Gas_fraction": 39.5847245096202,
+        "Renewables_fraction": 63.64487785,
+        "WindSolar_fraction": 2.368145446
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -106.3468,
+          56.1304
+        ]
+      },
+      "properties": {
+        "Country": "Canada",
+        "Year": 2013,
+        "EV": "3100",
+        "EV_norm": 31.31313131313131,
+        "CleanElec": 67.42243745,
+        "CleanElec_norm": 0.6252489265759408,
+        "CarbonIntensity": 49.343057747235015,
+        "Coal_fraction": 15.58173502037501,
+        "Oil_fraction": 38.0839572543979,
+        "Gas_fraction": 40.52198310385616,
+        "Renewables_fraction": 64.06647458,
+        "WindSolar_fraction": 3.35596287
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -106.3468,
+          56.1304
+        ]
+      },
+      "properties": {
+        "Country": "Canada",
+        "Year": 2014,
+        "EV": "5100",
+        "EV_norm": 51.515151515151516,
+        "CleanElec": 67.240672652,
+        "CleanElec_norm": 0.6235633119773426,
+        "CarbonIntensity": 48.289408641363046,
+        "Coal_fraction": 14.917198446707689,
+        "Oil_fraction": 36.3881068741736,
+        "Gas_fraction": 40.98278327162205,
+        "Renewables_fraction": 63.15194258,
+        "WindSolar_fraction": 4.088730072
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -106.3468,
+          56.1304
+        ]
+      },
+      "properties": {
+        "Country": "Canada",
+        "Year": 2015,
+        "EV": "6800",
+        "EV_norm": 68.68686868686869,
+        "CleanElec": 68.593983685,
+        "CleanElec_norm": 0.6361133814009544,
+        "CarbonIntensity": 48.1293786812052,
+        "Coal_fraction": 13.729150932262943,
+        "Oil_fraction": 37.0995952794524,
+        "Gas_fraction": 40.62056015253163,
+        "Renewables_fraction": 64.03234926,
+        "WindSolar_fraction": 4.561634425
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -106.3468,
+          56.1304
+        ]
+      },
+      "properties": {
+        "Country": "Canada",
+        "Year": 2016,
+        "EV": "11600",
+        "EV_norm": 117.17171717171718,
+        "CleanElec": 70.097678846,
+        "CleanElec_norm": 0.6500580535438136,
+        "CarbonIntensity": 46.64630248420077,
+        "Coal_fraction": 13.506176133765905,
+        "Oil_fraction": 36.69089674108166,
+        "Gas_fraction": 39.01389078124093,
+        "Renewables_fraction": 64.80111719,
+        "WindSolar_fraction": 5.296561656
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -106.3468,
+          56.1304
+        ]
+      },
+      "properties": {
+        "Country": "Canada",
+        "Year": 2017,
+        "EV": "16700",
+        "EV_norm": 168.68686868686868,
+        "CleanElec": 71.867439346,
+        "CleanElec_norm": 0.6664701100456585,
+        "CarbonIntensity": 46.288004285596614,
+        "Coal_fraction": 13.199755046615467,
+        "Oil_fraction": 35.56117883814444,
+        "Gas_fraction": 38.76311423792257,
+        "Renewables_fraction": 66.5436851,
+        "WindSolar_fraction": 5.323754246
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -106.3468,
+          56.1304
+        ]
+      },
+      "properties": {
+        "Country": "Canada",
+        "Year": 2018,
+        "EV": "44000",
+        "EV_norm": 444.44444444444446,
+        "CleanElec": 71.946931461,
+        "CleanElec_norm": 0.66720728837167,
+        "CarbonIntensity": 46.63928128085632,
+        "Coal_fraction": 10.682348349570772,
+        "Oil_fraction": 36.14110654983731,
+        "Gas_fraction": 40.86476346063168,
+        "Renewables_fraction": 66.26095089,
+        "WindSolar_fraction": 5.685980571
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -106.3468,
+          56.1304
+        ]
+      },
+      "properties": {
+        "Country": "Canada",
+        "Year": 2019,
+        "EV": "51000",
+        "EV_norm": 515.1515151515151,
+        "CleanElec": 71.88745401099999,
+        "CleanElec_norm": 0.6666557181055318,
+        "CarbonIntensity": 45.97022562565436,
+        "Coal_fraction": 10.170979891051251,
+        "Oil_fraction": 35.02494452041252,
+        "Gas_fraction": 40.80305691985058,
+        "Renewables_fraction": 65.98415062,
+        "WindSolar_fraction": 5.903303391
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -106.3468,
+          56.1304
+        ]
+      },
+      "properties": {
+        "Country": "Canada",
+        "Year": 2020,
+        "EV": "51000",
+        "EV_norm": 515.1515151515151,
+        "CleanElec": 74.250606399,
+        "CleanElec_norm": 0.6885706554737948,
+        "CarbonIntensity": 43.8520384869416,
+        "Coal_fraction": 9.918779317355863,
+        "Oil_fraction": 31.77342493215224,
+        "Gas_fraction": 41.7214182726369,
+        "Renewables_fraction": 67.72302974,
+        "WindSolar_fraction": 6.527576659
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -71.543,
+          -35.6751
+        ]
+      },
+      "properties": {
+        "Country": "Chile",
+        "Year": 2014,
+        "EV": "19",
+        "EV_norm": 0.1919191919191919,
+        "CleanElec": 45.612200185,
+        "CleanElec_norm": 0.4229894421361976,
+        "CarbonIntensity": 52.71333629965761,
+        "Coal_fraction": 31.25156220041503,
+        "Oil_fraction": 41.46731227513634,
+        "Gas_fraction": 11.732292696944844,
+        "Renewables_fraction": 42.89429423,
+        "WindSolar_fraction": 2.717905955
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -71.543,
+          -35.6751
+        ]
+      },
+      "properties": {
+        "Country": "Chile",
+        "Year": 2015,
+        "EV": "36",
+        "EV_norm": 0.36363636363636365,
+        "CleanElec": 48.082560649,
+        "CleanElec_norm": 0.4458985846529911,
+        "CarbonIntensity": 54.80721974253585,
+        "Coal_fraction": 33.996879043428635,
+        "Oil_fraction": 40.33775170613112,
+        "Gas_fraction": 12.366552635029969,
+        "Renewables_fraction": 43.60433496,
+        "WindSolar_fraction": 4.478225689
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -71.543,
+          -35.6751
+        ]
+      },
+      "properties": {
+        "Country": "Chile",
+        "Year": 2016,
+        "EV": "31",
+        "EV_norm": 0.31313131313131315,
+        "CleanElec": 49.688556013,
+        "CleanElec_norm": 0.4607919482779951,
+        "CarbonIntensity": 54.39425567045742,
+        "Coal_fraction": 33.61428441023191,
+        "Oil_fraction": 40.51379412829461,
+        "Gas_fraction": 12.669826841513105,
+        "Renewables_fraction": 43.27306199,
+        "WindSolar_fraction": 6.415494023
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -71.543,
+          -35.6751
+        ]
+      },
+      "properties": {
+        "Country": "Chile",
+        "Year": 2017,
+        "EV": "135",
+        "EV_norm": 1.3636363636363635,
+        "CleanElec": 53.358956839,
+        "CleanElec_norm": 0.4948297888449701,
+        "CarbonIntensity": 54.09004176044044,
+        "Coal_fraction": 33.940903115678296,
+        "Oil_fraction": 40.1872790130065,
+        "Gas_fraction": 13.087331331075905,
+        "Renewables_fraction": 43.91575066,
+        "WindSolar_fraction": 9.443206179
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -71.543,
+          -35.6751
+        ]
+      },
+      "properties": {
+        "Country": "Chile",
+        "Year": 2018,
+        "EV": "198",
+        "EV_norm": 2,
+        "CleanElec": 57.21485228,
+        "CleanElec_norm": 0.5305878328531272,
+        "CarbonIntensity": 53.08345531652559,
+        "Coal_fraction": 31.55827733624851,
+        "Oil_fraction": 40.049210331508384,
+        "Gas_fraction": 13.566795667457093,
+        "Renewables_fraction": 46.25691072,
+        "WindSolar_fraction": 10.95794156
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -71.543,
+          -35.6751
+        ]
+      },
+      "properties": {
+        "Country": "Chile",
+        "Year": 2019,
+        "EV": "305",
+        "EV_norm": 3.080808080808081,
+        "CleanElec": 59.7745186,
+        "CleanElec_norm": 0.5543251624351294,
+        "CarbonIntensity": 51.336799432222186,
+        "Coal_fraction": 30.36080403662521,
+        "Oil_fraction": 39.074627017062454,
+        "Gas_fraction": 14.083991327974543,
+        "Renewables_fraction": 46.00486539,
+        "WindSolar_fraction": 13.76965321
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -71.543,
+          -35.6751
+        ]
+      },
+      "properties": {
+        "Country": "Chile",
+        "Year": 2020,
+        "EV": "239",
+        "EV_norm": 2.414141414141414,
+        "CleanElec": 64.35039493,
+        "CleanElec_norm": 0.5967600234648645,
+        "CarbonIntensity": 50.23046780159429,
+        "Coal_fraction": 30.604087101598225,
+        "Oil_fraction": 37.391775042367584,
+        "Gas_fraction": 13.80360972162661,
+        "Renewables_fraction": 48.17795827,
+        "WindSolar_fraction": 16.17243666
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          104.1954,
+          35.8617
+        ]
+      },
+      "properties": {
+        "Country": "China",
+        "Year": 2010,
+        "EV": "1440",
+        "EV_norm": 14.545454545454545,
+        "CleanElec": 19.91167761,
+        "CleanElec_norm": 0.184652995691699,
+        "CarbonIntensity": 73.43352309076057,
+        "Coal_fraction": 132.059021443073,
+        "Oil_fraction": 15.791692959657173,
+        "Gas_fraction": 4.9337276754746595,
+        "Renewables_fraction": 18.83147144,
+        "WindSolar_fraction": 1.08020617
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          104.1954,
+          35.8617
+        ]
+      },
+      "properties": {
+        "Country": "China",
+        "Year": 2011,
+        "EV": "5120",
+        "EV_norm": 51.717171717171716,
+        "CleanElec": 18.503715519,
+        "CleanElec_norm": 0.17159611404587874,
+        "CarbonIntensity": 74.4628375432627,
+        "Coal_fraction": 135.71284293136907,
+        "Oil_fraction": 15.401019874856578,
+        "Gas_fraction": 4.821600277229743,
+        "Renewables_fraction": 16.9541671,
+        "WindSolar_fraction": 1.549548419
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          104.1954,
+          35.8617
+        ]
+      },
+      "properties": {
+        "Country": "China",
+        "Year": 2012,
+        "EV": "9860",
+        "EV_norm": 99.5959595959596,
+        "CleanElec": 22.167341306,
+        "CleanElec_norm": 0.20557112559001697,
+        "CarbonIntensity": 74.08320612188145,
+        "Coal_fraction": 135.83759900394656,
+        "Oil_fraction": 15.5363955754913,
+        "Gas_fraction": 5.220113296117514,
+        "Renewables_fraction": 20.11549756,
+        "WindSolar_fraction": 2.051843746
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          104.1954,
+          35.8617
+        ]
+      },
+      "properties": {
+        "Country": "China",
+        "Year": 2013,
+        "EV": "15730",
+        "EV_norm": 158.88888888888889,
+        "CleanElec": 23.331143233,
+        "CleanElec_norm": 0.21636376277616723,
+        "CarbonIntensity": 75.15073660302632,
+        "Coal_fraction": 136.35581193106827,
+        "Oil_fraction": 15.839826647534794,
+        "Gas_fraction": 5.751929960713434,
+        "Renewables_fraction": 20.45249646,
+        "WindSolar_fraction": 2.878646773
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          104.1954,
+          35.8617
+        ]
+      },
+      "properties": {
+        "Country": "China",
+        "Year": 2014,
+        "EV": "73000",
+        "EV_norm": 737.3737373737374,
+        "CleanElec": 26.054434405000002,
+        "CleanElec_norm": 0.2416184842968698,
+        "CarbonIntensity": 73.14426385637114,
+        "Coal_fraction": 129.38287100156504,
+        "Oil_fraction": 16.06017204788669,
+        "Gas_fraction": 6.214534611504913,
+        "Renewables_fraction": 22.78903916,
+        "WindSolar_fraction": 3.265395245
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          104.1954,
+          35.8617
+        ]
+      },
+      "properties": {
+        "Country": "China",
+        "Year": 2015,
+        "EV": "211000",
+        "EV_norm": 2131.313131313131,
+        "CleanElec": 28.063517198,
+        "CleanElec_norm": 0.2602499207627646,
+        "CarbonIntensity": 72.4157080525951,
+        "Coal_fraction": 125.92448103408182,
+        "Oil_fraction": 16.94209059893805,
+        "Gas_fraction": 6.406780625102433,
+        "Renewables_fraction": 24.12619474,
+        "WindSolar_fraction": 3.937322458
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          104.1954,
+          35.8617
+        ]
+      },
+      "properties": {
+        "Country": "China",
+        "Year": 2016,
+        "EV": "339000",
+        "EV_norm": 3424.242424242424,
+        "CleanElec": 30.286072605,
+        "CleanElec_norm": 0.28086101752877607,
+        "CarbonIntensity": 72.46655422945622,
+        "Coal_fraction": 124.88388712755747,
+        "Oil_fraction": 17.56396059006056,
+        "Gas_fraction": 6.982980367476673,
+        "Renewables_fraction": 25.2594779,
+        "WindSolar_fraction": 5.026594705
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          104.1954,
+          35.8617
+        ]
+      },
+      "properties": {
+        "Country": "China",
+        "Year": 2017,
+        "EV": "580000",
+        "EV_norm": 5858.585858585859,
+        "CleanElec": 31.983168205,
+        "CleanElec_norm": 0.29659920858696287,
+        "CarbonIntensity": 71.46272937208639,
+        "Coal_fraction": 122.15908521596748,
+        "Oil_fraction": 17.787666062574115,
+        "Gas_fraction": 7.745478054284069,
+        "Renewables_fraction": 25.55585047,
+        "WindSolar_fraction": 6.427317735
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          104.1954,
+          35.8617
+        ]
+      },
+      "properties": {
+        "Country": "China",
+        "Year": 2018,
+        "EV": "1090000",
+        "EV_norm": 11010.10101010101,
+        "CleanElec": 33.542242678,
+        "CleanElec_norm": 0.31105744649060013,
+        "CarbonIntensity": 69.72962386928236,
+        "Coal_fraction": 117.75176259128963,
+        "Oil_fraction": 17.770521119233468,
+        "Gas_fraction": 8.735142611377334,
+        "Renewables_fraction": 25.97956849,
+        "WindSolar_fraction": 7.562674188
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          104.1954,
+          35.8617
+        ]
+      },
+      "properties": {
+        "Country": "China",
+        "Year": 2019,
+        "EV": "1060000",
+        "EV_norm": 10707.070707070707,
+        "CleanElec": 35.464246374,
+        "CleanElec_norm": 0.3288813459705052,
+        "CarbonIntensity": 69.01231451737604,
+        "Coal_fraction": 115.045664512208,
+        "Oil_fraction": 18.318516092088526,
+        "Gas_fraction": 9.176589222034137,
+        "Renewables_fraction": 27.02464767,
+        "WindSolar_fraction": 8.439598704
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          104.1954,
+          35.8617
+        ]
+      },
+      "properties": {
+        "Country": "China",
+        "Year": 2020,
+        "EV": "1140000",
+        "EV_norm": 11515.151515151516,
+        "CleanElec": 37.98611929,
+        "CleanElec_norm": 0.3522681945230999,
+        "CarbonIntensity": 68.63464072150394,
+        "Coal_fraction": 113.26787280170643,
+        "Oil_fraction": 18.59260130163239,
+        "Gas_fraction": 9.627523414890957,
+        "Renewables_fraction": 28.39562093,
+        "WindSolar_fraction": 9.59049836
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.2137,
+          46.2276
+        ]
+      },
+      "properties": {
+        "Country": "France",
+        "Year": 2010,
+        "EV": "272",
+        "EV_norm": 2.7474747474747474,
+        "CleanElec": 16.544174475,
+        "CleanElec_norm": 0.1534241080982875,
+        "CarbonIntensity": 32.39290111340836,
+        "Coal_fraction": 6.718946963055101,
+        "Oil_fraction": 28.57889364194177,
+        "Gas_fraction": 18.33882086000625,
+        "Renewables_fraction": 14.5810205,
+        "WindSolar_fraction": 1.963153975
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.2137,
+          46.2276
+        ]
+      },
+      "properties": {
+        "Country": "France",
+        "Year": 2011,
+        "EV": "2656",
+        "EV_norm": 26.828282828282827,
+        "CleanElec": 15.163705035,
+        "CleanElec_norm": 0.1406221823866728,
+        "CarbonIntensity": 31.42217188212705,
+        "Coal_fraction": 6.30170519605241,
+        "Oil_fraction": 29.18446540387493,
+        "Gas_fraction": 15.969396308828573,
+        "Renewables_fraction": 12.41026607,
+        "WindSolar_fraction": 2.753438965
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.2137,
+          46.2276
+        ]
+      },
+      "properties": {
+        "Country": "France",
+        "Year": 2012,
+        "EV": "6360",
+        "EV_norm": 64.24242424242425,
+        "CleanElec": 19.384412282,
+        "CleanElec_norm": 0.179763346298688,
+        "CarbonIntensity": 31.940834029921675,
+        "Coal_fraction": 6.9655162488715145,
+        "Oil_fraction": 28.61322428226624,
+        "Gas_fraction": 16.512666629961444,
+        "Renewables_fraction": 15.7399905,
+        "WindSolar_fraction": 3.644421782
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.2137,
+          46.2276
+        ]
+      },
+      "properties": {
+        "Country": "France",
+        "Year": 2013,
+        "EV": "9750",
+        "EV_norm": 98.48484848484848,
+        "CleanElec": 21.826517430000003,
+        "CleanElec_norm": 0.2024104602287493,
+        "CarbonIntensity": 31.853460170942796,
+        "Coal_fraction": 7.2729607864352035,
+        "Oil_fraction": 27.98088055845418,
+        "Gas_fraction": 16.71269604034631,
+        "Renewables_fraction": 17.93880804,
+        "WindSolar_fraction": 3.88770939
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.2137,
+          46.2276
+        ]
+      },
+      "properties": {
+        "Country": "France",
+        "Year": 2014,
+        "EV": "13100",
+        "EV_norm": 132.32323232323233,
+        "CleanElec": 21.790406588,
+        "CleanElec_norm": 0.20207558261156142,
+        "CarbonIntensity": 30.136371557835044,
+        "Coal_fraction": 5.741081391457407,
+        "Oil_fraction": 28.601264682833154,
+        "Gas_fraction": 14.595861258128085,
+        "Renewables_fraction": 17.42512899,
+        "WindSolar_fraction": 4.365277598
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.2137,
+          46.2276
+        ]
+      },
+      "properties": {
+        "Country": "France",
+        "Year": 2015,
+        "EV": "23800",
+        "EV_norm": 240.40404040404042,
+        "CleanElec": 21.958660242,
+        "CleanElec_norm": 0.20363590022295,
+        "CarbonIntensity": 30.252436687221604,
+        "Coal_fraction": 5.465074347165748,
+        "Oil_fraction": 28.14685047505553,
+        "Gas_fraction": 15.45607643285501,
+        "Renewables_fraction": 16.70120561,
+        "WindSolar_fraction": 5.257454632
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.2137,
+          46.2276
+        ]
+      },
+      "properties": {
+        "Country": "France",
+        "Year": 2016,
+        "EV": "30600",
+        "EV_norm": 309.09090909090907,
+        "CleanElec": 23.939175875,
+        "CleanElec_norm": 0.22200241618461997,
+        "CarbonIntensity": 30.93369095275855,
+        "Coal_fraction": 5.270229159914068,
+        "Oil_fraction": 28.1520103734948,
+        "Gas_fraction": 17.21482263008271,
+        "Renewables_fraction": 18.40853339,
+        "WindSolar_fraction": 5.530642485
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.2137,
+          46.2276
+        ]
+      },
+      "properties": {
+        "Country": "France",
+        "Year": 2017,
+        "EV": "38000",
+        "EV_norm": 383.83838383838383,
+        "CleanElec": 23.725165384,
+        "CleanElec_norm": 0.22001776782667573,
+        "CarbonIntensity": 31.406068488203005,
+        "Coal_fraction": 5.987721156370939,
+        "Oil_fraction": 28.427833152405864,
+        "Gas_fraction": 17.339702687926874,
+        "Renewables_fraction": 17.3954326,
+        "WindSolar_fraction": 6.329732784
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.2137,
+          46.2276
+        ]
+      },
+      "properties": {
+        "Country": "France",
+        "Year": 2018,
+        "EV": "48000",
+        "EV_norm": 484.8484848484849,
+        "CleanElec": 27.347595499,
+        "CleanElec_norm": 0.2536107470582522,
+        "CarbonIntensity": 31.062810472735393,
+        "Coal_fraction": 5.281836631586134,
+        "Oil_fraction": 27.47016493050838,
+        "Gas_fraction": 16.635529465365096,
+        "Renewables_fraction": 20.39771503,
+        "WindSolar_fraction": 6.949880469
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.2137,
+          46.2276
+        ]
+      },
+      "properties": {
+        "Country": "France",
+        "Year": 2019,
+        "EV": "64000",
+        "EV_norm": 646.4646464646464,
+        "CleanElec": 28.932794215999998,
+        "CleanElec_norm": 0.26831125083266455,
+        "CarbonIntensity": 30.643459017738575,
+        "Coal_fraction": 4.202473083818045,
+        "Oil_fraction": 27.85630921586874,
+        "Gas_fraction": 17.200714102921467,
+        "Renewables_fraction": 20.56353266,
+        "WindSolar_fraction": 8.369261556
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.2137,
+          46.2276
+        ]
+      },
+      "properties": {
+        "Country": "France",
+        "Year": 2020,
+        "EV": "185000",
+        "EV_norm": 1868.6868686868686,
+        "CleanElec": 34.58789231,
+        "CleanElec_norm": 0.32075438618470975,
+        "CarbonIntensity": 29.963096350955578,
+        "Coal_fraction": 3.8067797108203245,
+        "Oil_fraction": 26.67812036351603,
+        "Gas_fraction": 17.842513570252205,
+        "Renewables_fraction": 24.30269876,
+        "WindSolar_fraction": 10.28519355
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.4515,
+          51.1657
+        ]
+      },
+      "properties": {
+        "Country": "Germany",
+        "Year": 2011,
+        "EV": "1640",
+        "EV_norm": 16.565656565656564,
+        "CleanElec": 32.85702869,
+        "CleanElec_norm": 0.3047030439107536,
+        "CarbonIntensity": 57.451219862779396,
+        "Coal_fraction": 75.60452696107927,
+        "Oil_fraction": 31.32810368486114,
+        "Gas_fraction": 27.44829025049093,
+        "Renewables_fraction": 21.18302527,
+        "WindSolar_fraction": 11.67400342
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.4515,
+          51.1657
+        ]
+      },
+      "properties": {
+        "Country": "Germany",
+        "Year": 2012,
+        "EV": "3400",
+        "EV_norm": 34.343434343434346,
+        "CleanElec": 36.45342933,
+        "CleanElec_norm": 0.3380546361216494,
+        "CarbonIntensity": 58.272654182697245,
+        "Coal_fraction": 78.53142052896129,
+        "Oil_fraction": 31.026127990374913,
+        "Gas_fraction": 27.31019112956732,
+        "Renewables_fraction": 23.73622106,
+        "WindSolar_fraction": 12.71720827
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.4515,
+          51.1657
+        ]
+      },
+      "properties": {
+        "Country": "Germany",
+        "Year": 2013,
+        "EV": "6800",
+        "EV_norm": 68.68686868686869,
+        "CleanElec": 38.1579174,
+        "CleanElec_norm": 0.3538613820127236,
+        "CarbonIntensity": 58.55591300676217,
+        "Coal_fraction": 76.8527488326001,
+        "Oil_fraction": 30.988043005217282,
+        "Gas_fraction": 27.254912506690886,
+        "Renewables_fraction": 24.75696766,
+        "WindSolar_fraction": 13.40094974
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.4515,
+          51.1657
+        ]
+      },
+      "properties": {
+        "Country": "Germany",
+        "Year": 2014,
+        "EV": "13500",
+        "EV_norm": 136.36363636363637,
+        "CleanElec": 42.21957101,
+        "CleanElec_norm": 0.39152754561974396,
+        "CarbonIntensity": 58.24136012778779,
+        "Coal_fraction": 77.83324708603459,
+        "Oil_fraction": 31.5111560426446,
+        "Gas_fraction": 25.754155351631514,
+        "Renewables_fraction": 26.82086504,
+        "WindSolar_fraction": 15.39870597
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.4515,
+          51.1657
+        ]
+      },
+      "properties": {
+        "Country": "Germany",
+        "Year": 2015,
+        "EV": "23000",
+        "EV_norm": 232.32323232323233,
+        "CleanElec": 48.744348759999994,
+        "CleanElec_norm": 0.45203574494670373,
+        "CarbonIntensity": 58.32758555779879,
+        "Coal_fraction": 77.45010636224478,
+        "Oil_fraction": 31.333211730838723,
+        "Gas_fraction": 26.328329375759974,
+        "Renewables_fraction": 30.03305523,
+        "WindSolar_fraction": 18.71129353
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.4515,
+          51.1657
+        ]
+      },
+      "properties": {
+        "Country": "Germany",
+        "Year": 2016,
+        "EV": "24000",
+        "EV_norm": 242.42424242424244,
+        "CleanElec": 48.48112612,
+        "CleanElec_norm": 0.4495947226500457,
+        "CarbonIntensity": 58.63937929701319,
+        "Coal_fraction": 74.60119242658796,
+        "Oil_fraction": 31.243557031883363,
+        "Gas_fraction": 28.778199200622023,
+        "Renewables_fraction": 30.01926362,
+        "WindSolar_fraction": 18.4618625
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.4515,
+          51.1657
+        ]
+      },
+      "properties": {
+        "Country": "Germany",
+        "Year": 2017,
+        "EV": "54000",
+        "EV_norm": 545.4545454545455,
+        "CleanElec": 56.48967529,
+        "CleanElec_norm": 0.5238628292530819,
+        "CarbonIntensity": 57.26364868262142,
+        "Coal_fraction": 71.41976561680876,
+        "Oil_fraction": 31.679987826246432,
+        "Gas_fraction": 29.206540360802606,
+        "Renewables_fraction": 34.00951167,
+        "WindSolar_fraction": 22.48016362
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.4515,
+          51.1657
+        ]
+      },
+      "properties": {
+        "Country": "Germany",
+        "Year": 2018,
+        "EV": "67000",
+        "EV_norm": 676.7676767676768,
+        "CleanElec": 60.39190931,
+        "CleanElec_norm": 0.5600505988522233,
+        "CarbonIntensity": 57.38554979010519,
+        "Coal_fraction": 71.38351387013715,
+        "Oil_fraction": 30.934256913493286,
+        "Gas_fraction": 30.409892184003333,
+        "Renewables_fraction": 35.90651767,
+        "WindSolar_fraction": 24.48539164
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.4515,
+          51.1657
+        ]
+      },
+      "properties": {
+        "Country": "Germany",
+        "Year": 2019,
+        "EV": "108000",
+        "EV_norm": 1090.909090909091,
+        "CleanElec": 68.5991651,
+        "CleanElec_norm": 0.636161431787286,
+        "CarbonIntensity": 55.06326095945665,
+        "Coal_fraction": 57.22622867045521,
+        "Oil_fraction": 32.46207703351686,
+        "Gas_fraction": 32.264932999484465,
+        "Renewables_fraction": 40.48816777,
+        "WindSolar_fraction": 28.11099733
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.4515,
+          51.1657
+        ]
+      },
+      "properties": {
+        "Country": "Germany",
+        "Year": 2020,
+        "EV": "390000",
+        "EV_norm": 3939.3939393939395,
+        "CleanElec": 76.62584168000001,
+        "CleanElec_norm": 0.7105976447963316,
+        "CarbonIntensity": 53.49556718258589,
+        "Coal_fraction": 50.24328450641907,
+        "Oil_fraction": 31.510118419693445,
+        "Gas_fraction": 33.61684740974688,
+        "Renewables_fraction": 44.53262232,
+        "WindSolar_fraction": 32.09321936
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          78.9629,
+          20.5937
+        ]
+      },
+      "properties": {
+        "Country": "India",
+        "Year": 2019,
+        "EV": "687",
+        "EV_norm": 6.9393939393939394,
+        "CleanElec": 28.483595353,
+        "CleanElec_norm": 0.26414555885337104,
+        "CarbonIntensity": 58.90320139236452,
+        "Coal_fraction": 107.75619265306022,
+        "Oil_fraction": 24.363308337944982,
+        "Gas_fraction": 6.75006420246368,
+        "Renewables_fraction": 21.11007279,
+        "WindSolar_fraction": 7.373522563
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          78.9629,
+          20.5937
+        ]
+      },
+      "properties": {
+        "Country": "India",
+        "Year": 2020,
+        "EV": "3143",
+        "EV_norm": 31.747474747474747,
+        "CleanElec": 30.750652683,
+        "CleanElec_norm": 0.28516934879154715,
+        "CarbonIntensity": 57.62065899213242,
+        "Coal_fraction": 107.42553390173295,
+        "Oil_fraction": 22.708289025076738,
+        "Gas_fraction": 6.889922926452849,
+        "Renewables_fraction": 22.51975359,
+        "WindSolar_fraction": 8.230899093
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.5674,
+          41.8719
+        ]
+      },
+      "properties": {
+        "Country": "Italy",
+        "Year": 2013,
+        "EV": "1040",
+        "EV_norm": 10.505050505050505,
+        "CleanElec": 54.10773377,
+        "CleanElec_norm": 0.5017736489316033,
+        "CarbonIntensity": 52.7594983856291,
+        "Coal_fraction": 13.902608635174754,
+        "Oil_fraction": 34.240443798826064,
+        "Gas_fraction": 45.03246513620429,
+        "Renewables_fraction": 39.30546881,
+        "WindSolar_fraction": 14.80226496
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.5674,
+          41.8719
+        ]
+      },
+      "properties": {
+        "Country": "Italy",
+        "Year": 2014,
+        "EV": "1340",
+        "EV_norm": 13.535353535353535,
+        "CleanElec": 59.48353804,
+        "CleanElec_norm": 0.5516267242048387,
+        "CarbonIntensity": 53.32780463879815,
+        "Coal_fraction": 14.487860749944092,
+        "Oil_fraction": 36.50271359156025,
+        "Gas_fraction": 42.127200765041785,
+        "Renewables_fraction": 43.73773796,
+        "WindSolar_fraction": 15.74580008
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.5674,
+          41.8719
+        ]
+      },
+      "properties": {
+        "Country": "Italy",
+        "Year": 2015,
+        "EV": "2240",
+        "EV_norm": 22.626262626262626,
+        "CleanElec": 54.73739633,
+        "CleanElec_norm": 0.5076128896151965,
+        "CarbonIntensity": 52.53105901818398,
+        "Coal_fraction": 13.075878455929836,
+        "Oil_fraction": 35.45098858636068,
+        "Gas_fraction": 44.20360374404913,
+        "Renewables_fraction": 38.98930362,
+        "WindSolar_fraction": 15.74809271
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.5674,
+          41.8719
+        ]
+      },
+      "properties": {
+        "Country": "Italy",
+        "Year": 2016,
+        "EV": "2700",
+        "EV_norm": 27.272727272727273,
+        "CleanElec": 54.066011429999996,
+        "CleanElec_norm": 0.5013867325090312,
+        "CarbonIntensity": 52.618788940230544,
+        "Coal_fraction": 11.744099665275565,
+        "Oil_fraction": 34.44583126831261,
+        "Gas_fraction": 46.90695476460739,
+        "Renewables_fraction": 37.90894785,
+        "WindSolar_fraction": 16.15706358
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.5674,
+          41.8719
+        ]
+      },
+      "properties": {
+        "Country": "Italy",
+        "Year": 2017,
+        "EV": "4900",
+        "EV_norm": 49.494949494949495,
+        "CleanElec": 52.29536702,
+        "CleanElec_norm": 0.48496647897664896,
+        "CarbonIntensity": 51.18259307274431,
+        "Coal_fraction": 10.112506241716424,
+        "Oil_fraction": 33.564516067408405,
+        "Gas_fraction": 48.92042981111652,
+        "Renewables_fraction": 35.73796237,
+        "WindSolar_fraction": 16.55740465
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.5674,
+          41.8719
+        ]
+      },
+      "properties": {
+        "Country": "Italy",
+        "Year": 2018,
+        "EV": "9700",
+        "EV_norm": 97.97979797979798,
+        "CleanElec": 56.33521168,
+        "CleanElec_norm": 0.5224303950368143,
+        "CarbonIntensity": 51.26049066841346,
+        "Coal_fraction": 9.462867243093136,
+        "Oil_fraction": 34.32595605397493,
+        "Gas_fraction": 48.15970518275235,
+        "Renewables_fraction": 40.08547483,
+        "WindSolar_fraction": 16.24973685
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.5674,
+          41.8719
+        ]
+      },
+      "properties": {
+        "Country": "Italy",
+        "Year": 2019,
+        "EV": "17500",
+        "EV_norm": 176.76767676767676,
+        "CleanElec": 57.22901417,
+        "CleanElec_norm": 0.5307191646004753,
+        "CarbonIntensity": 50.77944032538765,
+        "Coal_fraction": 6.714397203505085,
+        "Oil_fraction": 34.536115008775944,
+        "Gas_fraction": 49.80912850643652,
+        "Renewables_fraction": 39.93116046,
+        "WindSolar_fraction": 17.29785371
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.5674,
+          41.8719
+        ]
+      },
+      "properties": {
+        "Country": "Italy",
+        "Year": 2020,
+        "EV": "60000",
+        "EV_norm": 606.060606060606,
+        "CleanElec": 60.29164059,
+        "CleanElec_norm": 0.559120746537174,
+        "CarbonIntensity": 48.02668393677127,
+        "Coal_fraction": 5.412445806327426,
+        "Oil_fraction": 30.40786471909387,
+        "Gas_fraction": 51.82083914609286,
+        "Renewables_fraction": 42.01458374,
+        "WindSolar_fraction": 18.27705685
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.2529,
+          36.2048
+        ]
+      },
+      "properties": {
+        "Country": "Japan",
+        "Year": 2011,
+        "EV": "13015",
+        "EV_norm": 131.46464646464648,
+        "CleanElec": 13.930337961,
+        "CleanElec_norm": 0.1291844256359695,
+        "CarbonIntensity": 60.04983364696041,
+        "Coal_fraction": 38.41859235853657,
+        "Oil_fraction": 40.351039974807826,
+        "Gas_fraction": 27.851744710495357,
+        "Renewables_fraction": 10.94294404,
+        "WindSolar_fraction": 2.987393921
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.2529,
+          36.2048
+        ]
+      },
+      "properties": {
+        "Country": "Japan",
+        "Year": 2012,
+        "EV": "24000",
+        "EV_norm": 242.42424242424244,
+        "CleanElec": 13.710312944,
+        "CleanElec_norm": 0.1271440009509212,
+        "CarbonIntensity": 63.457072721916326,
+        "Coal_fraction": 41.08897160792432,
+        "Oil_fraction": 41.6460845142766,
+        "Gas_fraction": 29.543446643249418,
+        "Renewables_fraction": 10.5306167,
+        "WindSolar_fraction": 3.179696244
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.2529,
+          36.2048
+        ]
+      },
+      "properties": {
+        "Country": "Japan",
+        "Year": 2013,
+        "EV": "29000",
+        "EV_norm": 292.92929292929296,
+        "CleanElec": 15.155925122,
+        "CleanElec_norm": 0.14055003456117016,
+        "CarbonIntensity": 63.55964060746999,
+        "Coal_fraction": 43.52895310639737,
+        "Oil_fraction": 40.719891583733876,
+        "Gas_fraction": 25.92483690993741,
+        "Renewables_fraction": 11.31430621,
+        "WindSolar_fraction": 3.841618912
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.2529,
+          36.2048
+        ]
+      },
+      "properties": {
+        "Country": "Japan",
+        "Year": 2014,
+        "EV": "32000",
+        "EV_norm": 323.2323232323232,
+        "CleanElec": 17.650945524999997,
+        "CleanElec_norm": 0.16368786356531603,
+        "CarbonIntensity": 63.489707875473385,
+        "Coal_fraction": 44.59362832679146,
+        "Oil_fraction": 39.74307683825612,
+        "Gas_fraction": 27.012460878837253,
+        "Renewables_fraction": 12.82921974,
+        "WindSolar_fraction": 4.821725785
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.2529,
+          36.2048
+        ]
+      },
+      "properties": {
+        "Country": "Japan",
+        "Year": 2015,
+        "EV": "24000",
+        "EV_norm": 242.42424242424244,
+        "CleanElec": 20.747260679,
+        "CleanElec_norm": 0.1924018614508867,
+        "CarbonIntensity": 62.597830337811054,
+        "Coal_fraction": 44.83976321398473,
+        "Oil_fraction": 39.523365750832774,
+        "Gas_fraction": 26.15404250694846,
+        "Renewables_fraction": 14.7340205,
+        "WindSolar_fraction": 6.013240179
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.2529,
+          36.2048
+        ]
+      },
+      "properties": {
+        "Country": "Japan",
+        "Year": 2016,
+        "EV": "24400",
+        "EV_norm": 246.46464646464648,
+        "CleanElec": 21.845120544,
+        "CleanElec_norm": 0.2025829781248591,
+        "CarbonIntensity": 62.80291839445887,
+        "Coal_fraction": 44.97209665612834,
+        "Oil_fraction": 39.077571635208805,
+        "Gas_fraction": 26.98676983842901,
+        "Renewables_fraction": 14.78333997,
+        "WindSolar_fraction": 7.061780574
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.2529,
+          36.2048
+        ]
+      },
+      "properties": {
+        "Country": "Japan",
+        "Year": 2017,
+        "EV": "54000",
+        "EV_norm": 545.4545454545455,
+        "CleanElec": 24.405393577999998,
+        "CleanElec_norm": 0.22632593413170732,
+        "CarbonIntensity": 61.15358233608604,
+        "Coal_fraction": 44.7071847125906,
+        "Oil_fraction": 38.12385854381213,
+        "Gas_fraction": 26.11035580454326,
+        "Renewables_fraction": 16.49819814,
+        "WindSolar_fraction": 7.907195438
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.2529,
+          36.2048
+        ]
+      },
+      "properties": {
+        "Country": "Japan",
+        "Year": 2018,
+        "EV": "50000",
+        "EV_norm": 505.050505050505,
+        "CleanElec": 26.096152623,
+        "CleanElec_norm": 0.24200536249364965,
+        "CarbonIntensity": 59.56775949620804,
+        "Coal_fraction": 44.07060878712675,
+        "Oil_fraction": 36.61778430295989,
+        "Gas_fraction": 25.303885506763553,
+        "Renewables_fraction": 17.42295647,
+        "WindSolar_fraction": 8.673196153
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.2529,
+          36.2048
+        ]
+      },
+      "properties": {
+        "Country": "Japan",
+        "Year": 2019,
+        "EV": "39000",
+        "EV_norm": 393.93939393939394,
+        "CleanElec": 28.11538659,
+        "CleanElec_norm": 0.26073093691846494,
+        "CarbonIntensity": 59.907076271229585,
+        "Coal_fraction": 44.65597708225501,
+        "Oil_fraction": 36.53602193615656,
+        "Gas_fraction": 24.749660613261646,
+        "Renewables_fraction": 18.32390532,
+        "WindSolar_fraction": 9.79148127
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          138.2529,
+          36.2048
+        ]
+      },
+      "properties": {
+        "Country": "Japan",
+        "Year": 2020,
+        "EV": "30000",
+        "EV_norm": 303.030303030303,
+        "CleanElec": 30.92021346,
+        "CleanElec_norm": 0.2867417881428722,
+        "CarbonIntensity": 60.550931115,
+        "Coal_fraction": 44.26405167266509,
+        "Oil_fraction": 36.09434803800619,
+        "Gas_fraction": 25.84974809706698,
+        "Renewables_fraction": 20.22647471,
+        "WindSolar_fraction": 10.69373875
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -102.5528,
+          23.6345
+        ]
+      },
+      "properties": {
+        "Country": "Mexico",
+        "Year": 2015,
+        "EV": "99",
+        "EV_norm": 1,
+        "CleanElec": 20.207137157,
+        "CleanElec_norm": 0.18739297026982604,
+        "CarbonIntensity": 58.275980631506684,
+        "Coal_fraction": 13.219180635337446,
+        "Oil_fraction": 45.19013394860572,
+        "Gas_fraction": 42.08077361088869,
+        "Renewables_fraction": 15.27813538,
+        "WindSolar_fraction": 4.929001777
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -102.5528,
+          23.6345
+        ]
+      },
+      "properties": {
+        "Country": "Mexico",
+        "Year": 2016,
+        "EV": "770",
+        "EV_norm": 7.777777777777778,
+        "CleanElec": 20.631761521,
+        "CleanElec_norm": 0.1913307680984181,
+        "CarbonIntensity": 59.063149529486914,
+        "Coal_fraction": 11.62941843705946,
+        "Oil_fraction": 46.48847176750772,
+        "Gas_fraction": 43.40714076640464,
+        "Renewables_fraction": 15.33172783,
+        "WindSolar_fraction": 5.300033691
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -102.5528,
+          23.6345
+        ]
+      },
+      "properties": {
+        "Country": "Mexico",
+        "Year": 2017,
+        "EV": "1200",
+        "EV_norm": 12.121212121212121,
+        "CleanElec": 21.415709964999998,
+        "CleanElec_norm": 0.19860079483789006,
+        "CarbonIntensity": 60.50864359716221,
+        "Coal_fraction": 12.042091664041983,
+        "Oil_fraction": 46.68101010623854,
+        "Gas_fraction": 45.2525392624043,
+        "Renewables_fraction": 15.99057452,
+        "WindSolar_fraction": 5.425135445
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -102.5528,
+          23.6345
+        ]
+      },
+      "properties": {
+        "Country": "Mexico",
+        "Year": 2018,
+        "EV": "1800",
+        "EV_norm": 18.181818181818183,
+        "CleanElec": 22.262916397999998,
+        "CleanElec_norm": 0.20645745106178162,
+        "CarbonIntensity": 60.61459313955226,
+        "Coal_fraction": 11.37980049051027,
+        "Oil_fraction": 46.104351773364996,
+        "Gas_fraction": 46.830500216986366,
+        "Renewables_fraction": 16.29880084,
+        "WindSolar_fraction": 5.964115558
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -102.5528,
+          23.6345
+        ]
+      },
+      "properties": {
+        "Country": "Mexico",
+        "Year": 2019,
+        "EV": "1690",
+        "EV_norm": 17.07070707070707,
+        "CleanElec": 26.018098751,
+        "CleanElec_norm": 0.24128152186241636,
+        "CarbonIntensity": 59.94846485370147,
+        "Coal_fraction": 11.677621351401985,
+        "Oil_fraction": 43.94905915380548,
+        "Gas_fraction": 48.6712676778317,
+        "Renewables_fraction": 17.02234726,
+        "WindSolar_fraction": 8.995751491
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -102.5528,
+          23.6345
+        ]
+      },
+      "properties": {
+        "Country": "Mexico",
+        "Year": 2020,
+        "EV": "3800",
+        "EV_norm": 38.38383838383838,
+        "CleanElec": 31.71078259,
+        "CleanElec_norm": 0.29407321249671803,
+        "CarbonIntensity": 58.53115297839803,
+        "Coal_fraction": 8.938174444936873,
+        "Oil_fraction": 42.2097318929601,
+        "Gas_fraction": 51.36566924756145,
+        "Renewables_fraction": 20.47945821,
+        "WindSolar_fraction": 11.23132438
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.2913,
+          52.1326
+        ]
+      },
+      "properties": {
+        "Country": "Netherlands",
+        "Year": 2011,
+        "EV": "877",
+        "EV_norm": 8.858585858585858,
+        "CleanElec": 15.509691909,
+        "CleanElec_norm": 0.14383072734232338,
+        "CarbonIntensity": 55.38176338459008,
+        "Coal_fraction": 15.506194083597258,
+        "Oil_fraction": 31.34620387162444,
+        "Gas_fraction": 63.87051816747555,
+        "Renewables_fraction": 10.81247093,
+        "WindSolar_fraction": 4.697220979
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.2913,
+          52.1326
+        ]
+      },
+      "properties": {
+        "Country": "Netherlands",
+        "Year": 2012,
+        "EV": "5090",
+        "EV_norm": 51.41414141414141,
+        "CleanElec": 17.240277041,
+        "CleanElec_norm": 0.15987948702909266,
+        "CarbonIntensity": 54.78983536903326,
+        "Coal_fraction": 17.03551637342636,
+        "Oil_fraction": 31.81839330102274,
+        "Gas_fraction": 61.26731592032449,
+        "Renewables_fraction": 12.08795467,
+        "WindSolar_fraction": 5.152322371
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.2913,
+          52.1326
+        ]
+      },
+      "properties": {
+        "Country": "Netherlands",
+        "Year": 2013,
+        "EV": "22600",
+        "EV_norm": 228.2828282828283,
+        "CleanElec": 17.973039461,
+        "CleanElec_norm": 0.16667483489648408,
+        "CarbonIntensity": 55.472330037861425,
+        "Coal_fraction": 17.373340576089,
+        "Oil_fraction": 30.98683842668113,
+        "Gas_fraction": 62.347500460094366,
+        "Renewables_fraction": 11.91183706,
+        "WindSolar_fraction": 6.061202401
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.2913,
+          52.1326
+        ]
+      },
+      "properties": {
+        "Country": "Netherlands",
+        "Year": 2014,
+        "EV": "14700",
+        "EV_norm": 148.4848484848485,
+        "CleanElec": 17.722070111,
+        "CleanElec_norm": 0.16434744474825144,
+        "CarbonIntensity": 56.56222391723697,
+        "Coal_fraction": 20.558180249297138,
+        "Oil_fraction": 31.84576895349866,
+        "Gas_fraction": 58.30295324898213,
+        "Renewables_fraction": 11.27064447,
+        "WindSolar_fraction": 6.451425641
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.2913,
+          52.1326
+        ]
+      },
+      "properties": {
+        "Country": "Netherlands",
+        "Year": 2015,
+        "EV": "15400",
+        "EV_norm": 155.55555555555554,
+        "CleanElec": 20.377785829,
+        "CleanElec_norm": 0.1889754983276219,
+        "CarbonIntensity": 58.15905300880122,
+        "Coal_fraction": 24.797902082049124,
+        "Oil_fraction": 32.44739055300876,
+        "Gas_fraction": 56.90687484182174,
+        "Renewables_fraction": 12.39807936,
+        "WindSolar_fraction": 7.979706469
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.2913,
+          52.1326
+        ]
+      },
+      "properties": {
+        "Country": "Netherlands",
+        "Year": 2016,
+        "EV": "43000",
+        "EV_norm": 434.34343434343435,
+        "CleanElec": 21.427455472,
+        "CleanElec_norm": 0.1987097180083003,
+        "CarbonIntensity": 56.997594479683315,
+        "Coal_fraction": 22.317306339693626,
+        "Oil_fraction": 32.93650684168497,
+        "Gas_fraction": 57.236411284044905,
+        "Renewables_fraction": 12.82592091,
+        "WindSolar_fraction": 8.601534562
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.2913,
+          52.1326
+        ]
+      },
+      "properties": {
+        "Country": "Netherlands",
+        "Year": 2017,
+        "EV": "26000",
+        "EV_norm": 262.62626262626264,
+        "CleanElec": 25.87261505,
+        "CleanElec_norm": 0.23993236375830596,
+        "CarbonIntensity": 55.85196316969358,
+        "Coal_fraction": 19.82163114750324,
+        "Oil_fraction": 33.418602890117235,
+        "Gas_fraction": 58.647879410533974,
+        "Renewables_fraction": 14.86953513,
+        "WindSolar_fraction": 11.00307992
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.2913,
+          52.1326
+        ]
+      },
+      "properties": {
+        "Country": "Netherlands",
+        "Year": 2018,
+        "EV": "27600",
+        "EV_norm": 278.7878787878788,
+        "CleanElec": 29.04253813,
+        "CleanElec_norm": 0.26932897233639436,
+        "CarbonIntensity": 54.65695571714846,
+        "Coal_fraction": 17.923500858393975,
+        "Oil_fraction": 33.76899945070564,
+        "Gas_fraction": 58.38338766819079,
+        "Renewables_fraction": 16.49742225,
+        "WindSolar_fraction": 12.54511588
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.2913,
+          52.1326
+        ]
+      },
+      "properties": {
+        "Country": "Netherlands",
+        "Year": 2019,
+        "EV": "66500",
+        "EV_norm": 671.7171717171717,
+        "CleanElec": 31.84382021,
+        "CleanElec_norm": 0.2953069505851831,
+        "CarbonIntensity": 53.45022797006858,
+        "Coal_fraction": 14.101044876978383,
+        "Oil_fraction": 32.772785945203104,
+        "Gas_fraction": 61.90786722940215,
+        "Renewables_fraction": 18.02251433,
+        "WindSolar_fraction": 13.82130588
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.2913,
+          52.1326
+        ]
+      },
+      "properties": {
+        "Country": "Netherlands",
+        "Year": 2020,
+        "EV": "87000",
+        "EV_norm": 878.7878787878788,
+        "CleanElec": 43.66798628,
+        "CleanElec_norm": 0.4049595739927215,
+        "CarbonIntensity": 51.73096111905904,
+        "Coal_fraction": 9.046927543226301,
+        "Oil_fraction": 32.35674285651992,
+        "Gas_fraction": 62.255311847512054,
+        "Renewables_fraction": 24.78119222,
+        "WindSolar_fraction": 18.88679406
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          174.886,
+          -40.9006
+        ]
+      },
+      "properties": {
+        "Country": "New Zealand",
+        "Year": 2011,
+        "EV": "15",
+        "EV_norm": 0.15151515151515152,
+        "CleanElec": 94.40453942,
+        "CleanElec_norm": 0.8754702317017922,
+        "CarbonIntensity": 37.9229860026972,
+        "Coal_fraction": 16.170587864522265,
+        "Oil_fraction": 32.52195533455692,
+        "Gas_fraction": 23.450700889671,
+        "Renewables_fraction": 76.09601225,
+        "WindSolar_fraction": 18.30852717
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          174.886,
+          -40.9006
+        ]
+      },
+      "properties": {
+        "Country": "New Zealand",
+        "Year": 2012,
+        "EV": "27",
+        "EV_norm": 0.2727272727272727,
+        "CleanElec": 90.60325351,
+        "CleanElec_norm": 0.8402186148109265,
+        "CarbonIntensity": 38.34724396410672,
+        "Coal_fraction": 18.20446388599976,
+        "Oil_fraction": 30.755741859757695,
+        "Gas_fraction": 23.247431522847755,
+        "Renewables_fraction": 71.80976051,
+        "WindSolar_fraction": 18.793493
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          174.886,
+          -40.9006
+        ]
+      },
+      "properties": {
+        "Country": "New Zealand",
+        "Year": 2013,
+        "EV": "36",
+        "EV_norm": 0.36363636363636365,
+        "CleanElec": 93.89406514999999,
+        "CleanElec_norm": 0.8707362959167081,
+        "CarbonIntensity": 38.292137013026014,
+        "Coal_fraction": 15.94514962035643,
+        "Oil_fraction": 30.986370244892676,
+        "Gas_fraction": 24.66083564740983,
+        "Renewables_fraction": 74.21219337,
+        "WindSolar_fraction": 19.68187178
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          174.886,
+          -40.9006
+        ]
+      },
+      "properties": {
+        "Country": "New Zealand",
+        "Year": 2014,
+        "EV": "320",
+        "EV_norm": 3.2323232323232323,
+        "CleanElec": 101.10707887,
+        "CleanElec_norm": 0.9376269224852309,
+        "CarbonIntensity": 37.08303677277178,
+        "Coal_fraction": 15.371164586347023,
+        "Oil_fraction": 30.12284710310682,
+        "Gas_fraction": 26.131748092440894,
+        "Renewables_fraction": 79.13776471,
+        "WindSolar_fraction": 21.96931416
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          174.886,
+          -40.9006
+        ]
+      },
+      "properties": {
+        "Country": "New Zealand",
+        "Year": 2015,
+        "EV": "500",
+        "EV_norm": 5.05050505050505,
+        "CleanElec": 103.38730101,
+        "CleanElec_norm": 0.9587727976465522,
+        "CarbonIntensity": 36.37940515156108,
+        "Coal_fraction": 14.177068313523062,
+        "Oil_fraction": 30.454398601006115,
+        "Gas_fraction": 24.3365742073546,
+        "Renewables_fraction": 80.08095152,
+        "WindSolar_fraction": 23.30634949
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          174.886,
+          -40.9006
+        ]
+      },
+      "properties": {
+        "Country": "New Zealand",
+        "Year": 2016,
+        "EV": "1540",
+        "EV_norm": 15.555555555555555,
+        "CleanElec": 107.83295193999999,
+        "CleanElec_norm": 1,
+        "CarbonIntensity": 36.28092431376945,
+        "Coal_fraction": 12.238993363992897,
+        "Oil_fraction": 31.502437086429374,
+        "Gas_fraction": 24.632741859046064,
+        "Renewables_fraction": 84.23569794,
+        "WindSolar_fraction": 23.597254
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          174.886,
+          -40.9006
+        ]
+      },
+      "properties": {
+        "Country": "New Zealand",
+        "Year": 2017,
+        "EV": "3440",
+        "EV_norm": 34.74747474747475,
+        "CleanElec": 104.01549292,
+        "CleanElec_norm": 0.9645984001057109,
+        "CarbonIntensity": 37.80096847824424,
+        "Coal_fraction": 12.724400902502907,
+        "Oil_fraction": 32.53193639119094,
+        "Gas_fraction": 24.993485584637273,
+        "Renewables_fraction": 81.118623,
+        "WindSolar_fraction": 22.89686992
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          174.886,
+          -40.9006
+        ]
+      },
+      "properties": {
+        "Country": "New Zealand",
+        "Year": 2018,
+        "EV": "5600",
+        "EV_norm": 56.56565656565657,
+        "CleanElec": 106.31436987000001,
+        "CleanElec_norm": 0.9859172725713292,
+        "CarbonIntensity": 37.58254217552789,
+        "Coal_fraction": 12.82978036770452,
+        "Oil_fraction": 33.16990080452084,
+        "Gas_fraction": 22.425621123670783,
+        "Renewables_fraction": 83.37565791,
+        "WindSolar_fraction": 22.93871196
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          174.886,
+          -40.9006
+        ]
+      },
+      "properties": {
+        "Country": "New Zealand",
+        "Year": 2019,
+        "EV": "6900",
+        "EV_norm": 69.6969696969697,
+        "CleanElec": 105.02801874,
+        "CleanElec_norm": 0.9739881627133726,
+        "CarbonIntensity": 36.96327509273748,
+        "Coal_fraction": 14.333507238356752,
+        "Oil_fraction": 33.655439448606884,
+        "Gas_fraction": 23.76313939202085,
+        "Renewables_fraction": 81.68117893,
+        "WindSolar_fraction": 23.34683981
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          174.886,
+          -40.9006
+        ]
+      },
+      "properties": {
+        "Country": "New Zealand",
+        "Year": 2020,
+        "EV": "5400",
+        "EV_norm": 54.54545454545455,
+        "CleanElec": 103.94150633,
+        "CleanElec_norm": 0.9639122778335396,
+        "CarbonIntensity": 34.4853406524937,
+        "Coal_fraction": 13.535286870835803,
+        "Oil_fraction": 30.834020668113226,
+        "Gas_fraction": 23.487176552869546,
+        "Renewables_fraction": 80.02988022,
+        "WindSolar_fraction": 23.91162611
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.4689,
+          60.472
+        ]
+      },
+      "properties": {
+        "Country": "Norway",
+        "Year": 2012,
+        "EV": "4220",
+        "EV_norm": 42.62626262626262,
+        "CleanElec": 99.03090144900001,
+        "CleanElec_norm": 0.9183732770674999,
+        "CarbonIntensity": 30.079396665736514,
+        "Coal_fraction": 3.6744144596344634,
+        "Oil_fraction": 28.453990417982073,
+        "Gas_fraction": 18.907652599741436,
+        "Renewables_fraction": 97.98256842,
+        "WindSolar_fraction": 1.048333029
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.4689,
+          60.472
+        ]
+      },
+      "properties": {
+        "Country": "Norway",
+        "Year": 2013,
+        "EV": "8240",
+        "EV_norm": 83.23232323232324,
+        "CleanElec": 99.09377051499999,
+        "CleanElec_norm": 0.9189562998343714,
+        "CarbonIntensity": 28.117665420679607,
+        "Coal_fraction": 3.461151717071951,
+        "Oil_fraction": 26.31742657181226,
+        "Gas_fraction": 17.56728088567718,
+        "Renewables_fraction": 97.69079301,
+        "WindSolar_fraction": 1.402977505
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.4689,
+          60.472
+        ]
+      },
+      "properties": {
+        "Country": "Norway",
+        "Year": 2014,
+        "EV": "21700",
+        "EV_norm": 219.1919191919192,
+        "CleanElec": 99.230119041,
+        "CleanElec_norm": 0.920220741951062,
+        "CarbonIntensity": 32.096205439998414,
+        "Coal_fraction": 3.9988999533996643,
+        "Oil_fraction": 29.25699937605028,
+        "Gas_fraction": 21.35224578892477,
+        "Renewables_fraction": 97.66852152,
+        "WindSolar_fraction": 1.561597521
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.4689,
+          60.472
+        ]
+      },
+      "properties": {
+        "Country": "Norway",
+        "Year": 2015,
+        "EV": "33900",
+        "EV_norm": 342.42424242424244,
+        "CleanElec": 99.43962475100001,
+        "CleanElec_norm": 0.922163614757851,
+        "CarbonIntensity": 31.606268925410987,
+        "Coal_fraction": 3.821798883822125,
+        "Oil_fraction": 28.79201229909536,
+        "Gas_fraction": 21.696303533831376,
+        "Renewables_fraction": 97.69969421,
+        "WindSolar_fraction": 1.739930541
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.4689,
+          60.472
+        ]
+      },
+      "properties": {
+        "Country": "Norway",
+        "Year": 2016,
+        "EV": "45000",
+        "EV_norm": 454.54545454545456,
+        "CleanElec": 99.22169589500001,
+        "CleanElec_norm": 0.9201426290380011,
+        "CarbonIntensity": 31.947245831162338,
+        "Coal_fraction": 4.06523165760099,
+        "Oil_fraction": 28.989307130754653,
+        "Gas_fraction": 21.671874134966448,
+        "Renewables_fraction": 97.80196186,
+        "WindSolar_fraction": 1.419734035
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.4689,
+          60.472
+        ]
+      },
+      "properties": {
+        "Country": "Norway",
+        "Year": 2017,
+        "EV": "62000",
+        "EV_norm": 626.2626262626262,
+        "CleanElec": 99.731736683,
+        "CleanElec_norm": 0.9248725448830554,
+        "CarbonIntensity": 30.050815121095773,
+        "Coal_fraction": 4.0356595482259,
+        "Oil_fraction": 26.51957317304917,
+        "Gas_fraction": 21.45256043740859,
+        "Renewables_fraction": 97.82245116,
+        "WindSolar_fraction": 1.909285523
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.4689,
+          60.472
+        ]
+      },
+      "properties": {
+        "Country": "Norway",
+        "Year": 2018,
+        "EV": "73000",
+        "EV_norm": 737.3737373737374,
+        "CleanElec": 100.393870894,
+        "CleanElec_norm": 0.9310129147708095,
+        "CarbonIntensity": 31.578728842389047,
+        "Coal_fraction": 4.1194103901000405,
+        "Oil_fraction": 28.593288854101356,
+        "Gas_fraction": 22.599686022856257,
+        "Renewables_fraction": 97.75367921,
+        "WindSolar_fraction": 2.640191684
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.4689,
+          60.472
+        ]
+      },
+      "properties": {
+        "Country": "Norway",
+        "Year": 2019,
+        "EV": "79000",
+        "EV_norm": 797.979797979798,
+        "CleanElec": 101.77997380400001,
+        "CleanElec_norm": 0.9438670830474162,
+        "CarbonIntensity": 32.363895109352136,
+        "Coal_fraction": 4.079351591557115,
+        "Oil_fraction": 27.673054115615358,
+        "Gas_fraction": 23.973524545035453,
+        "Renewables_fraction": 97.67128203,
+        "WindSolar_fraction": 4.108691774
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.4689,
+          60.472
+        ]
+      },
+      "properties": {
+        "Country": "Norway",
+        "Year": 2020,
+        "EV": "106000",
+        "EV_norm": 1070.7070707070707,
+        "CleanElec": 104.78726594,
+        "CleanElec_norm": 0.9717555167951383,
+        "CarbonIntensity": 30.79499105491303,
+        "Coal_fraction": 4.271404455465007,
+        "Oil_fraction": 26.58275056904821,
+        "Gas_fraction": 22.649565723638716,
+        "Renewables_fraction": 98.37086423,
+        "WindSolar_fraction": 6.41640171
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.1451,
+          51.9194
+        ]
+      },
+      "properties": {
+        "Country": "Poland",
+        "Year": 2010,
+        "EV": "16",
+        "EV_norm": 0.16161616161616163,
+        "CleanElec": 8.326303304,
+        "CleanElec_norm": 0.07721483233281873,
+        "CarbonIntensity": 75.38263955388707,
+        "Coal_fraction": 132.49003010095032,
+        "Oil_fraction": 24.33432151023428,
+        "Gas_fraction": 17.02511077592006,
+        "Renewables_fraction": 7.266407454,
+        "WindSolar_fraction": 1.05989585
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.1451,
+          51.9194
+        ]
+      },
+      "properties": {
+        "Country": "Poland",
+        "Year": 2012,
+        "EV": "48",
+        "EV_norm": 0.48484848484848486,
+        "CleanElec": 13.607460268,
+        "CleanElec_norm": 0.12619018605343768,
+        "CarbonIntensity": 74.91035509216309,
+        "Coal_fraction": 137.8675071892791,
+        "Oil_fraction": 23.354492428367678,
+        "Gas_fraction": 18.450513640983885,
+        "Renewables_fraction": 10.67417463,
+        "WindSolar_fraction": 2.933285638
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.1451,
+          51.9194
+        ]
+      },
+      "properties": {
+        "Country": "Poland",
+        "Year": 2013,
+        "EV": "37",
+        "EV_norm": 0.37373737373737376,
+        "CleanElec": 14.36262,
+        "CleanElec_norm": 0.13319323770336544,
+        "CarbonIntensity": 74.13725690028976,
+        "Coal_fraction": 139.40652937404906,
+        "Oil_fraction": 21.85680751958962,
+        "Gas_fraction": 18.56517676792023,
+        "Renewables_fraction": 10.70907765,
+        "WindSolar_fraction": 3.65354235
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.1451,
+          51.9194
+        ]
+      },
+      "properties": {
+        "Country": "Poland",
+        "Year": 2014,
+        "EV": "201",
+        "EV_norm": 2.0303030303030303,
+        "CleanElec": 17.656970053000002,
+        "CleanElec_norm": 0.16374373264699857,
+        "CarbonIntensity": 73.6330632263029,
+        "Coal_fraction": 137.85817046039062,
+        "Oil_fraction": 22.616241722204723,
+        "Gas_fraction": 18.65719488010175,
+        "Renewables_fraction": 12.82165737,
+        "WindSolar_fraction": 4.835312683
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.1451,
+          51.9194
+        ]
+      },
+      "properties": {
+        "Country": "Poland",
+        "Year": 2015,
+        "EV": "220",
+        "EV_norm": 2.2222222222222223,
+        "CleanElec": 20.740372487000002,
+        "CleanElec_norm": 0.19233798309203556,
+        "CarbonIntensity": 73.98989898281773,
+        "Coal_fraction": 135.10477146046264,
+        "Oil_fraction": 24.160163239835168,
+        "Gas_fraction": 19.048934642427277,
+        "Renewables_fraction": 14.11751867,
+        "WindSolar_fraction": 6.622853817
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.1451,
+          51.9194
+        ]
+      },
+      "properties": {
+        "Country": "Poland",
+        "Year": 2016,
+        "EV": "510",
+        "EV_norm": 5.151515151515151,
+        "CleanElec": 21.610706034,
+        "CleanElec_norm": 0.2004091109925707,
+        "CarbonIntensity": 73.36531890891328,
+        "Coal_fraction": 128.39971120993275,
+        "Oil_fraction": 25.363784011642753,
+        "Gas_fraction": 19.055632282518758,
+        "Renewables_fraction": 13.97605545,
+        "WindSolar_fraction": 7.634650584
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.1451,
+          51.9194
+        ]
+      },
+      "properties": {
+        "Country": "Poland",
+        "Year": 2017,
+        "EV": "1080",
+        "EV_norm": 10.909090909090908,
+        "CleanElec": 23.276550066,
+        "CleanElec_norm": 0.21585748741211733,
+        "CarbonIntensity": 73.05525388385723,
+        "Coal_fraction": 124.14812943680167,
+        "Oil_fraction": 27.174308610100518,
+        "Gas_fraction": 19.22159993839638,
+        "Renewables_fraction": 14.42900256,
+        "WindSolar_fraction": 8.847547506
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.1451,
+          51.9194
+        ]
+      },
+      "properties": {
+        "Country": "Poland",
+        "Year": 2018,
+        "EV": "1380",
+        "EV_norm": 13.93939393939394,
+        "CleanElec": 20.697206866000002,
+        "CleanElec_norm": 0.19193768225427293,
+        "CarbonIntensity": 71.82180481054081,
+        "Coal_fraction": 119.02020234478559,
+        "Oil_fraction": 27.13953998601315,
+        "Gas_fraction": 19.058106521138736,
+        "Renewables_fraction": 12.95851908,
+        "WindSolar_fraction": 7.738687786
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.1451,
+          51.9194
+        ]
+      },
+      "properties": {
+        "Country": "Poland",
+        "Year": 2019,
+        "EV": "2700",
+        "EV_norm": 27.272727272727273,
+        "CleanElec": 24.15981931,
+        "CleanElec_norm": 0.22404857583276508,
+        "CarbonIntensity": 69.73666949894594,
+        "Coal_fraction": 109.08423072092755,
+        "Oil_fraction": 28.456649409076228,
+        "Gas_fraction": 20.178979665761016,
+        "Renewables_fraction": 14.47815449,
+        "WindSolar_fraction": 9.68166482
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.1451,
+          51.9194
+        ]
+      },
+      "properties": {
+        "Country": "Poland",
+        "Year": 2020,
+        "EV": "8200",
+        "EV_norm": 82.82828282828282,
+        "CleanElec": 27.88276498,
+        "CleanElec_norm": 0.2585736964292179,
+        "CarbonIntensity": 68.13003080698768,
+        "Coal_fraction": 102.35581201052439,
+        "Oil_fraction": 29.408111204900305,
+        "Gas_fraction": 22.090650541630826,
+        "Renewables_fraction": 16.67080675,
+        "WindSolar_fraction": 11.21195823
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -8.2245,
+          39.3999
+        ]
+      },
+      "properties": {
+        "Country": "Portugal",
+        "Year": 2011,
+        "EV": "172",
+        "EV_norm": 1.7373737373737375,
+        "CleanElec": 65.45756057,
+        "CleanElec_norm": 0.6070274382029498,
+        "CarbonIntensity": 50.20198482567862,
+        "Coal_fraction": 16.29373941096598,
+        "Oil_fraction": 45.19859666756002,
+        "Gas_fraction": 22.70000642961204,
+        "Renewables_fraction": 47.06173875,
+        "WindSolar_fraction": 18.39582182
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -8.2245,
+          39.3999
+        ]
+      },
+      "properties": {
+        "Country": "Portugal",
+        "Year": 2012,
+        "EV": "84",
+        "EV_norm": 0.8484848484848485,
+        "CleanElec": 66.94626194,
+        "CleanElec_norm": 0.6208330638787483,
+        "CarbonIntensity": 51.78174734441899,
+        "Coal_fraction": 22.680115209502876,
+        "Oil_fraction": 42.60971284991907,
+        "Gas_fraction": 20.931924120481632,
+        "Renewables_fraction": 43.78204441,
+        "WindSolar_fraction": 23.16421753
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -8.2245,
+          39.3999
+        ]
+      },
+      "properties": {
+        "Country": "Portugal",
+        "Year": 2013,
+        "EV": "185",
+        "EV_norm": 1.8686868686868687,
+        "CleanElec": 83.79617981999999,
+        "CleanElec_norm": 0.7770925149728402,
+        "CarbonIntensity": 49.939243566650994,
+        "Coal_fraction": 20.579182620898635,
+        "Oil_fraction": 42.581936459601664,
+        "Gas_fraction": 19.77232342797811,
+        "Renewables_fraction": 59.23789987,
+        "WindSolar_fraction": 24.55827995
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -8.2245,
+          39.3999
+        ]
+      },
+      "properties": {
+        "Country": "Portugal",
+        "Year": 2014,
+        "EV": "288",
+        "EV_norm": 2.909090909090909,
+        "CleanElec": 85.87959018,
+        "CleanElec_norm": 0.7964132357962787,
+        "CarbonIntensity": 49.691050719446565,
+        "Coal_fraction": 21.328212628368767,
+        "Oil_fraction": 42.5104383740969,
+        "Gas_fraction": 19.20905468758335,
+        "Renewables_fraction": 61.36772532,
+        "WindSolar_fraction": 24.51186486
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -8.2245,
+          39.3999
+        ]
+      },
+      "properties": {
+        "Country": "Portugal",
+        "Year": 2015,
+        "EV": "1100",
+        "EV_norm": 11.11111111111111,
+        "CleanElec": 72.71652041,
+        "CleanElec_norm": 0.6743441508534483,
+        "CarbonIntensity": 52.29131351106273,
+        "Coal_fraction": 25.026222674039733,
+        "Oil_fraction": 41.41833043314684,
+        "Gas_fraction": 21.49893014101034,
+        "Renewables_fraction": 48.66653949,
+        "WindSolar_fraction": 24.04998092
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -8.2245,
+          39.3999
+        ]
+      },
+      "properties": {
+        "Country": "Portugal",
+        "Year": 2016,
+        "EV": "1800",
+        "EV_norm": 18.181818181818183,
+        "CleanElec": 77.92769647,
+        "CleanElec_norm": 0.7226705294441002,
+        "CarbonIntensity": 52.02860436639871,
+        "Coal_fraction": 22.002203731762084,
+        "Oil_fraction": 41.338166603907176,
+        "Gas_fraction": 23.090670622875408,
+        "Renewables_fraction": 55.52387741,
+        "WindSolar_fraction": 22.40381906
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -8.2245,
+          39.3999
+        ]
+      },
+      "properties": {
+        "Country": "Portugal",
+        "Year": 2017,
+        "EV": "4400",
+        "EV_norm": 44.44444444444444,
+        "CleanElec": 63.54173724,
+        "CleanElec_norm": 0.5892608529844909,
+        "CarbonIntensity": 54.38094857111417,
+        "Coal_fraction": 23.882120864224195,
+        "Oil_fraction": 40.07487550308712,
+        "Gas_fraction": 27.50986798554122,
+        "Renewables_fraction": 40.90052179,
+        "WindSolar_fraction": 22.64121545
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -8.2245,
+          39.3999
+        ]
+      },
+      "properties": {
+        "Country": "Portugal",
+        "Year": 2018,
+        "EV": "8200",
+        "EV_norm": 82.82828282828282,
+        "CleanElec": 74.60221775,
+        "CleanElec_norm": 0.6918313595969243,
+        "CarbonIntensity": 52.0859947363359,
+        "Coal_fraction": 20.62780488062187,
+        "Oil_fraction": 38.95334247121044,
+        "Gas_fraction": 25.95945340388399,
+        "Renewables_fraction": 51.37321482,
+        "WindSolar_fraction": 23.22900293
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -8.2245,
+          39.3999
+        ]
+      },
+      "properties": {
+        "Country": "Portugal",
+        "Year": 2019,
+        "EV": "12600",
+        "EV_norm": 127.27272727272727,
+        "CleanElec": 83.06423473,
+        "CleanElec_norm": 0.7703047466994902,
+        "CarbonIntensity": 49.04501710749532,
+        "Coal_fraction": 9.757825157277273,
+        "Oil_fraction": 42.68221073218562,
+        "Gas_fraction": 27.70148432767156,
+        "Renewables_fraction": 54.12277252,
+        "WindSolar_fraction": 28.94146221
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -8.2245,
+          39.3999
+        ]
+      },
+      "properties": {
+        "Country": "Portugal",
+        "Year": 2020,
+        "EV": "19800",
+        "EV_norm": 200,
+        "CleanElec": 86.50438333,
+        "CleanElec_norm": 0.802207319504083,
+        "CarbonIntensity": 46.427147435280894,
+        "Coal_fraction": 4.800775496637313,
+        "Oil_fraction": 40.934630085536924,
+        "Gas_fraction": 29.811425297854083,
+        "Renewables_fraction": 59.70064134,
+        "WindSolar_fraction": 26.80374199
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          127.7669,
+          35.9078
+        ]
+      },
+      "properties": {
+        "Country": "South Korea",
+        "Year": 2015,
+        "EV": "3350",
+        "EV_norm": 33.83838383838384,
+        "CleanElec": 3.835012674,
+        "CleanElec_norm": 0.035564385514864356,
+        "CarbonIntensity": 53.88104964601206,
+        "Coal_fraction": 47.706266750669776,
+        "Oil_fraction": 34.53731229167938,
+        "Gas_fraction": 15.66108927629333,
+        "Renewables_fraction": 2.585865311,
+        "WindSolar_fraction": 1.249147363
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          127.7669,
+          35.9078
+        ]
+      },
+      "properties": {
+        "Country": "South Korea",
+        "Year": 2016,
+        "EV": "5030",
+        "EV_norm": 50.80808080808081,
+        "CleanElec": 4.99766265,
+        "CleanElec_norm": 0.04634633996462214,
+        "CarbonIntensity": 53.403683866168194,
+        "Coal_fraction": 46.005985378063926,
+        "Oil_fraction": 34.85236037637068,
+        "Gas_fraction": 16.03007611469635,
+        "Renewables_fraction": 3.496426432,
+        "WindSolar_fraction": 1.501236218
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          127.7669,
+          35.9078
+        ]
+      },
+      "properties": {
+        "Country": "South Korea",
+        "Year": 2017,
+        "EV": "14670",
+        "EV_norm": 148.1818181818182,
+        "CleanElec": 5.9962044279999995,
+        "CleanElec_norm": 0.05560642011670408,
+        "CarbonIntensity": 53.86084407740198,
+        "Coal_fraction": 46.93044703242724,
+        "Oil_fraction": 34.89036687452733,
+        "Gas_fraction": 16.52437697331791,
+        "Renewables_fraction": 4.023300737,
+        "WindSolar_fraction": 1.972903691
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          127.7669,
+          35.9078
+        ]
+      },
+      "properties": {
+        "Country": "South Korea",
+        "Year": 2018,
+        "EV": "59400",
+        "EV_norm": 600,
+        "CleanElec": 6.92416468,
+        "CleanElec_norm": 0.06421195520876326,
+        "CarbonIntensity": 53.886113674838434,
+        "Coal_fraction": 46.99319739546957,
+        "Oil_fraction": 33.80248243172592,
+        "Gas_fraction": 18.292855350443542,
+        "Renewables_fraction": 4.564731445,
+        "WindSolar_fraction": 2.359433235
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          127.7669,
+          35.9078
+        ]
+      },
+      "properties": {
+        "Country": "South Korea",
+        "Year": 2019,
+        "EV": "35700",
+        "EV_norm": 360.6060606060606,
+        "CleanElec": 8.504593198,
+        "CleanElec_norm": 0.0788682220508263,
+        "CarbonIntensity": 49.67346077986067,
+        "Coal_fraction": 44.807106314243924,
+        "Oil_fraction": 34.07481136342728,
+        "Gas_fraction": 17.93070033750706,
+        "Renewables_fraction": 5.343168389,
+        "WindSolar_fraction": 3.161424809
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          127.7669,
+          35.9078
+        ]
+      },
+      "properties": {
+        "Country": "South Korea",
+        "Year": 2020,
+        "EV": "39700",
+        "EV_norm": 401.010101010101,
+        "CleanElec": 12.233120923000001,
+        "CleanElec_norm": 0.11344510840996645,
+        "CarbonIntensity": 48.129546703609606,
+        "Coal_fraction": 40.62151871160237,
+        "Oil_fraction": 33.2189388753354,
+        "Gas_fraction": 18.755226907823385,
+        "Renewables_fraction": 7.073798163,
+        "WindSolar_fraction": 5.15932276
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.7492,
+          40.4637
+        ]
+      },
+      "properties": {
+        "Country": "Spain",
+        "Year": 2011,
+        "EV": "398",
+        "EV_norm": 4.02020202020202,
+        "CleanElec": 48.43506995,
+        "CleanElec_norm": 0.44916761600804606,
+        "CarbonIntensity": 51.60524951653532,
+        "Coal_fraction": 19.735650653888285,
+        "Oil_fraction": 42.88871615332716,
+        "Gas_fraction": 26.573696431263045,
+        "Renewables_fraction": 30.57271301,
+        "WindSolar_fraction": 17.86235694
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.7492,
+          40.4637
+        ]
+      },
+      "properties": {
+        "Country": "Spain",
+        "Year": 2012,
+        "EV": "540",
+        "EV_norm": 5.454545454545454,
+        "CleanElec": 51.14750352,
+        "CleanElec_norm": 0.4743216484369203,
+        "CarbonIntensity": 50.97982723644259,
+        "Coal_fraction": 22.871949341905147,
+        "Oil_fraction": 39.756784664014596,
+        "Gas_fraction": 26.046017180249997,
+        "Renewables_fraction": 30.44068571,
+        "WindSolar_fraction": 20.70681781
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.7492,
+          40.4637
+        ]
+      },
+      "properties": {
+        "Country": "Spain",
+        "Year": 2013,
+        "EV": "882",
+        "EV_norm": 8.909090909090908,
+        "CleanElec": 64.53571216,
+        "CleanElec_norm": 0.5984785819079563,
+        "CarbonIntensity": 49.12605576723546,
+        "Coal_fraction": 18.255662512852457,
+        "Oil_fraction": 40.355122139976594,
+        "Gas_fraction": 25.5746693476684,
+        "Renewables_fraction": 40.46899671,
+        "WindSolar_fraction": 24.06671545
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.7492,
+          40.4637
+        ]
+      },
+      "properties": {
+        "Country": "Spain",
+        "Year": 2014,
+        "EV": "1730",
+        "EV_norm": 17.474747474747474,
+        "CleanElec": 64.48645739,
+        "CleanElec_norm": 0.5980218127190037,
+        "CarbonIntensity": 49.795528673132296,
+        "Coal_fraction": 20.38694663224139,
+        "Oil_fraction": 40.12106574211401,
+        "Gas_fraction": 24.05568195443818,
+        "Renewables_fraction": 40.92197309,
+        "WindSolar_fraction": 23.5644843
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.7492,
+          40.4637
+        ]
+      },
+      "properties": {
+        "Country": "Spain",
+        "Year": 2015,
+        "EV": "2080",
+        "EV_norm": 21.01010101010101,
+        "CleanElec": 58.280380619999995,
+        "CleanElec_norm": 0.5404691197958501,
+        "CarbonIntensity": 51.173060173233644,
+        "Coal_fraction": 22.181061722166557,
+        "Oil_fraction": 40.74188952368017,
+        "Gas_fraction": 24.006935033480758,
+        "Renewables_fraction": 35.71095472,
+        "WindSolar_fraction": 22.5694259
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.7492,
+          40.4637
+        ]
+      },
+      "properties": {
+        "Country": "Spain",
+        "Year": 2016,
+        "EV": "3500",
+        "EV_norm": 35.35353535353536,
+        "CleanElec": 62.14534232,
+        "CleanElec_norm": 0.5763112406917941,
+        "CarbonIntensity": 48.95782281239076,
+        "Coal_fraction": 16.73096815571248,
+        "Oil_fraction": 41.773400514295545,
+        "Gas_fraction": 24.27601842716522,
+        "Renewables_fraction": 39.34243664,
+        "WindSolar_fraction": 22.80290568
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.7492,
+          40.4637
+        ]
+      },
+      "properties": {
+        "Country": "Spain",
+        "Year": 2017,
+        "EV": "7400",
+        "EV_norm": 74.74747474747475,
+        "CleanElec": 55.95663811,
+        "CleanElec_norm": 0.5189196539953315,
+        "CarbonIntensity": 49.47514187795609,
+        "Coal_fraction": 19.303857260770187,
+        "Oil_fraction": 40.0043822475513,
+        "Gas_fraction": 24.9723256507308,
+        "Renewables_fraction": 32.88482044,
+        "WindSolar_fraction": 23.07181767
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.7492,
+          40.4637
+        ]
+      },
+      "properties": {
+        "Country": "Spain",
+        "Year": 2018,
+        "EV": "11600",
+        "EV_norm": 117.17171717171718,
+        "CleanElec": 61.97367846,
+        "CleanElec_norm": 0.5747192981833898,
+        "CarbonIntensity": 48.721037080585816,
+        "Coal_fraction": 16.806405110301064,
+        "Oil_fraction": 40.66055366628202,
+        "Gas_fraction": 24.917429230200096,
+        "Renewables_fraction": 38.7514028,
+        "WindSolar_fraction": 23.22227566
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.7492,
+          40.4637
+        ]
+      },
+      "properties": {
+        "Country": "Spain",
+        "Year": 2019,
+        "EV": "17400",
+        "EV_norm": 175.75757575757575,
+        "CleanElec": 63.46190178,
+        "CleanElec_norm": 0.5885204906132148,
+        "CarbonIntensity": 46.939092673082,
+        "Coal_fraction": 7.2856376905476985,
+        "Oil_fraction": 41.782386320981814,
+        "Gas_fraction": 29.27023124514348,
+        "Renewables_fraction": 37.63363448,
+        "WindSolar_fraction": 25.8282673
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.7492,
+          40.4637
+        ]
+      },
+      "properties": {
+        "Country": "Spain",
+        "Year": 2020,
+        "EV": "42000",
+        "EV_norm": 424.24242424242425,
+        "CleanElec": 73.03052282,
+        "CleanElec_norm": 0.6772560845838235,
+        "CarbonIntensity": 42.7102255454184,
+        "Coal_fraction": 3.58042113788472,
+        "Oil_fraction": 38.41674725834957,
+        "Gas_fraction": 29.771981919189106,
+        "Renewables_fraction": 43.91544261,
+        "WindSolar_fraction": 29.11508021
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.6435,
+          60.1282
+        ]
+      },
+      "properties": {
+        "Country": "Sweden",
+        "Year": 2012,
+        "EV": "930",
+        "EV_norm": 9.393939393939394,
+        "CleanElec": 63.411002577,
+        "CleanElec_norm": 0.5880484716052559,
+        "CarbonIntensity": 20.041154926463353,
+        "Coal_fraction": 7.0500298923234075,
+        "Oil_fraction": 22.060556340973108,
+        "Gas_fraction": 2.352223285401839,
+        "Renewables_fraction": 59.09846843,
+        "WindSolar_fraction": 4.312534147
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.6435,
+          60.1282
+        ]
+      },
+      "properties": {
+        "Country": "Sweden",
+        "Year": 2013,
+        "EV": "1530",
+        "EV_norm": 15.454545454545455,
+        "CleanElec": 60.522570280000004,
+        "CleanElec_norm": 0.5612622968318233,
+        "CarbonIntensity": 19.66342679695812,
+        "Coal_fraction": 7.237022988213712,
+        "Oil_fraction": 21.719000272262008,
+        "Gas_fraction": 2.1859056506928645,
+        "Renewables_fraction": 54.0740112,
+        "WindSolar_fraction": 6.44855908
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.6435,
+          60.1282
+        ]
+      },
+      "properties": {
+        "Country": "Sweden",
+        "Year": 2014,
+        "EV": "4600",
+        "EV_norm": 46.464646464646464,
+        "CleanElec": 63.211052759000005,
+        "CleanElec_norm": 0.5861942163483724,
+        "CarbonIntensity": 19.50263101412871,
+        "Coal_fraction": 6.759203802723207,
+        "Oil_fraction": 21.776131261430308,
+        "Gas_fraction": 1.9143833596592403,
+        "Renewables_fraction": 55.86901206,
+        "WindSolar_fraction": 7.342040699
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.6435,
+          60.1282
+        ]
+      },
+      "properties": {
+        "Country": "Sweden",
+        "Year": 2015,
+        "EV": "8700",
+        "EV_norm": 87.87878787878788,
+        "CleanElec": 73.43194828,
+        "CleanElec_norm": 0.6809787449838036,
+        "CarbonIntensity": 20.975146979475138,
+        "Coal_fraction": 7.159983424498462,
+        "Oil_fraction": 22.967767890001795,
+        "Gas_fraction": 2.1730233899336775,
+        "Renewables_fraction": 63.3037653,
+        "WindSolar_fraction": 10.12818298
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.6435,
+          60.1282
+        ]
+      },
+      "properties": {
+        "Country": "Sweden",
+        "Year": 2016,
+        "EV": "12900",
+        "EV_norm": 130.3030303030303,
+        "CleanElec": 67.21876802999999,
+        "CleanElec_norm": 0.6233601772063294,
+        "CarbonIntensity": 19.525734298820076,
+        "Coal_fraction": 6.576916934427211,
+        "Oil_fraction": 21.67407083967305,
+        "Gas_fraction": 1.9290523231402468,
+        "Renewables_fraction": 57.20530735,
+        "WindSolar_fraction": 10.01346068
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.6435,
+          60.1282
+        ]
+      },
+      "properties": {
+        "Country": "Sweden",
+        "Year": 2017,
+        "EV": "20400",
+        "EV_norm": 206.06060606060606,
+        "CleanElec": 68.7500761,
+        "CleanElec_norm": 0.6375609205083588,
+        "CarbonIntensity": 19.01774914952855,
+        "Coal_fraction": 6.359618933297508,
+        "Oil_fraction": 20.814178566729773,
+        "Gas_fraction": 2.326134290136822,
+        "Renewables_fraction": 57.8891933,
+        "WindSolar_fraction": 10.8608828
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.6435,
+          60.1282
+        ]
+      },
+      "properties": {
+        "Country": "Sweden",
+        "Year": 2018,
+        "EV": "29100",
+        "EV_norm": 293.93939393939394,
+        "CleanElec": 66.23194614,
+        "CleanElec_norm": 0.6142087826442194,
+        "CarbonIntensity": 17.56978897104022,
+        "Coal_fraction": 6.484330995270188,
+        "Oil_fraction": 18.36017724452806,
+        "Gas_fraction": 2.458982328847537,
+        "Renewables_fraction": 55.80966952,
+        "WindSolar_fraction": 10.42227662
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.6435,
+          60.1282
+        ]
+      },
+      "properties": {
+        "Country": "Sweden",
+        "Year": 2019,
+        "EV": "41000",
+        "EV_norm": 414.14141414141415,
+        "CleanElec": 70.65593345,
+        "CleanElec_norm": 0.6552350851835543,
+        "CarbonIntensity": 17.637945087716034,
+        "Coal_fraction": 6.268810049892841,
+        "Oil_fraction": 18.06998768004375,
+        "Gas_fraction": 2.487428399656857,
+        "Renewables_fraction": 58.511529,
+        "WindSolar_fraction": 12.14440445
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.6435,
+          60.1282
+        ]
+      },
+      "properties": {
+        "Country": "Sweden",
+        "Year": 2020,
+        "EV": "94000",
+        "EV_norm": 949.4949494949495,
+        "CleanElec": 85.70306812,
+        "CleanElec_norm": 0.7947762402691766,
+        "CarbonIntensity": 16.43004306358011,
+        "Coal_fraction": 5.743408521413653,
+        "Oil_fraction": 16.9410611618223,
+        "Gas_fraction": 2.6777288789181295,
+        "Renewables_fraction": 68.40278071,
+        "WindSolar_fraction": 17.30028741
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.2433,
+          38.9637
+        ]
+      },
+      "properties": {
+        "Country": "Turkey",
+        "Year": 2014,
+        "EV": "68",
+        "EV_norm": 0.6868686868686869,
+        "CleanElec": 25.348166200999998,
+        "CleanElec_norm": 0.23506883327374856,
+        "CarbonIntensity": 63.37683558134322,
+        "Coal_fraction": 81.2257289910821,
+        "Oil_fraction": 26.848471863683127,
+        "Gas_fraction": 40.874151070588226,
+        "Renewables_fraction": 20.88759064,
+        "WindSolar_fraction": 4.460575561
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.2433,
+          38.9637
+        ]
+      },
+      "properties": {
+        "Country": "Turkey",
+        "Year": 2015,
+        "EV": "230",
+        "EV_norm": 2.323232323232323,
+        "CleanElec": 37.979547951,
+        "CleanElec_norm": 0.3522072545332195,
+        "CarbonIntensity": 60.87274441160887,
+        "Coal_fraction": 71.73344218194742,
+        "Oil_fraction": 28.873088104205046,
+        "Gas_fraction": 37.229668452523015,
+        "Renewables_fraction": 31.95700256,
+        "WindSolar_fraction": 6.022545391
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.2433,
+          38.9637
+        ]
+      },
+      "properties": {
+        "Country": "Turkey",
+        "Year": 2016,
+        "EV": "127",
+        "EV_norm": 1.2828282828282829,
+        "CleanElec": 40.937946411,
+        "CleanElec_norm": 0.37964226773443555,
+        "CarbonIntensity": 60.95100193273467,
+        "Coal_fraction": 78.05236935089867,
+        "Oil_fraction": 29.720423963093523,
+        "Gas_fraction": 33.93893916503632,
+        "Renewables_fraction": 32.88716072,
+        "WindSolar_fraction": 8.050785691
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.2433,
+          38.9637
+        ]
+      },
+      "properties": {
+        "Country": "Turkey",
+        "Year": 2017,
+        "EV": "111",
+        "EV_norm": 1.121212121212121,
+        "CleanElec": 38.685857397999996,
+        "CleanElec_norm": 0.3587572880275543,
+        "CarbonIntensity": 62.81963175408497,
+        "Coal_fraction": 76.47768389814512,
+        "Oil_fraction": 29.28916151975795,
+        "Gas_fraction": 36.727487008928904,
+        "Renewables_fraction": 29.34477953,
+        "WindSolar_fraction": 9.341077868
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.2433,
+          38.9637
+        ]
+      },
+      "properties": {
+        "Country": "Turkey",
+        "Year": 2018,
+        "EV": "235",
+        "EV_norm": 2.3737373737373737,
+        "CleanElec": 43.92955261,
+        "CleanElec_norm": 0.40738523632778895,
+        "CarbonIntensity": 63.43353849352302,
+        "Coal_fraction": 84.69905621352359,
+        "Oil_fraction": 28.37704648474063,
+        "Gas_fraction": 34.43716761492855,
+        "Renewables_fraction": 32.07589097,
+        "WindSolar_fraction": 11.85366164
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.2433,
+          38.9637
+        ]
+      },
+      "properties": {
+        "Country": "Turkey",
+        "Year": 2019,
+        "EV": "324",
+        "EV_norm": 3.272727272727273,
+        "CleanElec": 57.001583600000004,
+        "CleanElec_norm": 0.5286100637559901,
+        "CarbonIntensity": 61.70533950249961,
+        "Coal_fraction": 86.19883266417871,
+        "Oil_fraction": 27.474043095350854,
+        "Gas_fraction": 30.992319439982047,
+        "Renewables_fraction": 43.48071514,
+        "WindSolar_fraction": 13.52086846
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.2433,
+          38.9637
+        ]
+      },
+      "properties": {
+        "Country": "Turkey",
+        "Year": 2020,
+        "EV": "1290",
+        "EV_norm": 13.030303030303031,
+        "CleanElec": 56.71628625,
+        "CleanElec_norm": 0.5259643293597106,
+        "CarbonIntensity": 60.09864309199983,
+        "Coal_fraction": 77.43867275386035,
+        "Oil_fraction": 28.10823932360254,
+        "Gas_fraction": 34.03500662140304,
+        "Renewables_fraction": 41.59850895,
+        "WindSolar_fraction": 15.1177773
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.436,
+          55.3781
+        ]
+      },
+      "properties": {
+        "Country": "United Kingdom",
+        "Year": 2010,
+        "EV": "261",
+        "EV_norm": 2.6363636363636362,
+        "CleanElec": 10.380269636,
+        "CleanElec_norm": 0.09626250092620807,
+        "CarbonIntensity": 56.91353304020756,
+        "Coal_fraction": 24.91570401886155,
+        "Oil_fraction": 29.4286559420736,
+        "Gas_fraction": 48.823633593951,
+        "Renewables_fraction": 7.677107135,
+        "WindSolar_fraction": 2.703162501
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.436,
+          55.3781
+        ]
+      },
+      "properties": {
+        "Country": "United Kingdom",
+        "Year": 2011,
+        "EV": "1207",
+        "EV_norm": 12.191919191919192,
+        "CleanElec": 14.763413628,
+        "CleanElec_norm": 0.13691003874413643,
+        "CarbonIntensity": 56.42612413664235,
+        "Coal_fraction": 26.76178266348486,
+        "Oil_fraction": 30.396998495604628,
+        "Gas_fraction": 43.789327703594054,
+        "Renewables_fraction": 10.3588743,
+        "WindSolar_fraction": 4.404539328
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.436,
+          55.3781
+        ]
+      },
+      "properties": {
+        "Country": "United Kingdom",
+        "Year": 2012,
+        "EV": "2570",
+        "EV_norm": 25.95959595959596,
+        "CleanElec": 17.97877866,
+        "CleanElec_norm": 0.16672805795026074,
+        "CarbonIntensity": 57.63563859937506,
+        "Coal_fraction": 32.9117989326623,
+        "Oil_fraction": 29.22405194879855,
+        "Gas_fraction": 40.045444582123345,
+        "Renewables_fraction": 12.15129205,
+        "WindSolar_fraction": 5.82748661
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.436,
+          55.3781
+        ]
+      },
+      "properties": {
+        "Country": "United Kingdom",
+        "Year": 2013,
+        "EV": "3700",
+        "EV_norm": 37.37373737373738,
+        "CleanElec": 24.151106645,
+        "CleanElec_norm": 0.22396777803540116,
+        "CarbonIntensity": 56.903797570758144,
+        "Coal_fraction": 31.82837838999628,
+        "Oil_fraction": 28.90944991185811,
+        "Gas_fraction": 40.33602026607925,
+        "Renewables_fraction": 15.66301041,
+        "WindSolar_fraction": 8.488096235
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.436,
+          55.3781
+        ]
+      },
+      "properties": {
+        "Country": "United Kingdom",
+        "Year": 2014,
+        "EV": "14500",
+        "EV_norm": 146.46464646464648,
+        "CleanElec": 30.58887903,
+        "CleanElec_norm": 0.28366912413767686,
+        "CarbonIntensity": 55.01192361283957,
+        "Coal_fraction": 27.177064425476644,
+        "Oil_fraction": 30.63505045007977,
+        "Gas_fraction": 39.29695687839234,
+        "Renewables_fraction": 19.93670512,
+        "WindSolar_fraction": 10.65217391
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.436,
+          55.3781
+        ]
+      },
+      "properties": {
+        "Country": "United Kingdom",
+        "Year": 2015,
+        "EV": "29000",
+        "EV_norm": 292.92929292929296,
+        "CleanElec": 39.641194330000005,
+        "CleanElec_norm": 0.36761670358479115,
+        "CarbonIntensity": 52.88824751103252,
+        "Coal_fraction": 21.201773176941565,
+        "Oil_fraction": 31.480809524826864,
+        "Gas_fraction": 40.02495969901465,
+        "Renewables_fraction": 25.56166457,
+        "WindSolar_fraction": 14.07952976
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.436,
+          55.3781
+        ]
+      },
+      "properties": {
+        "Country": "United Kingdom",
+        "Year": 2016,
+        "EV": "39000",
+        "EV_norm": 393.93939393939394,
+        "CleanElec": 39.49661665,
+        "CleanElec_norm": 0.3662759475598569,
+        "CarbonIntensity": 50.69639830882989,
+        "Coal_fraction": 10.547242371922906,
+        "Oil_fraction": 32.83203772439251,
+        "Gas_fraction": 45.58732409735128,
+        "Renewables_fraction": 25.50367755,
+        "WindSolar_fraction": 13.9929391
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.436,
+          55.3781
+        ]
+      },
+      "properties": {
+        "Country": "United Kingdom",
+        "Year": 2017,
+        "EV": "49000",
+        "EV_norm": 494.949494949495,
+        "CleanElec": 48.29929193,
+        "CleanElec_norm": 0.44790846453757954,
+        "CarbonIntensity": 49.777702962260925,
+        "Coal_fraction": 8.601496658642898,
+        "Oil_fraction": 33.76718243393205,
+        "Gas_fraction": 45.058219824244944,
+        "Renewables_fraction": 30.25290426,
+        "WindSolar_fraction": 18.04638767
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.436,
+          55.3781
+        ]
+      },
+      "properties": {
+        "Country": "United Kingdom",
+        "Year": 2018,
+        "EV": "62000",
+        "EV_norm": 626.2626262626262,
+        "CleanElec": 54.90935303,
+        "CleanElec_norm": 0.5092075478055396,
+        "CarbonIntensity": 48.96730746046661,
+        "Coal_fraction": 7.330456172417707,
+        "Oil_fraction": 33.115391058377455,
+        "Gas_fraction": 45.66873036652099,
+        "Renewables_fraction": 33.98386402,
+        "WindSolar_fraction": 20.92548901
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.436,
+          55.3781
+        ]
+      },
+      "properties": {
+        "Country": "United Kingdom",
+        "Year": 2019,
+        "EV": "75000",
+        "EV_norm": 757.5757575757576,
+        "CleanElec": 61.60629748,
+        "CleanElec_norm": 0.5713123527794987,
+        "CarbonIntensity": 48.629045513243696,
+        "Coal_fraction": 5.283136278278794,
+        "Oil_fraction": 33.21511219642974,
+        "Gas_fraction": 45.69228885231093,
+        "Renewables_fraction": 37.82347148,
+        "WindSolar_fraction": 23.782826
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.436,
+          55.3781
+        ]
+      },
+      "properties": {
+        "Country": "United Kingdom",
+        "Year": 2020,
+        "EV": "178000",
+        "EV_norm": 1797.979797979798,
+        "CleanElec": 71.99205769,
+        "CleanElec_norm": 0.6676257711099066,
+        "CarbonIntensity": 47.04353909835245,
+        "Coal_fraction": 5.3403886395765,
+        "Oil_fraction": 30.977518725042664,
+        "Gas_fraction": 47.224403594349404,
+        "Renewables_fraction": 43.73747467,
+        "WindSolar_fraction": 28.25458302
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -95.7129,
+          37.0902
+        ]
+      },
+      "properties": {
+        "Country": "United States",
+        "Year": 2011,
+        "EV": "17800",
+        "EV_norm": 179.7979797979798,
+        "CleanElec": 16.11203498,
+        "CleanElec_norm": 0.1494166179273753,
+        "CarbonIntensity": 57.07877552946525,
+        "Coal_fraction": 41.535803753637644,
+        "Oil_fraction": 33.24574597287357,
+        "Gas_fraction": 31.62199228159302,
+        "Renewables_fraction": 12.6863937,
+        "WindSolar_fraction": 3.42564128
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -95.7129,
+          37.0902
+        ]
+      },
+      "properties": {
+        "Country": "United States",
+        "Year": 2012,
+        "EV": "54000",
+        "EV_norm": 545.4545454545455,
+        "CleanElec": 16.476113234,
+        "CleanElec_norm": 0.15279293516111456,
+        "CarbonIntensity": 56.01131208542814,
+        "Coal_fraction": 37.49065083495172,
+        "Oil_fraction": 33.23547193107332,
+        "Gas_fraction": 33.83815511923381,
+        "Renewables_fraction": 12.41296211,
+        "WindSolar_fraction": 4.063151124
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -95.7129,
+          37.0902
+        ]
+      },
+      "properties": {
+        "Country": "United States",
+        "Year": 2013,
+        "EV": "97000",
+        "EV_norm": 979.7979797979798,
+        "CleanElec": 17.867062542,
+        "CleanElec_norm": 0.16569204700935503,
+        "CarbonIntensity": 56.171911968670315,
+        "Coal_fraction": 38.2214280911827,
+        "Oil_fraction": 33.114970674458036,
+        "Gas_fraction": 33.757506123941006,
+        "Renewables_fraction": 13.02858021,
+        "WindSolar_fraction": 4.838482332
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -95.7129,
+          37.0902
+        ]
+      },
+      "properties": {
+        "Country": "United States",
+        "Year": 2014,
+        "EV": "118000",
+        "EV_norm": 1191.919191919192,
+        "CleanElec": 18.740679076,
+        "CleanElec_norm": 0.17379362002839002,
+        "CarbonIntensity": 55.94434180398831,
+        "Coal_fraction": 37.47554915365076,
+        "Oil_fraction": 32.96541217289486,
+        "Gas_fraction": 33.858431228334815,
+        "Renewables_fraction": 13.37929407,
+        "WindSolar_fraction": 5.361385006
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -95.7129,
+          37.0902
+        ]
+      },
+      "properties": {
+        "Country": "United States",
+        "Year": 2015,
+        "EV": "114000",
+        "EV_norm": 1151.5151515151515,
+        "CleanElec": 19.490178613,
+        "CleanElec_norm": 0.18074418127628236,
+        "CarbonIntensity": 54.95549554030278,
+        "Coal_fraction": 32.933108796853325,
+        "Oil_fraction": 33.95795066121516,
+        "Gas_fraction": 34.99021883160907,
+        "Renewables_fraction": 13.63280806,
+        "WindSolar_fraction": 5.857370553
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -95.7129,
+          37.0902
+        ]
+      },
+      "properties": {
+        "Country": "United States",
+        "Year": 2016,
+        "EV": "160000",
+        "EV_norm": 1616.1616161616162,
+        "CleanElec": 22.292400016000002,
+        "CleanElec_norm": 0.2067308704337785,
+        "CarbonIntensity": 54.509307493999344,
+        "Coal_fraction": 30.586780450874624,
+        "Oil_fraction": 34.46638829283332,
+        "Gas_fraction": 35.81574833293776,
+        "Renewables_fraction": 15.25944473,
+        "WindSolar_fraction": 7.032955286
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -95.7129,
+          37.0902
+        ]
+      },
+      "properties": {
+        "Country": "United States",
+        "Year": 2017,
+        "EV": "194000",
+        "EV_norm": 1959.5959595959596,
+        "CleanElec": 25.506693292,
+        "CleanElec_norm": 0.23653895060011287,
+        "CarbonIntensity": 54.055178469715955,
+        "Coal_fraction": 30.093926012219907,
+        "Oil_fraction": 34.48539613732481,
+        "Gas_fraction": 35.62070537909135,
+        "Renewables_fraction": 17.28541849,
+        "WindSolar_fraction": 8.221274802
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -95.7129,
+          37.0902
+        ]
+      },
+      "properties": {
+        "Country": "United States",
+        "Year": 2018,
+        "EV": "360000",
+        "EV_norm": 3636.3636363636365,
+        "CleanElec": 25.805461917000002,
+        "CleanElec_norm": 0.2393096122543189,
+        "CarbonIntensity": 54.00025043074822,
+        "Coal_fraction": 27.93699850677811,
+        "Oil_fraction": 34.11112588732971,
+        "Gas_fraction": 38.277510040910975,
+        "Renewables_fraction": 17.16288286,
+        "WindSolar_fraction": 8.642579057
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -95.7129,
+          37.0902
+        ]
+      },
+      "properties": {
+        "Country": "United States",
+        "Year": 2019,
+        "EV": "325000",
+        "EV_norm": 3282.8282828282827,
+        "CleanElec": 27.350321381,
+        "CleanElec_norm": 0.2536360258060835,
+        "CarbonIntensity": 53.22147646364709,
+        "Coal_fraction": 24.05617503574151,
+        "Oil_fraction": 34.51092200434764,
+        "Gas_fraction": 39.8723761089932,
+        "Renewables_fraction": 17.85274653,
+        "WindSolar_fraction": 9.497574851
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -95.7129,
+          37.0902
+        ]
+      },
+      "properties": {
+        "Country": "United States",
+        "Year": 2020,
+        "EV": "294000",
+        "EV_norm": 2969.6969696969695,
+        "CleanElec": 30.96211161,
+        "CleanElec_norm": 0.2871303349576095,
+        "CarbonIntensity": 51.42698029934309,
+        "Coal_fraction": 20.492643755759484,
+        "Oil_fraction": 32.92313374676354,
+        "Gas_fraction": 42.566732735717075,
+        "Renewables_fraction": 19.79598008,
+        "WindSolar_fraction": 11.16613153
+      }
+    }
+  ]
+}

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Task 6 — Visualization Alternatives (Top 10 CO₂ Emitters, 2020)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121936;
+      --ink: #eaf0ff;
+      --muted: #9bb0ff;
+      --accent: #7aa2ff;
+      --grid: #273056;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+      background: radial-gradient(1250px 700px at 80% -10%, #151a33, var(--bg));
+      color: var(--ink);
+    }
+    .wrap {
+      max-width: 1200px;
+      margin: 24px auto 80px;
+      padding: 0 16px;
+    }
+    h1, h2, h3 { margin: 0.6em 0 0.4em; }
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(122,162,255,0.2);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      backdrop-filter: blur(4px);
+      margin-top: 16px;
+    }
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 980px) {
+      .grid2 { grid-template-columns: 1fr 1fr; }
+    }
+    .viz { width: 100%; height: 480px; border-radius: 14px; background: #0e1530; }
+    #map1, #map2 { height: 520px; border-radius: 14px; }
+    .legend { font-size: 12px; color: var(--muted); }
+    .pill { display:inline-block; padding: 4px 10px; border-radius: 999px; background:#172046; color:#b9c7ff; margin-right:6px; border:1px solid rgba(122,162,255,0.25);}
+    .caption { color: var(--muted); font-size: 13px; }
+    a, a:visited { color: #a8c1ff; }
+    .tooltip {
+      position: absolute;
+      pointer-events: none;
+      background: rgba(18, 25, 54, 0.95);
+      color: var(--ink);
+      padding: 8px 10px;
+      border: 1px solid rgba(122,162,255,0.35);
+      border-radius: 10px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .axis text { fill: #cfe0ff; }
+    .axis line, .axis path { stroke: #3a4783; }
+    .grid line { stroke: var(--grid); stroke-dasharray: 2 4; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Task 6 — Choose Visualization Type</h1>
+    <div class="caption">Top 10 countries by CO₂ emissions from fuel combustion, 2020. Three alternative mockups using <span class="pill">D3.js</span> <span class="pill">Leaflet</span> and <span class="pill">Hybrid (Leaflet + D3)</span>.</div>
+
+    <div class="card">
+      <h2>Justification & Design Choices</h2>
+      <ul>
+        <li><strong>Spatial vs. non-spatial:</strong> Scatter plot reveals non-spatial relationships (energy consumption vs. CO₂). The two map-based views highlight spatial context and regional patterns.</li>
+        <li><strong>Data volume & complexity:</strong> With only 10 countries, all three are readable. D3 scatter scales to more variables (size/colour encodings). Maps remain clear with low point density, no clustering needed.</li>
+        <li><strong>Audience needs:</strong> Executives: quick map overview. Analysts: quantitative comparison (scatter, axes, tooltips). Educators: hybrid view demonstrates layering geospatial + multivariate marks.</li>
+      </ul>
+      <div class="caption"><em>Data fields used:</em> CO₂ emissions (MtCO₂), total energy consumption (Mtoe), region, country centroids.</div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h2>Alt A — D3.js Scatter Plot</h2>
+        <div id="scatter" class="viz"></div>
+        <div class="caption">X: Total energy consumption (Mtoe). Y: CO₂ emissions (MtCO₂). Point size encodes renewable share in electricity (%). Colour encodes region.</div>
+      </div>
+
+      <div class="card">
+        <h2>Alt B — Leaflet Proportional Symbol Map</h2>
+        <div id="map1"></div>
+        <div class="caption">Circles centered on country centroids; radius ∝ CO₂ emissions. Tooltip shows details.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Alt C — Hybrid: Leaflet Map with D3 Overlay</h2>
+      <div id="map2"></div>
+      <div class="caption">SVG bubbles rendered in Leaflet overlay pane via D3. Includes scalable legend.</div>
+    </div>
+  </div>
+
+  <!-- Libraries -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin="">
+  </script>
+
+  <script>
+  const DATA = [
+  {
+    "country": "china",
+    "region": "Asia & Pacific",
+    "co2": 9716.772478,
+    "energy_consumption": 3381.399262,
+    "energy_production": 2749.04658,
+    "elec_share_tfc": 24.58500536,
+    "renewables_share": 28.39562093,
+    "lat": 35.0,
+    "lon": 103.0
+  },
+  {
+    "country": "united states",
+    "region": "North America",
+    "co2": 4404.709314,
+    "energy_consumption": 2045.709741,
+    "energy_production": 2190.194556,
+    "elec_share_tfc": 22.02362155,
+    "renewables_share": 19.79598008,
+    "lat": 39.8,
+    "lon": -98.6
+  },
+  {
+    "country": "india",
+    "region": "Asia & Pacific",
+    "co2": 2191.260453,
+    "energy_consumption": 908.3088892,
+    "energy_production": 590.2474861,
+    "elec_share_tfc": 16.31532809,
+    "renewables_share": 22.51975359,
+    "lat": 22.0,
+    "lon": 79.0
+  },
+  {
+    "country": "russia",
+    "region": "Europe",
+    "co2": 1619.084595,
+    "energy_consumption": 731.3470314,
+    "energy_production": 1401.556999,
+    "elec_share_tfc": 12.99110159,
+    "renewables_share": 20.30110701,
+    "lat": 61.5,
+    "lon": 105.3
+  },
+  {
+    "country": "japan",
+    "region": "Asia & Pacific",
+    "co2": 979.3774382,
+    "energy_consumption": 386.3198766,
+    "energy_production": 50.18306864,
+    "elec_share_tfc": 27.76789231,
+    "renewables_share": 20.22647471,
+    "lat": 36.2,
+    "lon": 138.3
+  },
+  {
+    "country": "iran",
+    "region": "Middle east",
+    "co2": 619.0628724,
+    "energy_consumption": 267.5450373,
+    "energy_production": 338.9256267,
+    "elec_share_tfc": 11.55923833,
+    "renewables_share": 6.9366736,
+    "lat": 32.4,
+    "lon": 53.7
+  },
+  {
+    "country": "germany",
+    "region": "Europe",
+    "co2": 616.9915188,
+    "energy_consumption": 275.4730911,
+    "energy_production": 95.50225364,
+    "elec_share_tfc": 18.75441884,
+    "renewables_share": 44.53262232,
+    "lat": 51.2,
+    "lon": 10.5
+  },
+  {
+    "country": "south korea",
+    "region": "Asia & Pacific",
+    "co2": 569.7679483,
+    "energy_consumption": 282.7509208,
+    "energy_production": 67.11643754,
+    "elec_share_tfc": 22.68485701,
+    "renewables_share": 7.073798163,
+    "lat": 36.5,
+    "lon": 127.9
+  },
+  {
+    "country": "indonesia",
+    "region": "Asia & Pacific",
+    "co2": 566.0397656,
+    "energy_consumption": 224.8734595,
+    "energy_production": 436.5830134,
+    "elec_share_tfc": 14.81026981,
+    "renewables_share": 18.31361856,
+    "lat": -2.5,
+    "lon": 118.0
+  },
+  {
+    "country": "canada",
+    "region": "North America",
+    "co2": 515.5687575,
+    "energy_consumption": 280.8113064,
+    "energy_production": 504.3304092,
+    "elec_share_tfc": 24.03373474,
+    "renewables_share": 67.72302974,
+    "lat": 56.1,
+    "lon": -106.3
+  }
+];
+
+  // ======== D3 Scatter =========
+  (function scatter() {
+    const el = d3.select('#scatter');
+    const W = el.node().clientWidth, H = el.node().clientHeight;
+    const margin = {top: 24, right: 28, bottom: 48, left: 60};
+    const w = W - margin.left - margin.right;
+    const h = H - margin.top - margin.bottom;
+
+    const svg = el.append('svg').attr('width', W).attr('height', H);
+    const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+    const x = d3.scaleLinear()
+      .domain(d3.extent(DATA, d => d.energy_consumption)).nice()
+      .range([0, w]);
+
+    const y = d3.scaleLinear()
+      .domain(d3.extent(DATA, d => d.co2)).nice()
+      .range([h, 0]);
+
+    // Color by region
+    const regions = Array.from(new Set(DATA.map(d => d.region)));
+    const color = d3.scaleOrdinal().domain(regions).range(d3.schemeTableau10);
+
+    // Size by renewables share (fallback if null)
+    const size = d3.scaleSqrt()
+      .domain([0, d3.max(DATA, d => (d.renewables_share ?? 0) || 0)])
+      .range([4, 18]);
+
+    // Gridlines
+    const xGrid = d3.axisBottom(x).tickSize(-h).tickFormat('');
+    const yGrid = d3.axisLeft(y).tickSize(-w).tickFormat('');
+    g.append('g').attr('class','grid').attr('transform', `translate(0,${h})`).call(xGrid);
+    g.append('g').attr('class','grid').call(yGrid);
+
+    // Axes
+    g.append('g').attr('class','axis').attr('transform', `translate(0,${h})`).call(d3.axisBottom(x));
+    g.append('g').attr('class','axis').call(d3.axisLeft(y));
+
+    g.append('text').attr('x', w/2).attr('y', h+40).attr('text-anchor','middle').text('Total energy consumption (Mtoe)').attr('fill','#cfe0ff');
+    g.append('text').attr('x', -h/2).attr('y', -44).attr('transform','rotate(-90)').attr('text-anchor','middle').text('CO₂ emissions (MtCO₂)').attr('fill','#cfe0ff');
+
+    const tooltip = d3.select('body').append('div').attr('class','tooltip').style('opacity',0);
+
+    g.selectAll('circle.point')
+      .data(DATA)
+      .join('circle')
+      .attr('class','point')
+      .attr('cx', d => x(d.energy_consumption))
+      .attr('cy', d => y(d.co2))
+      .attr('r', d => size(d.renewables_share ?? 0))
+      .attr('fill', d => color(d.region))
+      .attr('fill-opacity', 0.9)
+      .attr('stroke', 'white')
+      .attr('stroke-width', 1)
+      .on('mousemove', (event, d) => {
+        tooltip.style('opacity',1)
+          .html(`<strong>${d.country}</strong><br/>CO₂: ${d3.format(',')(Math.round(d.co2))} Mt<br/>Energy: ${d3.format(',')(Math.round(d.energy_consumption))} Mtoe<br/>Renewables in electricity: ${d.renewables_share ?? 'N/A'}%`)
+          .style('left', (event.pageX + 12) + 'px')
+          .style('top', (event.pageY - 28) + 'px');
+      })
+      .on('mouseout', () => tooltip.style('opacity',0));
+
+    // Legend
+    const legend = svg.append('g').attr('transform', `translate(${W-180},${20})`);
+    legend.append('text').text('Region').attr('font-weight',600).attr('fill','#cfe0ff');
+    regions.forEach((r,i) => {
+      const y0 = 16 + i*18;
+      legend.append('rect').attr('x',0).attr('y', y0-10).attr('width', 14).attr('height', 14).attr('fill', color(r));
+      legend.append('text').attr('x', 20).attr('y', y0+1).text(r).attr('alignment-baseline','middle').attr('fill','#cfe0ff');
+    });
+  })();
+
+  // ======== Leaflet Map (Circles) =========
+  (function map1() {
+    const map = L.map('map1', { zoomControl: true, worldCopyJump: true }).setView([25, 20], 2);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 6,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const maxCO2 = Math.max(...DATA.map(d => d.co2));
+    const r = (co2) => 6 + 28 * Math.sqrt(co2 / maxCO2);
+
+    DATA.forEach(d => {
+      if (d.lat == null || d.lon == null) return;
+      const circle = L.circleMarker([d.lat, d.lon], {
+        radius: r(d.co2),
+        weight: 1,
+        opacity: 1,
+        color: '#ffffff',
+        fillOpacity: 0.85,
+        fillColor: '#4c7dff'
+      }).addTo(map);
+      circle.bindTooltip(`<strong>${d.country}</strong><br/>CO₂: ${Math.round(d.co2).toLocaleString()} Mt<br/>Energy: ${Math.round(d.energy_consumption).toLocaleString()} Mtoe`, { sticky: true });
+    });
+  })();
+
+  // ======== Hybrid Leaflet + D3 SVG Overlay =========
+  (function map2() {
+    const map = L.map('map2', { zoomControl: true, worldCopyJump: true }).setView([25, 20], 2);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 6,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Create an SVG layer
+    L.svg().addTo(map);
+    const svg = d3.select('#map2').select('svg');
+    const g = svg.append('g').attr('class', 'leaflet-zoom-hide');
+
+    const maxCO2 = d3.max(DATA, d => d.co2);
+    const size = d3.scaleSqrt().domain([0, maxCO2]).range([4, 34]);
+
+    function projectPoint(lat, lon) {
+      return map.latLngToLayerPoint(new L.LatLng(lat, lon));
+    }
+
+    function update() {
+      const circles = g.selectAll('circle').data(DATA.filter(d => d.lat != null && d.lon != null), d => d.country);
+      circles.join(
+        enter => enter.append('circle')
+          .attr('r', d => size(d.co2))
+          .attr('fill', '#67a9ff')
+          .attr('fill-opacity', 0.85)
+          .attr('stroke', '#ffffff')
+          .attr('stroke-width', 1)
+          .attr('cx', d => projectPoint(d.lat, d.lon).x)
+          .attr('cy', d => projectPoint(d.lat, d.lon).y)
+          .append('title').text(d => `${d.country}\nCO₂: ${Math.round(d.co2).toLocaleString()} Mt`),
+        update => update
+          .attr('r', d => size(d.co2))
+          .attr('cx', d => projectPoint(d.lat, d.lon).x)
+          .attr('cy', d => projectPoint(d.lat, d.lon).y)
+      );
+    }
+
+    map.on('zoom move', update);
+    update();
+
+    // Size legend
+    const legend = d3.select('#map2').append('div').attr('class','legend').style('position','absolute').style('right','18px').style('bottom','18px').style('background','rgba(18,25,54,0.9)').style('padding','10px 12px').style('border','1px solid rgba(122,162,255,0.35)').style('border-radius','10px');
+    legend.html('<div style="font-weight:600;color:#cfe0ff;margin-bottom:6px;">CO₂ bubble size (Mt)</div>');
+    const svgLeg = legend.append('svg').attr('width', 140).attr('height', 80);
+    const values = [maxCO2, maxCO2/4, maxCO2/16];
+    const cx = 38;
+    values.forEach((v,i) => {
+      const r = size(v);
+      const y = 70 - r;
+      svgLeg.append('circle').attr('cx', cx).attr('cy', y).attr('r', r).attr('fill','#67a9ff').attr('fill-opacity',0.85).attr('stroke','#fff');
+      svgLeg.append('text').attr('x', cx + r + 10).attr('y', y+2).text(Math.round(v).toLocaleString()).attr('fill','#cfe0ff').attr('font-size',12);
+    });
+  })();
+  </script>
+</body>
+</html>

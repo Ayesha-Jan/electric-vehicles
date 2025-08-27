@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EV Exploratory Analysis</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://unpkg.com/simple-statistics@7.8.4/dist/simple-statistics.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<style>
+  body { font-family: sans-serif; }
+  #charts { display: flex; flex-wrap: wrap; }
+  svg { margin: 10px; }
+  #map { height: 500px; width: 80%; margin: 20px auto; }
+  .line-hover { stroke-width:4; }
+  .outlier { fill:red; stroke:black; stroke-width:1.5; }
+</style>
+</head>
+<body>
+
+<h1>EV Exploratory Analysis (Top 10 Countries)</h1>
+<div id="charts">
+  <svg id="lineChart" width="700" height="500"></svg>
+  <svg id="scatterPlot" width="700" height="500"></svg>
+</div>
+<div id="map"></div>
+
+<script>
+d3.csv("merged_data.csv").then(data => {
+  data.forEach(d => {
+    d.Year = +d.Year;
+    d["Electric cars sold"] = +d["Electric cars sold"];
+    d["CO2 emissions from fuel combustion (MtCO2)"] = +d["CO2 emissions from fuel combustion (MtCO2)"];
+  });
+
+  // Aggregate top 10 countries
+  let countryTotals = d3.rollups(data, v => d3.sum(v, d => d["Electric cars sold"]), d => d.country);
+  countryTotals.sort((a,b)=>b[1]-a[1]);
+  let top10 = countryTotals.slice(0,10).map(d=>d[0]);
+  let topData = data.filter(d=>top10.includes(d.country) && d.Year>=2015);
+
+  // ---------- LINE CHART ----------
+  let lineSvg = d3.select("#lineChart"),
+      margin = {top:20,right:150,bottom:40,left:70},
+      width = +lineSvg.attr("width") - margin.left - margin.right,
+      height = +lineSvg.attr("height") - margin.top - margin.bottom;
+  let g = lineSvg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+  let x = d3.scaleLinear().domain(d3.extent(topData, d=>d.Year)).range([0,width]);
+  let y = d3.scaleLinear().domain([0,d3.max(topData, d=>d["Electric cars sold"])]).range([height,0]);
+
+  g.append("g").attr("transform", `translate(0,${height})`).call(d3.axisBottom(x).tickFormat(d3.format("d")));
+  g.append("g").call(d3.axisLeft(y).tickFormat(d3.format(",")));
+
+  let line = d3.line().x(d=>x(d.Year)).y(d=>y(d["Electric cars sold"]));
+  let countries = d3.group(topData,d=>d.country);
+  let color = d3.scaleOrdinal(d3.schemeCategory10).domain(top10);
+
+  countries.forEach((vals,country)=>{
+    g.append("path")
+      .datum(vals)
+      .attr("fill","none")
+      .attr("stroke", color(country))
+      .attr("stroke-width",2)
+      .attr("d",line)
+      .on("mouseover", function(){ d3.select(this).classed("line-hover",true); })
+      .on("mouseout", function(){ d3.select(this).classed("line-hover",false); });
+  });
+
+  let legend = g.append("g").attr("transform", `translate(${width + 20},20)`);
+  top10.forEach((country, i) => {
+    let row = legend.append("g").attr("transform", `translate(0,${i * 20})`);
+    row.append("rect").attr("width", 12).attr("height", 12).attr("fill", color(country));
+    row.append("text").attr("x", 18).attr("y", 10).text(country).style("font-size", "12px");
+  });
+
+  // ---------- SCATTER PLOT ----------
+  // ---------- SCATTER PLOT WITH BRUSHING ----------
+let scatterSvg = d3.select("#scatterPlot");
+let sm = {top:30,right:30,bottom:50,left:70},
+    sw = +scatterSvg.attr("width") - sm.left - sm.right,
+    sh = +scatterSvg.attr("height") - sm.top - sm.bottom;
+let sg = scatterSvg.append("g").attr("transform", `translate(${sm.left},${sm.top})`);
+
+let xS = d3.scaleSqrt().domain([0,d3.max(topData,d=>d["Electric cars sold"])]).range([0,sw]);
+let yS = d3.scaleLinear().domain([0,d3.max(topData,d=>d["CO2 emissions from fuel combustion (MtCO2)"])]).range([sh,0]);
+
+sg.append("g").attr("transform", `translate(0,${sh})`).call(d3.axisBottom(xS).ticks(6,"s"));
+sg.append("g").call(d3.axisLeft(yS).ticks(6,"s"));
+
+// Gridlines
+sg.append("g").attr("class","grid").call(d3.axisLeft(yS).tickSize(-sw).tickFormat(""));
+sg.append("g").attr("class","grid").attr("transform",`translate(0,${sh})`).call(d3.axisBottom(xS).tickSize(-sh).tickFormat(""));
+
+// Labels
+scatterSvg.append("text").attr("x", sm.left + sw/2).attr("y", sh + sm.top + 40)
+  .attr("text-anchor","middle").text("Electric Cars Sold (√ scale)");
+scatterSvg.append("text").attr("transform","rotate(-90)").attr("x", -sm.top - sh/2).attr("y", 20)
+  .attr("text-anchor","middle").text("CO₂ Emissions (Mt)");
+
+// Outlier threshold (top 5%)
+let evThresh = d3.quantile(topData.map(d=>d["Electric cars sold"]).sort(d3.ascending),0.95);
+let co2Thresh = d3.quantile(topData.map(d=>d["CO2 emissions from fuel combustion (MtCO2)"]).sort(d3.ascending),0.95);
+
+// Draw circles
+let circles = sg.selectAll("circle")
+  .data(topData)
+  .enter().append("circle")
+  .attr("cx", d=>xS(d["Electric cars sold"]))
+  .attr("cy", d=>yS(d["CO2 emissions from fuel combustion (MtCO2)"]))
+  .attr("r", d=>4 + d.Year/2025*3)
+  .attr("fill", d=>(d["Electric cars sold"]>evThresh || d["CO2 emissions from fuel combustion (MtCO2)"]>co2Thresh)?"red":color(d.country))
+  .attr("opacity",0.7)
+  .append("title")
+  .text(d=>`${d.country} (${d.Year})\nEVs: ${d["Electric cars sold"].toLocaleString()}\nCO₂: ${d["CO2 emissions from fuel combustion (MtCO2)"].toLocaleString()}\n${(d["Electric cars sold"]>evThresh||d["CO2 emissions from fuel combustion (MtCO2)"]>co2Thresh)?"Outlier":""}`);
+
+// BRUSH
+let brush = d3.brush()
+  .extent([[0,0],[sw,sh]])
+  .on("brush end", brushed);
+
+sg.append("g").call(brush);
+
+function brushed({selection}) {
+  if(selection){
+    let [[x0,y0],[x1,y1]] = selection;
+    circles.attr("opacity", d => {
+      let cx = xS(d["Electric cars sold"]);
+      let cy = yS(d["CO2 emissions from fuel combustion (MtCO2)"]);
+      return (cx >= x0 && cx <= x1 && cy >= y0 && cy <= y1) ? 0.9 : 0.1;
+    });
+  } else {
+    circles.attr("opacity",0.7);
+  }
+}
+
+  // Correlation
+  let xVals = topData.map(d=>d["Electric cars sold"]);
+  let yVals = topData.map(d=>d["CO2 emissions from fuel combustion (MtCO2)"]);
+  let corr = ss.sampleCorrelation(xVals,yVals);
+  console.log("Pearson correlation EV vs CO₂:", corr.toFixed(3));
+
+  // ---------- LEAFLET MAP ----------
+  let map = L.map('map').setView([20,0], 2);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{ maxZoom:18 }).addTo(map);
+
+  let countryCoords = {
+    "china":[35.8617,104.1954],
+    "united states":[37.0902,-95.7129],
+    "germany":[51.1657,10.4515],
+    "france":[46.2276,2.2137],
+    "norway":[60.472,8.4689],
+    "sweden":[60.1282,18.6435],
+    "canada":[56.1304,-106.3468],
+    "japan":[36.2048,138.2529],
+    "netherlands":[52.1326,5.2913],
+    "united kingdom":[55.3781,-3.436]
+  };
+
+  top10.forEach(country=>{
+    if(countryCoords[country]){
+      let cData = topData.filter(d=>d.country==country);
+      let totalEV = d3.sum(cData,d=>d["Electric cars sold"]);
+      let co2Total = d3.sum(cData,d=>d["CO2 emissions from fuel combustion (MtCO2)"]);
+      
+      // Marker size proportional to total EVs
+      let marker = L.circleMarker(countryCoords[country], {
+        radius: 5 + Math.sqrt(totalEV)/2000,
+        fillColor: color(country),
+        color: "#000", weight: 1,
+        opacity: 0.8, fillOpacity: 0.6
+      }).addTo(map);
+
+      // D3 mini bar chart in popup
+      let popupHTML = `<b>${country}</b><br>Total EVs: ${totalEV.toLocaleString()}<br>Total CO₂: ${co2Total.toLocaleString()} Mt`;
+      marker.bindPopup(popupHTML);
+    }
+  });
+
+});
+</script>
+</body>
+</html>
