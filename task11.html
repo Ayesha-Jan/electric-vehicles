@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Task 11 — EV vs Clean Electricity (D3 + Leaflet)</title>
+
+<!-- D3 -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<!-- simple-statistics -->
+<script src="https://unpkg.com/simple-statistics@7.8.4/dist/simple-statistics.min.js"></script>
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<!-- Leaflet.markercluster for spatial clustering visualization -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+
+
+<style>
+  body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial; margin: 12px; }
+  h1 { text-align: center; }
+  .container { width: 92%; margin: 0 auto; max-width: 1200px; }
+  #controls { display:flex; gap:12px; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  #loading { text-align:center; padding:8px; font-weight:600; }
+  #map { width: 100%; height: 520px; margin: 10px 0; border:1px solid #ddd; border-radius:6px; }
+  #chart { width: 100%; height: 480px; margin: 10px 0; border:1px solid #ddd; border-radius:6px; display:block; }
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: rgba(255,255,255,0.95);
+    border: 1px solid #ccc;
+    padding: 6px 8px;
+    font-size: 13px;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  }
+  .statbox { padding:8px; border:1px solid #eee; border-radius:6px; background:#fafafa; }
+  .legend { display:flex; gap:8px; align-items:center; font-size:13px; }
+  .dot { width:10px; height:10px; display:inline-block; border-radius:2px; margin-right:6px; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Does Clean Electricity Drive Electric Vehicle Adoption?</h1>
+
+    <div id="controls">
+      <div>
+        <label for="yearSelect">Year: </label>
+        <select id="yearSelect"><option value="ALL">All years</option></select>
+      </div>
+      <div class="statbox" id="corrBox">Correlation (EV vs CleanElec): —</div>
+      <div class="statbox" id="regBox">Regression slope: —</div>
+      <div style="text-align:right" class="legend">
+        <span><span class="dot" style="background: #440154;"></span>Low CleanElec</span>
+        <span><span class="dot" style="background: #fde725;"></span>High CleanElec</span>
+      </div>
+    </div>
+
+    <div id="loading">Loading master_data.geojson ...</div>
+
+    <div id="map"></div>
+
+    <div id="chart"></div>
+
+    <p style="font-size:13px; color:#555">Tip: Click a map marker to see popup. Click the map background to run a simple local (geographically weighted) regression centered at the clicked location — local slope shown on the chart.</p>
+  </div>
+
+<script>
+// -----------------------------
+// Task 11 Implementation
+// -----------------------------
+// Assumptions:
+// - data/master_data.geojson exists and each feature.properties includes:
+//   Country, Year, EV, CleanElec, CarbonIntensity, Coal_fraction, Oil_fraction, Gas_fraction, Renewables_fraction, WindSolar_fraction
+// - geometry is Point [lon,lat]
+
+// Utility: safe number parse
+const N = v => (v===null||v===undefined||v==="") ? NaN : +v;
+
+// Globals / DOM
+const loadingDiv = d3.select("#loading");
+const yearSelect = d3.select("#yearSelect");
+const corrBox = d3.select("#corrBox");
+const regBox = d3.select("#regBox");
+
+// Map init
+const map = L.map('map').setView([20,0], 2);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{ maxZoom: 18 }).addTo(map);
+
+// marker cluster group (visual spatial clustering)
+const markerCluster = L.markerClusterGroup();
+map.addLayer(markerCluster);
+
+// D3 chart setup (responsive width, fixed inner height)
+const chartDiv = document.getElementById('chart');
+const chartWidth = chartDiv.clientWidth;
+const chartHeight = 440;
+const margin = {top: 30, right: 30, bottom: 60, left: 70};
+const innerW = chartWidth - margin.left - margin.right;
+const innerH = chartHeight - margin.top - margin.bottom;
+
+const svg = d3.select("#chart").append("svg")
+  .attr("width", chartWidth)
+  .attr("height", chartHeight);
+
+const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+// Axes groups
+const xAxisG = g.append("g").attr("transform", `translate(0,${innerH})`).attr("class","x axis");
+const yAxisG = g.append("g").attr("class","y axis");
+
+// axis labels
+svg.append("text")
+  .attr("class","x label")
+  .attr("x", margin.left + innerW/2)
+  .attr("y", margin.top + innerH + 48)
+  .attr("text-anchor","middle")
+  .text("Clean Electricity (%)");
+
+svg.append("text")
+  .attr("class","y label")
+  .attr("transform", `translate(${12},${margin.top + innerH/2}) rotate(-90)`)
+  .attr("text-anchor","middle")
+  .text("Electric cars sold");
+
+// tooltip
+const tooltip = d3.select("body").append("div").attr("class","tooltip").style("opacity",0);
+
+// color scale for CleanElec
+const colorScale = d3.scaleSequential().domain([0,100]).interpolator(d3.interpolateViridis);
+
+// radius scale for EV
+const rScale = d3.scaleSqrt().range([3,16]);
+
+// state
+let rawFeatures = [];   // array of geojson features
+let masterData = [];    // flattened dataset (properties + lat/lon)
+let years = [];         // unique years
+
+// load GeoJSON
+d3.json("data/master_data.geojson").then(geo => {
+  if(!geo || !geo.features) throw new Error("GeoJSON not found or invalid.");
+  rawFeatures = geo.features;
+
+  // build masterData with numeric casts and safe coords
+  masterData = rawFeatures
+    .filter(f => f.geometry && Array.isArray(f.geometry.coordinates) && f.geometry.coordinates.length >= 2)
+    .map(f => {
+      const p = f.properties || {};
+      return {
+        Country: p.Country || p.country || p.Entity || "Unknown",
+        Year: N(p.Year),
+        EV: N(p.EV),
+        CleanElec: N(p.CleanElec),
+        CarbonIntensity: N(p.CarbonIntensity),
+        CoalFrac: N(p.Coal_fraction) || N(p["Coal fraction (%)"]) || 0,
+        OilFrac: N(p.Oil_fraction) || N(p["Oil fraction (%)"]) || 0,
+        GasFrac: N(p.Gas_fraction) || N(p["Gas fraction (%)"]) || 0,
+        RenewablesFrac: N(p.Renewables_fraction) || N(p["Renewables fraction (%)"]) || 0,
+        WindSolarFrac: N(p.WindSolar_fraction) || N(p["WindSolar fraction (%)"]) || 0,
+        lat: +f.geometry.coordinates[1],
+        lon: +f.geometry.coordinates[0],
+        raw: p
+      };
+    });
+
+  // build years dropdown
+  years = Array.from(new Set(masterData.map(d => d.Year).filter(y => !isNaN(y)))).sort((a,b)=>a-b);
+  years.forEach(y => yearSelect.append("option").attr("value", y).text(y));
+
+  // set scales domains
+  rScale.domain([0, d3.max(masterData, d => isFinite(d.EV) ? d.EV : 0) || 1]);
+
+  // initial draw
+  loadingDiv.style("display","none");
+  drawMap(masterData);
+  drawScatter(masterData);
+  computeStats(masterData);
+
+  // wire controls
+  yearSelect.on("change", () => {
+    const val = yearSelect.node().value;
+    const filtered = (val === "ALL") ? masterData : masterData.filter(d => d.Year === +val);
+    updateForYear(filtered);
+  });
+
+  // map click for GWR demo: compute local weighted regression centered at clicked point
+  map.on('click', e => {
+    const latlng = e.latlng;
+    const val = yearSelect.node().value;
+    const dataset = (val === "ALL") ? masterData : masterData.filter(d => d.Year === +val);
+    runLocalWeightedRegression(latlng, dataset);
+  });
+
+}).catch(err => {
+  loadingDiv.text("Error loading data: " + err.message);
+  console.error(err);
+});
+
+
+// -----------------------------
+// drawMap: creates markers (with clustering) from dataset
+// -----------------------------
+function drawMap(dataset) {
+  markerCluster.clearLayers();
+  dataset.forEach(d => {
+    // skip if coordinates invalid
+    if(!isFinite(d.lat) || !isFinite(d.lon)) return;
+
+    const isOutlier = isOutlierPoint(d, dataset);
+    const color = isOutlier ? 'red' : colorScale(isFinite(d.CleanElec) ? d.CleanElec : 0);
+    const radius = 4 + (isFinite(d.EV) ? rScale(d.EV) : 0);
+
+    const m = L.circleMarker([d.lat, d.lon], {
+      radius,
+      fillColor: color,
+      color: "#222",
+      weight: 0.6,
+      fillOpacity: 0.8
+    });
+
+    m.bindPopup(`<b>${d.Country}</b> (${isFinite(d.Year) ? d.Year : "n/a"})<br>
+      EV: ${isFinite(d.EV) ? d.EV.toLocaleString() : "n/a"}<br>
+      Clean electricity: ${isFinite(d.CleanElec) ? d.CleanElec.toFixed(1) + "%" : "n/a"}<br>
+      Carbon intensity: ${isFinite(d.CarbonIntensity) ? d.CarbonIntensity.toFixed(3) : "n/a"} MtCO₂/EJ
+    `);
+
+    // click popup also highlights corresponding point in scatter plot
+    m.on('popupopen', () => highlightScatterPoint(d));
+    markerCluster.addLayer(m);
+  });
+
+  // fit bounds if possible
+  const coords = dataset.filter(d=>isFinite(d.lat) && isFinite(d.lon)).map(d=>[d.lat,d.lon]);
+  if(coords.length) {
+    try { map.fitBounds(coords, {padding:[30,30]}); } catch(e) { /* ignore */ }
+  }
+}
+
+// -----------------------------
+// drawScatter: initial draw and sets axes etc.
+// -----------------------------
+let xScale, yScale, scatterDots;
+function drawScatter(dataset) {
+  // set domains
+  const xMax = d3.max(dataset, d => isFinite(d.CleanElec) ? d.CleanElec : 0) || 1;
+  const yMax = d3.max(dataset, d => isFinite(d.EV) ? d.EV : 0) || 1;
+
+  xScale = d3.scaleLinear().domain([0, xMax]).nice().range([0, innerW]);
+  yScale = d3.scaleLinear().domain([0, yMax]).nice().range([innerH, 0]);
+
+  xAxisG.transition().duration(400).call(d3.axisBottom(xScale));
+  yAxisG.transition().duration(400).call(d3.axisLeft(yScale).ticks(6).tickFormat(d3.format(",")));
+
+  // enter/update/exit pattern
+  scatterDots = g.selectAll("circle.point").data(dataset, d => d.Country + "_" + d.Year);
+
+  // exit
+  scatterDots.exit().transition().duration(200).attr("r",0).remove();
+
+  // update
+  scatterDots.transition().duration(400)
+    .attr("cx", d => xScale(d.CleanElec))
+    .attr("cy", d => yScale(d.EV))
+    .attr("r", d => 3 + Math.sqrt(Math.max(0, d.EV || 0))/20)
+    .attr("fill", d => isOutlierPoint(d, dataset) ? "red" : colorScale(isFinite(d.CleanElec) ? d.CleanElec : 0))
+    .attr("opacity", 0.8);
+
+  // enter
+  const entered = scatterDots.enter().append("circle")
+    .attr("class","point")
+    .attr("cx", d => xScale(d.CleanElec))
+    .attr("cy", d => yScale(d.EV))
+    .attr("r", 0)
+    .attr("fill", d => isOutlierPoint(d, dataset) ? "red" : colorScale(isFinite(d.CleanElec) ? d.CleanElec : 0))
+    .attr("stroke","#111").attr("stroke-width",0.3).attr("opacity",0.9)
+    .on("mouseover", (event,d) => {
+      tooltip.style("opacity", 1)
+        .html(`<strong>${d.Country}</strong><br/>Year: ${d.Year}<br/>EV: ${d.EV}<br/>CleanElec: ${d.CleanElec}%`)
+        .style("left", (event.pageX + 10) + "px")
+        .style("top", (event.pageY - 28) + "px");
+    })
+    .on("mouseout", () => tooltip.style("opacity", 0))
+    .on("click", (event,d) => {
+      // center map on country and open popup if exists
+      if(isFinite(d.lat) && isFinite(d.lon)) {
+        map.setView([d.lat, d.lon], 4, {animate:true});
+      }
+    });
+
+  entered.transition().duration(400).attr("r", d => 3 + Math.sqrt(Math.max(0, d.EV || 0))/20);
+
+  // draw regression line for dataset
+  drawRegression(dataset);
+}
+
+// -----------------------------
+// updateForYear: refresh both map and scatter for a filtered dataset
+// -----------------------------
+function updateForYear(dataset) {
+  // update map
+  drawMap(dataset);
+  // update scatter
+  drawScatter(dataset);
+  // recompute stats
+  computeStats(dataset);
+}
+
+// -----------------------------
+// computeStats: correlation + global regression + outliers (95th percentile)
+// -----------------------------
+function computeStats(dataset) {
+  const evArr = dataset.map(d => d.EV).filter(v => isFinite(v));
+  const cleanArr = dataset.map(d => d.CleanElec).filter(v => isFinite(v));
+  let corr = NaN;
+  if(evArr.length >= 3 && cleanArr.length >= 3 && evArr.length === cleanArr.length) {
+    corr = ss.sampleCorrelation(dataset.map(d=>d.EV), dataset.map(d=>d.CleanElec));
+  }
+  corrBox.text(`Correlation (EV vs CleanElec): ${isFinite(corr)?corr.toFixed(3):"n/a"}`);
+
+  // global regression slope & intercept
+  let regText = "n/a";
+  try {
+    const pairs = dataset.filter(d => isFinite(d.EV) && isFinite(d.CleanElec)).map(d => [d.CleanElec, d.EV]);
+    if(pairs.length >= 2) {
+      const lr = ss.linearRegression(pairs);
+      regText = `slope=${lr.m.toFixed(3)}, intercept=${lr.b.toFixed(1)}`;
+    }
+  } catch(e) { regText = "error"; }
+  regBox.text(`Regression: ${regText}`);
+
+  // outliers 95th percentile
+  const evThresh = d3.quantile(dataset.map(d=>d.EV).filter(v=>isFinite(v)).sort((a,b)=>a-b), 0.95);
+  const carbonThresh = d3.quantile(dataset.map(d=>d.CarbonIntensity).filter(v=>isFinite(v)).sort((a,b)=>a-b), 0.95);
+  // store to allow isOutlierPoint to access
+  computeStats.evThresh = evThresh;
+  computeStats.carbonThresh = carbonThresh;
+}
+
+// helper to check outliers
+function isOutlierPoint(d, dataset) {
+  return (isFinite(d.EV) && computeStats.evThresh && d.EV > computeStats.evThresh) ||
+         (isFinite(d.CarbonIntensity) && computeStats.carbonThresh && d.CarbonIntensity > computeStats.carbonThresh);
+}
+
+// -----------------------------
+// drawRegression: compute & draw regression line on scatter
+// -----------------------------
+let regressionLineEl = null;
+function drawRegression(dataset) {
+  // remove previous line
+  if(regressionLineEl) regressionLineEl.remove();
+
+  const pairs = dataset.filter(d => isFinite(d.EV) && isFinite(d.CleanElec)).map(d => [d.CleanElec, d.EV]);
+  if(pairs.length < 2) return;
+
+  const lr = ss.linearRegression(pairs);
+  const lrFn = ss.linearRegressionLine(lr);
+  const x0 = d3.min(dataset, d => isFinite(d.CleanElec) ? d.CleanElec : Infinity);
+  const x1 = d3.max(dataset, d => isFinite(d.CleanElec) ? d.CleanElec : -Infinity);
+  if(!isFinite(x0) || !isFinite(x1)) return;
+
+  regressionLineEl = g.append("line")
+    .attr("class","regression")
+    .attr("x1", xScale(x0))
+    .attr("y1", yScale(lrFn(x0)))
+    .attr("x2", xScale(x1))
+    .attr("y2", yScale(lrFn(x1)))
+    .attr("stroke", "crimson")
+    .attr("stroke-width", 2)
+    .attr("stroke-dasharray", "4 2");
+}
+
+// -----------------------------
+// highlightScatterPoint: when marker popup opens, emphasize point
+// -----------------------------
+function highlightScatterPoint(point) {
+  // briefly enlarge the matching scatter point
+  g.selectAll("circle.point")
+    .filter(d => d.Country === point.Country && d.Year === point.Year)
+    .transition().duration(120).attr("r", 12).transition().duration(600).attr("r", d => 3 + Math.sqrt(Math.max(0, d.EV || 0))/20);
+}
+
+// -----------------------------
+// Local Geographically Weighted Regression (GWR) demo
+// - Clicking the map computes a weighted linear regression where weights = exp(-dist/scale)
+// - We then draw the local regression line on the scatter plot and show slope in regBox
+// -----------------------------
+let localLineEl = null;
+function runLocalWeightedRegression(latlng, dataset) {
+  // choose a kernel scale (km) based on map extent; user can adjust
+  const scaleKm = 3000; // large to include many countries; reduce to focus locally
+
+  // convert miles: we use lat/lon distances via simple haversine
+  function haversineKm(a,b){
+    const R = 6371;
+    const toRad = Math.PI/180;
+    const dLat = (b[0]-a[0])*toRad;
+    const dLon = (b[1]-a[1])*toRad;
+    const lat1 = a[0]*toRad, lat2 = b[0]*toRad;
+    const aa = Math.sin(dLat/2)**2 + Math.cos(lat1)*Math.cos(lat2)*Math.sin(dLon/2)**2;
+    return 2*R*Math.asin(Math.sqrt(Math.min(1,aa)));
+  }
+
+  // compute weights and pairs
+  const pairs = [];
+  const weights = [];
+  dataset.forEach(d => {
+    if(!isFinite(d.CleanElec) || !isFinite(d.EV) || !isFinite(d.lat) || !isFinite(d.lon)) return;
+    const dist = haversineKm([latlng.lat, latlng.lng],[d.lat, d.lon]);
+    // Gaussian kernel
+    const w = Math.exp(- (dist*dist) / (2 * scaleKm * scaleKm));
+    pairs.push([d.CleanElec, d.EV]);
+    weights.push(w);
+  });
+
+  if(pairs.length < 3) {
+    alert("Not enough nearby points to run local regression.");
+    return;
+  }
+
+  // Weighted least squares to compute slope & intercept
+  // Using standard formulas: beta = (X^T W X)^{-1} X^T W y for simple linear model
+  // Here X = [1 x], compute scalar values
+  let Sw = 0, Sx = 0, Sy = 0, Sxx = 0, Sxy = 0;
+  for(let i=0;i<pairs.length;i++){
+    const x = pairs[i][0], y = pairs[i][1], w = weights[i];
+    Sw += w;
+    Sx += w * x;
+    Sy += w * y;
+    Sxx += w * x * x;
+    Sxy += w * x * y;
+  }
+  const denom = (Sw * Sxx - Sx*Sx);
+  if(Math.abs(denom) < 1e-8) {
+    alert("Local regression numerical issue (denominator ~ 0).");
+    return;
+  }
+  const slope = (Sw * Sxy - Sx * Sy) / denom;
+  const intercept = (Sy - slope * Sx) / Sw;
+
+  // Draw local regression line on scatter (remove previous)
+  if(localLineEl) localLineEl.remove();
+
+  // compute line endpoints across x domain
+  const x0 = xScale.domain()[0], x1 = xScale.domain()[1];
+  localLineEl = g.append("line")
+    .attr("x1", xScale(x0)).attr("y1", yScale(slope*x0 + intercept))
+    .attr("x2", xScale(x1)).attr("y2", yScale(slope*x1 + intercept))
+    .attr("stroke", "steelblue").attr("stroke-width", 2)
+    .attr("opacity", 0.9);
+
+  regBox.text(`Local regression (clicked): slope=${slope.toFixed(3)}, intercept=${intercept.toFixed(1)}`);
+}
+
+// -----------------------------
+// End of script
+// -----------------------------
+</script>
+</body>
+</html>
