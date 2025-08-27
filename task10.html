@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EV Visualization Template</title>
+
+<!-- D3.js -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<style>
+  body { font-family: sans-serif; margin:0; padding:0; }
+  #map {
+  height: 1000px;  
+  width: 90%;           
+  margin: 20px auto;   
+  display: block;      
+  border: 1px solid #ccc;
+  }
+  #chart svg {
+  display: block;
+  margin: auto;
+  max-width: 100%; 
+  height: 1000px;  
+  width: 100%; 
+  }
+  .loading { text-align:center; font-size:18px; padding:20px; }
+</style>
+</head>
+<body>
+
+<h1 style="text-align:center;">EV Data Visualization</h1>
+
+<div class="loading" id="loading">Loading data...</div>
+
+<div id="map"></div>
+
+<div id="chart"></div>
+
+<script>
+// =============================
+// Task 10: Basic Visualization Structure
+// =============================
+
+// Dimensions & margins
+const margin = {top: 20, right: 30, bottom: 50, left: 60};
+const width = 800 - margin.left - margin.right;
+const height = 500 - margin.top - margin.bottom;
+
+// Responsive SVG container for D3
+const svg = d3.select("#chart")
+    .append("svg")
+    .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+    .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`)
+    .attr("preserveAspectRatio", "xMidYMid meet");
+
+// Scales (placeholder)
+const xScale = d3.scaleLinear().range([0, width]);
+const yScale = d3.scaleLinear().range([height, 0]);
+
+// Axes groups
+svg.append("g")
+    .attr("class","x-axis")
+    .attr("transform", `translate(0, ${height})`);
+
+svg.append("g")
+    .attr("class","y-axis");
+
+// X-axis label
+svg.append("text")
+    .attr("x", width/2)
+    .attr("y", height + margin.bottom - 10)
+    .attr("text-anchor","middle")
+    .text("X-Axis Lable");
+
+// Y-axis label
+svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("x", -height/2)
+    .attr("y", -margin.left + 15)
+    .attr("text-anchor","middle")
+    .text("Y-Axis Label");
+
+// Loading indicator
+const loadingDiv = d3.select("#loading");
+
+// =============================
+// Leaflet Map Initialization
+// =============================
+const map = L.map('map').setView([20,0], 3);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+// =============================
+// Placeholder for data loading
+// =============================
+d3.csv("data/master_data.csv").then(data => {
+    loadingDiv.style("display", "none"); // Hide loading indicator
+
+    // Example: convert numeric fields
+    data.forEach(d => {
+        d.EV = +d.EV;
+        d.CleanElec = +d.CleanElec;
+    });
+
+    // Example: update scales
+    xScale.domain([0, d3.max(data, d => d.CleanElec)]).nice();
+    yScale.domain([0, d3.max(data, d => d.EV)]).nice();
+
+    // Update axes
+    svg.select(".x-axis").call(d3.axisBottom(xScale));
+    svg.select(".y-axis").call(d3.axisLeft(yScale));
+
+    // Basic scatter plot
+    svg.selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("cx", d=>xScale(d.CleanElec))
+        .attr("cy", d=>yScale(d.EV))
+        .attr("r", 5)
+        .attr("fill", "steelblue")
+        .attr("opacity", 0.7);
+
+}).catch(err => console.error(err));
+
+</script>
+
+</body>
+</html>
