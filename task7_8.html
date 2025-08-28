@@ -1,176 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>EV Data Preprocessing & Joining</title>
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-</head>
-<body>
-  <script>
-  // =============================
-  // Task 7: Data Preprocessing
-  // =============================
-
-  // Load datasets
-  Promise.all([
-    d3.csv("data/ev_sales.csv"),
-    d3.csv("data/energy_emissions.csv")
-  ]).then(([evData, energyData]) => {
+  <head>
+    <meta charset="UTF-8">
+    <title>Task 7 and 8: EV Data Preprocessing & Joining</title>
     
-    console.log("Raw EV data:", evData);
-    console.log("Raw Energy data:", energyData);
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 
-    // Step 1: Clean & standardize
-    const { cleanedEV, cleanedEnergy } = cleanData(evData, energyData);
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  
+  </head>
+  <body>
+    <script>
+    // =============================
+    // Task 7: Data Preprocessing
+    // =============================
 
-    console.log("Cleaned EV data:", cleanedEV);
-    console.log("Cleaned Energy data:", cleanedEnergy);
+    // Load datasets
+    Promise.all([
+      d3.csv("data/ev_sales.csv"),
+      d3.csv("data/energy_emissions.csv")
+    ]).then(([evData, energyData]) => {
+      
+      console.log("Raw EV data:", evData);
+      console.log("Raw Energy data:", energyData);
 
-    // Step 2: Merge datasets (Task 8 - temporal + key join)
-    const masterData = mergeDatasets(cleanedEV, cleanedEnergy);
+      // Clean & standardize
+      const { cleanedEV, cleanedEnergy } = cleanData(evData, energyData);
 
-    console.log("Master dataset (merged):", masterData);
-    console.log("Total merged rows:", masterData.length);
+      console.log("Cleaned EV data:", cleanedEV);
+      console.log("Cleaned Energy data:", cleanedEnergy);
 
-    // Step 3: Prepare GeoJSON for Leaflet (Task 8 - spatial join)
-    const geoJSON = prepareGeoJSON(masterData);
-    console.log("GeoJSON for Leaflet:", geoJSON);
+      // Merge datasets
+      const masterData = mergeDatasets(cleanedEV, cleanedEnergy);
 
-  }).catch(error => console.error(error));
+      console.log("Master dataset (merged):", masterData);
+      console.log("Total merged rows:", masterData.length);
 
-  // =============================
-  // Function: cleanData
-  // =============================
-  function cleanData(evData, energyData) {
-    // ---------- Convert Years to numbers ----------
-    evData.forEach(d => d.Year = +d.Year || 0);
-    energyData.forEach(d => d.Year = +d.Year || 0);
+      // Prepare GeoJSON for Leaflet
+      const geoJSON = prepareGeoJSON(masterData);
+      console.log("GeoJSON for Leaflet:", geoJSON);
 
-    // ---------- Standardize numeric columns ----------
-    const numericCols = energyData.columns.filter(c => !["country","Region"].includes(c));
-    energyData.forEach(d => {
-      numericCols.forEach(col => {
-        d[col] = parseFloat(d[col]) || 0;
-      });
-    });
+    }).catch(error => console.error(error));
 
-    // ---------- Align years ----------
-    const energyYears = new Set(energyData.map(d => d.Year));
-    evData = evData.filter(d => energyYears.has(d.Year));
-    const evYears = new Set(evData.map(d => d.Year));
-    energyData = energyData.filter(d => evYears.has(d.Year));
+    // =============================
+    // Function: cleanData
+    // =============================
+    function cleanData(evData, energyData) {
+      //  Convert Years to numbers 
+      evData.forEach(d => d.Year = +d.Year || 0);
+      energyData.forEach(d => d.Year = +d.Year || 0);
 
-    // ---------- Compute derived columns ----------
-    energyData.forEach(d => {
-      d["Total energy consumption (EJ)"] = d["Total energy consumption (Mtoe)"] * 0.041868;
-      d["Carbon Intensity (MtCO2 per EJ)"] = d["CO2 emissions from fuel combustion (MtCO2)"] / d["Total energy consumption (EJ)"];
-      d["Clean electricity share (%)"] = d["Share of renewables in electricity production (%)"] + d["Share of wind and solar in electricity production (%)"];
-    
-      // ---------- Energy source fractions ----------
-      d["Coal fraction (%)"] = d["Coal and lignite domestic consumption (Mt)"] / d["Total energy consumption (Mtoe)"] * 100 || 0;
-      d["Oil fraction (%)"] = d["Oil products domestic consumption (Mt)"] / d["Total energy consumption (Mtoe)"] * 100 || 0;
-      d["Gas fraction (%)"] = d["Natural gas domestic consumption (bcm)"] / d["Total energy consumption (Mtoe)"] * 100 || 0;
-      d["Renewables fraction (%)"] = d["Share of renewables in electricity production (%)"] || 0;
-      d["WindSolar fraction (%)"] = d["Share of wind and solar in electricity production (%)"] || 0;
-    });
-
-    // ---------- Rename EV column ----------
-    evData.forEach(d => {
-      d.country = d.Entity;
-      delete d.Entity;
-    });
-
-    // ---------- Normalize for D3 ----------
-    const evMax = d3.max(evData, d => d["Electric cars sold"]);
-    evData.forEach(d => d["EV_norm"] = d["Electric cars sold"] / evMax);
-
-    const cleanMax = d3.max(energyData, d => d["Clean electricity share (%)"]);
-    energyData.forEach(d => d["CleanElec_norm"] = d["Clean electricity share (%)"] / cleanMax);
-
-    return { cleanedEV: evData, cleanedEnergy: energyData };
-  }
-
-  // =============================
-  // Function: mergeDatasets
-  // Temporal + key-based join (Task 8)
-  // =============================
-  function mergeDatasets(evData, energyData) {
-    const energyMap = d3.group(energyData, d => d.country + "_" + d.Year);
-    const merged = [];
-
-    evData.forEach(ev => {
-      const key = ev.country + "_" + ev.Year;
-      const energy = energyMap.get(key);
-      if (energy) {
-        merged.push({ ...ev, ...energy[0] });
-      }
-    });
-
-    return merged;
-  }
-
-  // =============================
-  // Function: prepareGeoJSON
-  // Spatial join (Task 8)
-  // =============================
-  function prepareGeoJSON(masterData) {
-    const countryCoords = {
-      "Australia": [-25.2744, 133.7751],
-      "Belgium": [50.5039, 4.4699],
-      "Brazil": [-14.2350, -51.9253],
-      "Canada": [56.1304, -106.3468],
-      "Chile": [-35.6751, -71.5430],
-      "China": [35.8617, 104.1954],
-      "France": [46.2276, 2.2137],
-      "Germany": [51.1657, 10.4515],
-      "India": [20.5937, 78.9629],
-      "Italy": [41.8719, 12.5674],
-      "Japan": [36.2048, 138.2529],
-      "Mexico": [23.6345, -102.5528],
-      "Netherlands": [52.1326, 5.2913],
-      "New Zealand": [-40.9006, 174.8860],
-      "Norway": [60.4720, 8.4689],
-      "Poland": [51.9194, 19.1451],
-      "Portugal": [39.3999, -8.2245],
-      "South Korea": [35.9078, 127.7669],
-      "Spain": [40.4637, -3.7492],
-      "Sweden": [60.1282, 18.6435],
-      "Turkey": [38.9637, 35.2433],
-      "United Kingdom": [55.3781, -3.4360],
-      "United States": [37.0902, -95.7129]
-    };
-
-    const geoJSON = { type: "FeatureCollection", features: [] };
-
-    masterData.forEach(d => {
-      const coords = countryCoords[d.country];
-      if (coords) {
-        geoJSON.features.push({
-          type: "Feature",
-          geometry: { type: "Point", coordinates: [coords[1], coords[0]] },
-          properties: {
-            Country: d.country,
-            Region: d.Region,
-            Year: d.Year,
-            EV: d["Electric cars sold"],
-            EV_norm: d["EV_norm"],
-            CleanElec: d["Clean electricity share (%)"],
-            CleanElec_norm: d["CleanElec_norm"],
-            CarbonIntensity: d["Carbon Intensity (MtCO2 per EJ)"],
-            Coal_fraction: d["Coal fraction (%)"],
-            Oil_fraction: d["Oil fraction (%)"],
-            Gas_fraction: d["Gas fraction (%)"],
-            Renewables_fraction: d["Renewables fraction (%)"],
-            WindSolar_fraction: d["WindSolar fraction (%)"]
-          }
+      //  Standardize numeric columns 
+      const numericCols = energyData.columns.filter(c => !["country","Region"].includes(c));
+      energyData.forEach(d => {
+        numericCols.forEach(col => {
+          d[col] = parseFloat(d[col]) || 0;
         });
-      }
-    });
+      });
 
-    return geoJSON;
-  }
-  </script>
-</body>
+      //  Align years 
+      const energyYears = new Set(energyData.map(d => d.Year));
+      evData = evData.filter(d => energyYears.has(d.Year));
+      const evYears = new Set(evData.map(d => d.Year));
+      energyData = energyData.filter(d => evYears.has(d.Year));
+
+      //  Compute derived columns 
+      energyData.forEach(d => {
+        d["Total energy consumption (EJ)"] = d["Total energy consumption (Mtoe)"] * 0.041868;
+        d["Carbon Intensity (MtCO2 per EJ)"] = d["CO2 emissions from fuel combustion (MtCO2)"] / d["Total energy consumption (EJ)"];
+        d["Clean electricity share (%)"] = d["Share of renewables in electricity production (%)"] + d["Share of wind and solar in electricity production (%)"];
+      
+        //  Energy source fractions 
+        d["Coal fraction (%)"] = d["Coal and lignite domestic consumption (Mt)"] / d["Total energy consumption (Mtoe)"] * 100 || 0;
+        d["Oil fraction (%)"] = d["Oil products domestic consumption (Mt)"] / d["Total energy consumption (Mtoe)"] * 100 || 0;
+        d["Gas fraction (%)"] = d["Natural gas domestic consumption (bcm)"] / d["Total energy consumption (Mtoe)"] * 100 || 0;
+        d["Renewables fraction (%)"] = d["Share of renewables in electricity production (%)"] || 0;
+        d["WindSolar fraction (%)"] = d["Share of wind and solar in electricity production (%)"] || 0;
+      });
+
+      //  Rename EV column 
+      evData.forEach(d => {
+        d.country = d.Entity;
+        delete d.Entity;
+      });
+
+      //  Normalize for D3 
+      const evMax = d3.max(evData, d => d["Electric cars sold"]);
+      evData.forEach(d => d["EV_norm"] = d["Electric cars sold"] / evMax);
+
+      const cleanMax = d3.max(energyData, d => d["Clean electricity share (%)"]);
+      energyData.forEach(d => d["CleanElec_norm"] = d["Clean electricity share (%)"] / cleanMax);
+
+      return { cleanedEV: evData, cleanedEnergy: energyData };
+    }
+
+    // =============================
+    // Function: mergeDatasets
+    // Temporal + key-based join (Task 8)
+    // =============================
+
+    function mergeDatasets(evData, energyData) {
+      const energyMap = d3.group(energyData, d => d.country + "_" + d.Year);
+      const merged = [];
+
+      evData.forEach(ev => {
+        const key = ev.country + "_" + ev.Year;
+        const energy = energyMap.get(key);
+        if (energy) {
+          merged.push({ ...ev, ...energy[0] });
+        }
+      });
+
+      return merged;
+    }
+
+    // =============================
+    // Function: prepareGeoJSON
+    // Spatial join (Task 8)
+    // =============================
+    
+    function prepareGeoJSON(masterData) {
+      const countryCoords = {
+        "Australia": [-25.2744, 133.7751],
+        "Belgium": [50.5039, 4.4699],
+        "Brazil": [-14.2350, -51.9253],
+        "Canada": [56.1304, -106.3468],
+        "Chile": [-35.6751, -71.5430],
+        "China": [35.8617, 104.1954],
+        "France": [46.2276, 2.2137],
+        "Germany": [51.1657, 10.4515],
+        "India": [20.5937, 78.9629],
+        "Italy": [41.8719, 12.5674],
+        "Japan": [36.2048, 138.2529],
+        "Mexico": [23.6345, -102.5528],
+        "Netherlands": [52.1326, 5.2913],
+        "New Zealand": [-40.9006, 174.8860],
+        "Norway": [60.4720, 8.4689],
+        "Poland": [51.9194, 19.1451],
+        "Portugal": [39.3999, -8.2245],
+        "South Korea": [35.9078, 127.7669],
+        "Spain": [40.4637, -3.7492],
+        "Sweden": [60.1282, 18.6435],
+        "Turkey": [38.9637, 35.2433],
+        "United Kingdom": [55.3781, -3.4360],
+        "United States": [37.0902, -95.7129]
+      };
+
+      const geoJSON = { type: "FeatureCollection", features: [] };
+
+      masterData.forEach(d => {
+        const coords = countryCoords[d.country];
+        if (coords) {
+          geoJSON.features.push({
+            type: "Feature",
+            geometry: { type: "Point", coordinates: [coords[1], coords[0]] },
+            properties: {
+              Country: d.country,
+              Region: d.Region,
+              Year: d.Year,
+              EV: d["Electric cars sold"],
+              EV_norm: d["EV_norm"],
+              CleanElec: d["Clean electricity share (%)"],
+              CleanElec_norm: d["CleanElec_norm"],
+              CarbonIntensity: d["Carbon Intensity (MtCO2 per EJ)"],
+              Coal_fraction: d["Coal fraction (%)"],
+              Oil_fraction: d["Oil fraction (%)"],
+              Gas_fraction: d["Gas fraction (%)"],
+              Renewables_fraction: d["Renewables fraction (%)"],
+              WindSolar_fraction: d["WindSolar fraction (%)"]
+            }
+          });
+        }
+      });
+
+      return geoJSON;
+    }
+    </script>
+  </body>
 </html>
