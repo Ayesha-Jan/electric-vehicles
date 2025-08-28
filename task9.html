@@ -34,144 +34,148 @@
     <div id="interpretation"></div>
 
     <script>
-    // Load GeoJSON from Task 8
-    d3.json("data/master_data.geojson").then(geoData => {
+        // =============================
+        // Task 9: Statistical Analysis
+        // =============================
         
-        // Convert properties to numeric
-        const masterData = geoData.features.map(f => {
-            const p = f.properties;
-            return {
-                Country: p.Country,
-                Region: p.Region,
-                Year: +p.Year,
-                EV: +p.EV,
-                EV_Norm: +p.EV_Norm,
-                CarbonIntensity: +p.CarbonIntensity,
-                CleanElec: +p.CleanElec,
-                CoalFrac: +p.Coal_fraction,
-                OilFrac: +p.Oil_fraction,
-                GasFrac: +p.Gas_fraction,
-                RenewablesFrac: +p.Renewables_fraction,
-                WindSolarFrac: +p.WindSolar_fraction,
-                lat: f.geometry.coordinates[1],
-                lon: f.geometry.coordinates[0]
-            };
-        });
+        // Load GeoJSON from Task 8
+        d3.json("data/master_data.geojson").then(geoData => {
+            
+            // Convert properties to numeric
+            const masterData = geoData.features.map(f => {
+                const p = f.properties;
+                return {
+                    Country: p.Country,
+                    Region: p.Region,
+                    Year: +p.Year,
+                    EV: +p.EV,
+                    EV_Norm: +p.EV_Norm,
+                    CarbonIntensity: +p.CarbonIntensity,
+                    CleanElec: +p.CleanElec,
+                    CoalFrac: +p.Coal_fraction,
+                    OilFrac: +p.Oil_fraction,
+                    GasFrac: +p.Gas_fraction,
+                    RenewablesFrac: +p.Renewables_fraction,
+                    WindSolarFrac: +p.WindSolar_fraction,
+                    lat: f.geometry.coordinates[1],
+                    lon: f.geometry.coordinates[0]
+                };
+            });
 
-        // =============================
-        // 1. Correlation Coeffiecient
-        // =============================
-        let ev = masterData.map(d => d.EV);
-        let ci = masterData.map(d => d.CarbonIntensity);
-        let clean = masterData.map(d => d.CleanElec);
+            // =============================
+            // 1. Correlation Coeffiecient
+            // =============================
+            let ev = masterData.map(d => d.EV);
+            let ci = masterData.map(d => d.CarbonIntensity);
+            let clean = masterData.map(d => d.CleanElec);
 
-        let corrEV_CI = ss.sampleCorrelation(ev, ci);
-        let corrEV_Clean = ss.sampleCorrelation(ev, clean);
+            let corrEV_CI = ss.sampleCorrelation(ev, ci);
+            let corrEV_Clean = ss.sampleCorrelation(ev, clean);
 
-        d3.select("#stats").append("p").text(`Correlation EV vs Carbon Intensity: ${corrEV_CI.toFixed(3)}`);
-        d3.select("#stats").append("p").text(`Correlation EV vs Clean Electricity: ${corrEV_Clean.toFixed(3)}`);
+            d3.select("#stats").append("p").text(`Correlation EV vs Carbon Intensity: ${corrEV_CI.toFixed(3)}`);
+            d3.select("#stats").append("p").text(`Correlation EV vs Clean Electricity: ${corrEV_Clean.toFixed(3)}`);
 
-        // =============================
-        // 2. Spacial Statistics
-        // =============================
+            // =============================
+            // 2. Spacial Statistics
+            // =============================
 
-        let map = L.map('map').setView([20,0], 2);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-        let markers = L.markerClusterGroup();
+            let map = L.map('map').setView([20,0], 2);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+            let markers = L.markerClusterGroup();
 
-        masterData.forEach(f => {
-        let marker = L.circleMarker([f.lat, f.lon], {
-            radius: 5 + f.EV_Norm * 10,
-            color: f.CleanElec > 50 ? "green" : "red"
-        }).bindPopup(`
-            <b>${f.Country} (${f.Year})</b><br>
-            EVs: ${f.EV}<br>
-            Clean Electricity: ${f.CleanElec}%
-        `);
-        markers.addLayer(marker);
-        });
+            masterData.forEach(f => {
+            let marker = L.circleMarker([f.lat, f.lon], {
+                radius: 5 + f.EV_Norm * 10,
+                color: f.CleanElec > 50 ? "green" : "red"
+            }).bindPopup(`
+                <b>${f.Country} (${f.Year})</b><br>
+                EVs: ${f.EV}<br>
+                Clean Electricity: ${f.CleanElec}%
+            `);
+            markers.addLayer(marker);
+            });
 
-        map.addLayer(markers);
+            map.addLayer(markers);
 
-        // =============================
-        // 3. Non-Spacial Statistics
-        // =============================
+            // =============================
+            // 3. Non-Spacial Statistics
+            // =============================
 
-        // Margins and inner width/height
-        let margin = {top: 20, right: 20, bottom: 50, left: 80},
-            width = 600 - margin.left - margin.right,
-            height = 400 - margin.top - margin.bottom;
+            // Margins and inner width/height
+            let margin = {top: 20, right: 20, bottom: 50, left: 80},
+                width = 600 - margin.left - margin.right,
+                height = 400 - margin.top - margin.bottom;
 
-        let svg = d3.select("#scatter")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom);
+            let svg = d3.select("#scatter")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom);
 
-        let g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+            let g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+            
+            // Compute EV per thousand
+            masterData.forEach(d => d.EV_perThousand = d.EV / 1000);
+
+            // Scales
+            let x = d3.scaleLinear().domain(d3.extent(masterData, d => d.CarbonIntensity)).range([0, width]);
+            let y = d3.scaleLinear().domain(d3.extent(masterData, d => d.EV_perThousand)).range([height, 0]);
+
+            // Axes
+            g.append("g").attr("transform", `translate(0,${height})`).call(d3.axisBottom(x));
+            g.append("g").call(d3.axisLeft(y));
+
+            // Scatter points
+            g.selectAll("circle")
+            .data(masterData)
+            .enter().append("circle")
+            .attr("cx", d => x(d.CarbonIntensity))
+            .attr("cy", d => y(d.EV_perThousand))
+            .attr("r", 4)
+            .attr("fill", "pink")
+            .attr("opacity", 0.7);
+
+            // Regression line
+            let points = masterData.map(d => [d.CarbonIntensity, d.EV_perThousand]);
+            let lr = ss.linearRegression(points);
+            let lrLine = ss.linearRegressionLine(lr);
+
+            let xRange = d3.extent(masterData, d => d.CarbonIntensity);
+            let yRange = xRange.map(xv => lrLine(xv));
+
+            g.append("line")
+            .attr("x1", x(xRange[0])).attr("y1", y(yRange[0]))
+            .attr("x2", x(xRange[1])).attr("y2", y(yRange[1]))
+            .attr("stroke", "red").attr("stroke-width", 2);
+
+            // Axis Labels
+            g.append("text")
+                .attr("x", width / 2)
+                .attr("y", height + margin.bottom - 10)
+                .attr("text-anchor", "middle")
+                .text("Carbon Intensity (MtCO₂ per EJ)");
+
+            g.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("x", -height / 2)
+                .attr("y", -margin.left + 20)
+                .attr("text-anchor", "middle")
+                .text("EV Sales (thousands)");
+
+            // =============================
+            // 4. Geographically Weighted Regression
+            // =============================
         
-        // Compute EV per thousand
-        masterData.forEach(d => d.EV_perThousand = d.EV / 1000);
+            let regions = d3.group(masterData, d => d.Region);
 
-        // Scales
-        let x = d3.scaleLinear().domain(d3.extent(masterData, d => d.CarbonIntensity)).range([0, width]);
-        let y = d3.scaleLinear().domain(d3.extent(masterData, d => d.EV_perThousand)).range([height, 0]);
+            regions.forEach((values, region) => {
+            let evR = values.map(d => d.EV);
+            let ciR = values.map(d => d.CarbonIntensity);
+            let corrR = ss.sampleCorrelation(evR, ciR);
+            
+            d3.select("#stats").append("p")
+                .text(`Correlation in ${region}: ${corrR.toFixed(3)}`);
+            });
 
-        // Axes
-        g.append("g").attr("transform", `translate(0,${height})`).call(d3.axisBottom(x));
-        g.append("g").call(d3.axisLeft(y));
-
-        // Scatter points
-        g.selectAll("circle")
-        .data(masterData)
-        .enter().append("circle")
-        .attr("cx", d => x(d.CarbonIntensity))
-        .attr("cy", d => y(d.EV_perThousand))
-        .attr("r", 4)
-        .attr("fill", "pink")
-        .attr("opacity", 0.7);
-
-        // Regression line
-        let points = masterData.map(d => [d.CarbonIntensity, d.EV_perThousand]);
-        let lr = ss.linearRegression(points);
-        let lrLine = ss.linearRegressionLine(lr);
-
-        let xRange = d3.extent(masterData, d => d.CarbonIntensity);
-        let yRange = xRange.map(xv => lrLine(xv));
-
-        g.append("line")
-        .attr("x1", x(xRange[0])).attr("y1", y(yRange[0]))
-        .attr("x2", x(xRange[1])).attr("y2", y(yRange[1]))
-        .attr("stroke", "red").attr("stroke-width", 2);
-
-        // Axis Labels
-        g.append("text")
-            .attr("x", width / 2)
-            .attr("y", height + margin.bottom - 10)
-            .attr("text-anchor", "middle")
-            .text("Carbon Intensity (MtCO₂ per EJ)");
-
-        g.append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("x", -height / 2)
-            .attr("y", -margin.left + 20)
-            .attr("text-anchor", "middle")
-            .text("EV Sales (thousands)");
-
-        // =============================
-        // 4. Geographically Weighted Regression
-        // =============================
-       
-        let regions = d3.group(masterData, d => d.Region);
-
-        regions.forEach((values, region) => {
-        let evR = values.map(d => d.EV);
-        let ciR = values.map(d => d.CarbonIntensity);
-        let corrR = ss.sampleCorrelation(evR, ciR);
-        
-        d3.select("#stats").append("p")
-            .text(`Correlation in ${region}: ${corrR.toFixed(3)}`);
-        });
-
-    }).catch(error => console.error(error));
+        }).catch(error => console.error(error));
     </script>
 
 </body>
