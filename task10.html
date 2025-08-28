@@ -1,117 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>EV Visualization Template</title>
+
+        <!-- D3.js -->
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+
+        <!-- Leaflet -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+        <style>
+            body { font-family: sans-serif; margin:0; padding:0; }
+            h1 { text-align: center; margin: 20px 0; }
+            .container { width: 92%; max-width: 1200px; margin: 0 auto; }
+            #map { width: 100%; height: 520px; margin: 10px 0; }
+            #chart { width: 100%; height: 480px; margin: 10px 0; display:block; }
+            .loading { text-align:center; font-size:18px; padding:20px; }
+        </style>
+
+    </head>
+    <body>
+
+        <div class = "container">
+            <h1>Task 10:  Basic Visualization Structure</h1>
     
-    <title>EV Visualization Template</title>
+            <div class="loading" id="loading">Loading data...</div>
+            <div id="map"></div>
+            <div id="chart"></div> 
+        </div>
 
-    <!-- D3.js -->
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+        <script>
 
-    <!-- Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+            // =============================
+            // Setup SVG for Scatter Plot
+            // =============================
 
-    <style>
-        body { font-family: sans-serif; margin:0; padding:0; }
-        #map { height: 700px; width: 90%; margin: 20px auto; display: block; }
-        #chart svg { display: block; margin: auto; max-width: 100%; height: 700px; width: 100%; }
-        .loading { text-align:center; font-size:18px; padding:20px; }
-    </style>
+            // Dimensions & margins
+            const chartDiv = document.getElementById('chart');
+            const chartWidth = chartDiv.clientWidth;
+            const chartHeight = 440;
+            const margin = {top: 30, right: 30, bottom: 60, left: 70};
+            const innerW = chartWidth - margin.left - margin.right;
+            const innerH = chartHeight - margin.top - margin.bottom;
 
-</head>
-<body>
+            // Responsive SVG container
+            const svg = d3.select("#chart")
+                .append("svg")
+                .attr("width", chartWidth)
+                .attr("height", chartHeight)
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    <h1 style="text-align:center;">EV Data Visualization</h1>
-    <div class="loading" id="loading">Loading data...</div>
-    <div id="map"></div>
-    <div id="chart"></div>
+            // Scales
+            const xScale = d3.scaleLinear().range([0, innerW]);
+            const yScale = d3.scaleLinear().range([innerH, 0]);
 
-    <script>
-    // =============================
-    // Task 10: Basic Visualization Structure
-    // =============================
+            // Axes
+            svg.append("g").attr("class","x-axis").attr("transform", `translate(0, ${innerH})`);
+            svg.append("g").attr("class","y-axis");
 
-    // Dimensions & margins
-    const margin = {top: 20, right: 30, bottom: 50, left: 60};
-    const width = 800 - margin.left - margin.right;
-    const height = 500 - margin.top - margin.bottom;
+            // Labels
+            svg.append("text")
+                .attr("class","x-label")
+                .attr("x", innerW/2)
+                .attr("y", innerH + 48)
+                .attr("text-anchor","middle")
+                .text("X-Axis Label");
 
-    // Responsive SVG container
-    const svg = d3.select("#chart")
-        .append("svg")
-        .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
-        .append("g")
-        .attr("transform", `translate(${margin.left},${margin.top})`)
-        .attr("preserveAspectRatio", "xMidYMid meet");
+            svg.append("text")
+                .attr("class","y-label")
+                .attr("x", -innerH / 2)       
+                .attr("y", -50)              
+                .attr("transform", "rotate(-90)")
+                .attr("text-anchor", "middle")
+                .text("Y-Axis Label");
 
-    // Scales
-    const xScale = d3.scaleLinear().range([0, width]);
-    const yScale = d3.scaleLinear().range([height, 0]);
+            // Loading indicator
+            const loadingDiv = d3.select("#loading");
 
-    // Axes
-    svg.append("g").attr("class","x-axis").attr("transform", `translate(0, ${height})`);
-    svg.append("g").attr("class","y-axis");
+            // =============================
+            // Leaflet Map Setup
+            // =============================
+            
+            const map = L.map('map').setView([20,0], 2);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
 
-    // X-axis label
-    svg.append("text")
-        .attr("x", width/2)
-        .attr("y", height + margin.bottom - 10)
-        .attr("text-anchor","middle")
-        .text("X-Axis Label");
+            // =============================
+            // Placeholder for data loading
+            // =============================
 
-    // Y-axis label
-    svg.append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("x", -height/2)
-        .attr("y", -margin.left + 15)
-        .attr("text-anchor","middle")
-        .text("Y-Axis Label");
+            d3.json("data/master_data.geojson").then(data => {
+                loadingDiv.style("display", "none");
 
-    // Loading indicator
-    const loadingDiv = d3.select("#loading");
+                // Update scales
+                xScale.domain([0, d3.max(data, d => d.Variable)]).nice();
+                yScale.domain([0, d3.max(data, d => d.Variable)]).nice();
 
-    // =============================
-    // Leaflet Map Initialization
-    // =============================
-    
-    const map = L.map('map').setView([20,0], 3);
+                // Update axes
+                svg.select(".x-axis").call(d3.axisBottom(xScale));
+                svg.select(".y-axis").call(d3.axisLeft(yScale));
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+                // Basic scatter plot
+                svg.selectAll("circle")
+                    .data(data)
+                    .enter()
+                    .append("circle")
+                    .attr("cx", d=>xScale(d.Variable))
+                    .attr("cy", d=>yScale(d.Variable))
+                    .attr("r", 5)
+                    .attr("fill", "pink")
+                    .attr("opacity", 0.7);
 
-    // =============================
-    // Placeholder for data loading
-    // =============================
+            }).catch(err => console.error(err));
 
-    d3.json("data/master_data.geojson").then(data => {
-        loadingDiv.style("display", "none");
+        </script>
 
-        // Update scales
-        xScale.domain([0, d3.max(data, d => d.Variable)]).nice();
-        yScale.domain([0, d3.max(data, d => d.Variable)]).nice();
-
-        // Update axes
-        svg.select(".x-axis").call(d3.axisBottom(xScale));
-        svg.select(".y-axis").call(d3.axisLeft(yScale));
-
-        // Basic scatter plot
-        svg.selectAll("circle")
-            .data(data)
-            .enter()
-            .append("circle")
-            .attr("cx", d=>xScale(d.Variable))
-            .attr("cy", d=>yScale(d.Variable))
-            .attr("r", 5)
-            .attr("fill", "pink")
-            .attr("opacity", 0.7);
-
-    }).catch(err => console.error(err));
-
-    </script>
-
-</body>
+    </body>
 </html>
