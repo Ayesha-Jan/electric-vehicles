@@ -1,224 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EV Statistical Analysis</title>
-<script src="https://d3js.org/d3.v7.min.js"></script>
-<script src="https://unpkg.com/simple-statistics@7.8.4/dist/simple-statistics.min.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<style>
-  body { font-family: sans-serif; }
-  #map { height: 500px; width: 80%; margin: auto; margin-bottom: 30px; }
-  table { border-collapse: collapse; margin: 20px auto; }
-  th, td { border: 1px solid #999; padding: 5px 10px; text-align: center; }
-  th { background-color: #eee; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EV Statistical Analysis</title>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/simple-statistics@7.8.4/dist/simple-statistics.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+
+    <style>
+    body { font-family: sans-serif; }
+    #scatter { display: block; width: 600px; height: 400px; margin:20px auto; }
+    #map { height: 500px; margin:20px; }
+    #stats, #interpretation { margin:20px; text-align: center;}
+    </style>
+
 </head>
 <body>
 
-<h2 style="text-align:center;">Task 9: EV Statistical Analysis</h2>
+    <h2 style="text-align:center;">Task 9: Statistical Analysis of EV Adoption vs Clean Electricity</h2>
+    <div id="stats"></div>
+    <h3 style="text-align: center; margin: 10px 0;">EV Adoption Clusters</h3>
+    <div id="map" style="height: 350px;"></div>
+     <h3 style="text-align: center; margin: 10px 0;">EV Sales vs Carbon Intensity</h3>
+    <svg id="scatter"></svg>
+    <div id="interpretation"></div>
 
-<div id="map"></div>
+    <script>
+    // Load GeoJSON from Task 8
+    d3.json("data/master_data.geojson").then(geoData => {
+        
+        // Convert properties to numeric
+        const masterData = geoData.features.map(f => {
+            const p = f.properties;
+            return {
+                Country: p.Country,
+                Region: p.Region,
+                Year: +p.Year,
+                EV: +p.EV,
+                EV_Norm: +p.EV_Norm,
+                CarbonIntensity: +p.CarbonIntensity,
+                CleanElec: +p.CleanElec,
+                CoalFrac: +p.Coal_fraction,
+                OilFrac: +p.Oil_fraction,
+                GasFrac: +p.Gas_fraction,
+                RenewablesFrac: +p.Renewables_fraction,
+                WindSolarFrac: +p.WindSolar_fraction,
+                lat: f.geometry.coordinates[1],
+                lon: f.geometry.coordinates[0]
+            };
+        });
 
-<h3 style="text-align:center;">Scatter Plot: EV vs Clean Electricity</h3>
-<div id="scatter"></div>
+        // =============================
+        // 1. Correlation Coeffiecient
+        // =============================
+        let ev = masterData.map(d => d.EV);
+        let ci = masterData.map(d => d.CarbonIntensity);
+        let clean = masterData.map(d => d.CleanElec);
 
-<h3 style="text-align:center;">Correlation Matrix Heatmap</h3>
-<div id="heatmap"></div>
+        let corrEV_CI = ss.sampleCorrelation(ev, ci);
+        let corrEV_Clean = ss.sampleCorrelation(ev, clean);
 
-<h3 style="text-align:center;">Outliers (EV or Carbon Intensity above 95th percentile)</h3>
-<div id="outliers"></div>
+        d3.select("#stats").append("p").text(`Correlation EV vs Carbon Intensity: ${corrEV_CI.toFixed(3)}`);
+        d3.select("#stats").append("p").text(`Correlation EV vs Clean Electricity: ${corrEV_Clean.toFixed(3)}`);
 
-<script>
-// Load GeoJSON from Task 7/8
-d3.json("data/master_data.geojson").then(geoData => {
-    // Convert properties to numeric
-    const masterData = geoData.features.map(f => {
-        const p = f.properties;
-        return {
-            Country: p.Country,
-            Year: +p.Year,
-            EV: +p.EV,
-            CarbonIntensity: +p.CarbonIntensity,
-            CleanElec: +p.CleanElec,
-            CoalFrac: +p.Coal_fraction,
-            OilFrac: +p.Oil_fraction,
-            GasFrac: +p.Gas_fraction,
-            RenewablesFrac: +p.Renewables_fraction,
-            WindSolarFrac: +p.WindSolar_fraction,
-            lat: f.geometry.coordinates[1],
-            lon: f.geometry.coordinates[0]
-        };
-    });
+        // =============================
+        // 2. Spacial Statistics
+        // =============================
 
-    // -----------------------------
-    // 1. Leaflet Map
-    // -----------------------------
-    const map = L.map('map').setView([20,0],2);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
+        let map = L.map('map').setView([20,0], 2);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        let markers = L.markerClusterGroup();
 
-    masterData.forEach(d => {
-        L.circleMarker([d.lat, d.lon], {
-            radius: 5 + Math.sqrt(d.EV)/2000,
-            fillColor: d3.interpolateViridis(d.CleanElec/100),
-            color: "#000",
-            weight: 1,
-            opacity: 0.8,
-            fillOpacity: 0.6
+        masterData.forEach(f => {
+        let marker = L.circleMarker([f.lat, f.lon], {
+            radius: 5 + f.EV_Norm * 10,
+            color: f.CleanElec > 50 ? "green" : "red"
         }).bindPopup(`
-            <b>${d.Country}</b> (${d.Year})<br>
-            EV: ${d.EV.toLocaleString()}<br>
-            Clean Electricity: ${d.CleanElec.toFixed(1)}%<br>
-            Carbon Intensity: ${d.CarbonIntensity.toFixed(2)} MtCO2/EJ
-        `).addTo(map);
-    });
+            <b>${f.Country} (${f.Year})</b><br>
+            EVs: ${f.EV}<br>
+            Clean Electricity: ${f.CleanElec}%
+        `);
+        markers.addLayer(marker);
+        });
 
-    // -----------------------------
-    // 2. Scatter Plot with Regression
-    // -----------------------------
-    const width = 700, height = 500, margin = {top:20, right:20, bottom:50, left:60};
-    const svg = d3.select("#scatter").append("svg")
-        .attr("width", width)
-        .attr("height", height);
+        map.addLayer(markers);
 
-    const x = d3.scaleLinear()
-        .domain([0, d3.max(masterData, d=>d.CleanElec)]).nice()
-        .range([margin.left, width-margin.right]);
-    const y = d3.scaleLinear()
-        .domain([0, d3.max(masterData, d=>d.EV)]).nice()
-        .range([height-margin.bottom, margin.top]);
+        // =============================
+        // 3. Non-Spacial Statistics
+        // =============================
 
-    svg.append("g")
-        .attr("transform", `translate(0,${height-margin.bottom})`)
-        .call(d3.axisBottom(x).ticks(6))
-        .append("text")
-        .attr("x", width/2)
-        .attr("y", 40)
-        .attr("fill", "black")
-        .attr("text-anchor","middle")
-        .text("Clean Electricity (%)");
+        // Margins and inner width/height
+        let margin = {top: 20, right: 20, bottom: 50, left: 80},
+            width = 600 - margin.left - margin.right,
+            height = 400 - margin.top - margin.bottom;
 
-    svg.append("g")
-        .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y))
-        .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("x", -height/2)
-        .attr("y", -40)
-        .attr("fill", "black")
-        .attr("text-anchor","middle")
-        .text("EV Sales");
+        let svg = d3.select("#scatter")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom);
 
-    svg.selectAll("circle")
+        let g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+        
+        // Compute EV per thousand
+        masterData.forEach(d => d.EV_perThousand = d.EV / 1000);
+
+        // Scales
+        let x = d3.scaleLinear().domain(d3.extent(masterData, d => d.CarbonIntensity)).range([0, width]);
+        let y = d3.scaleLinear().domain(d3.extent(masterData, d => d.EV_perThousand)).range([height, 0]);
+
+        // Axes
+        g.append("g").attr("transform", `translate(0,${height})`).call(d3.axisBottom(x));
+        g.append("g").call(d3.axisLeft(y));
+
+        // Scatter points
+        g.selectAll("circle")
         .data(masterData)
-        .enter()
-        .append("circle")
-        .attr("cx", d=>x(d.CleanElec))
-        .attr("cy", d=>y(d.EV))
+        .enter().append("circle")
+        .attr("cx", d => x(d.CarbonIntensity))
+        .attr("cy", d => y(d.EV_perThousand))
         .attr("r", 4)
-        .attr("fill", d=>d3.interpolateViridis(d.CleanElec/100))
-        .attr("opacity",0.7);
+        .attr("fill", "pink")
+        .attr("opacity", 0.7);
 
-    // Regression line
-    const lr = ss.linearRegression(masterData.map(d => [d.CleanElec, d.EV]));
-    const lrLine = ss.linearRegressionLine(lr);
+        // Regression line
+        let points = masterData.map(d => [d.CarbonIntensity, d.EV_perThousand]);
+        let lr = ss.linearRegression(points);
+        let lrLine = ss.linearRegressionLine(lr);
 
-    svg.append("line")
-        .attr("x1", x(0))
-        .attr("y1", y(lrLine(0)))
-        .attr("x2", x(d3.max(masterData, d=>d.CleanElec)))
-        .attr("y2", y(lrLine(d3.max(masterData, d=>d.CleanElec))))
-        .attr("stroke", "red")
-        .attr("stroke-width", 2);
+        let xRange = d3.extent(masterData, d => d.CarbonIntensity);
+        let yRange = xRange.map(xv => lrLine(xv));
 
-    // -----------------------------
-    // 3. Correlation Matrix Heatmap
-    // -----------------------------
-    const variables = [
-        { name: "EV", accessor: d => d.EV },
-        { name: "CleanElec", accessor: d => d.CleanElec },
-        { name: "CarbonIntensity", accessor: d => d.CarbonIntensity },
-        { name: "CoalFrac", accessor: d => d.CoalFrac },
-        { name: "OilFrac", accessor: d => d.OilFrac },
-        { name: "GasFrac", accessor: d => d.GasFrac },
-        { name: "RenewablesFrac", accessor: d => d.RenewablesFrac },
-        { name: "WindSolarFrac", accessor: d => d.WindSolarFrac }
-    ];
+        g.append("line")
+        .attr("x1", x(xRange[0])).attr("y1", y(yRange[0]))
+        .attr("x2", x(xRange[1])).attr("y2", y(yRange[1]))
+        .attr("stroke", "red").attr("stroke-width", 2);
 
-    const corrMatrix = variables.map(v1 =>
-        variables.map(v2 => ss.sampleCorrelation(masterData.map(v1.accessor), masterData.map(v2.accessor)))
-    );
+        // Axis Labels
+        g.append("text")
+            .attr("x", width / 2)
+            .attr("y", height + margin.bottom - 10)
+            .attr("text-anchor", "middle")
+            .text("Carbon Intensity (MtCO₂ per EJ)");
 
-    const matrixSize = 400;
-    const cellSize = matrixSize / variables.length;
+        g.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -height / 2)
+            .attr("y", -margin.left + 20)
+            .attr("text-anchor", "middle")
+            .text("EV Sales (thousands)");
 
-    const svgMatrix = d3.select("#heatmap").append("svg")
-        .attr("width", matrixSize + 150)
-        .attr("height", matrixSize + 150);
+        // =============================
+        // 4. Geographically Weighted Regression
+        // =============================
+       
+        let regions = d3.group(masterData, d => d.Region);
 
-    const colorScale = d3.scaleSequential().domain([-1,1]).interpolator(d3.interpolateRdBu);
+        regions.forEach((values, region) => {
+        let evR = values.map(d => d.EV);
+        let ciR = values.map(d => d.CarbonIntensity);
+        let corrR = ss.sampleCorrelation(evR, ciR);
+        
+        d3.select("#stats").append("p")
+            .text(`Correlation in ${region}: ${corrR.toFixed(3)}`);
+        });
 
-    const rows = svgMatrix.selectAll("g.row")
-        .data(corrMatrix)
-        .enter()
-        .append("g")
-        .attr("transform", (d,i) => `translate(100,${i*cellSize + 50})`);
-
-    rows.selectAll("rect")
-        .data((row,i) => row.map((value,j) => ({value, row:i, col:j})))
-        .enter()
-        .append("rect")
-        .attr("x", d => d.col * cellSize)
-        .attr("width", cellSize)
-        .attr("height", cellSize)
-        .attr("fill", d => colorScale(d.value))
-        .attr("stroke","#fff")
-        .append("title")
-        .text(d => `${variables[d.col].name} vs ${variables[d.row].name}: ${d.value.toFixed(2)}`);
-
-    svgMatrix.selectAll(".colLabel")
-        .data(variables)
-        .enter()
-        .append("text")
-        .attr("x", (d,i) => i*cellSize + cellSize/2 + 100)
-        .attr("y", 40)
-        .attr("text-anchor","middle")
-        .text(d => d.name)
-        .attr("font-size","12px")
-        .attr("transform",(d,i)=>`rotate(-45,${i*cellSize + cellSize/2 + 100},40)`);
-
-    svgMatrix.selectAll(".rowLabel")
-        .data(variables)
-        .enter()
-        .append("text")
-        .attr("x", 80)
-        .attr("y", (d,i) => i*cellSize + cellSize/2 + 50)
-        .attr("text-anchor","end")
-        .attr("alignment-baseline","middle")
-        .text(d => d.name)
-        .attr("font-size","12px");
-
-    // -----------------------------
-    // 4. Outliers
-    // -----------------------------
-    const evThresh = d3.quantile(masterData.map(d=>d.EV).sort((a,b)=>a-b),0.95);
-    const carbonThresh = d3.quantile(masterData.map(d=>d.CarbonIntensity).sort((a,b)=>a-b),0.95);
-
-    const outliers = masterData.filter(d => d.EV > evThresh || d.CarbonIntensity > carbonThresh);
-
-    const table = d3.select("#outliers").append("table");
-    const header = table.append("tr");
-    ["Country","Year","EV","CarbonIntensity"].forEach(h => header.append("th").text(h));
-
-    outliers.forEach(d => {
-        const row = table.append("tr");
-        [d.Country, d.Year, d.EV, d.CarbonIntensity].forEach(val => row.append("td").text(val));
-    });
-
-}).catch(error => console.error(error));
-</script>
+    }).catch(error => console.error(error));
+    </script>
 
 </body>
 </html>

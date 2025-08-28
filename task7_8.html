@@ -40,7 +40,6 @@
 
   }).catch(error => console.error(error));
 
-
   // =============================
   // Function: cleanData
   // =============================
@@ -69,7 +68,7 @@
       d["Carbon Intensity (MtCO2 per EJ)"] = d["CO2 emissions from fuel combustion (MtCO2)"] / d["Total energy consumption (EJ)"];
       d["Clean electricity share (%)"] = d["Share of renewables in electricity production (%)"] + d["Share of wind and solar in electricity production (%)"];
     
-      // Energy source fractions
+      // ---------- Energy source fractions ----------
       d["Coal fraction (%)"] = d["Coal and lignite domestic consumption (Mt)"] / d["Total energy consumption (Mtoe)"] * 100 || 0;
       d["Oil fraction (%)"] = d["Oil products domestic consumption (Mt)"] / d["Total energy consumption (Mtoe)"] * 100 || 0;
       d["Gas fraction (%)"] = d["Natural gas domestic consumption (bcm)"] / d["Total energy consumption (Mtoe)"] * 100 || 0;
@@ -93,7 +92,6 @@
     return { cleanedEV: evData, cleanedEnergy: energyData };
   }
 
-
   // =============================
   // Function: mergeDatasets
   // Temporal + key-based join (Task 8)
@@ -112,7 +110,6 @@
 
     return merged;
   }
-
 
   // =============================
   // Function: prepareGeoJSON
@@ -155,6 +152,7 @@
           geometry: { type: "Point", coordinates: [coords[1], coords[0]] },
           properties: {
             Country: d.country,
+            Region: d.Region,
             Year: d.Year,
             EV: d["Electric cars sold"],
             EV_norm: d["EV_norm"],

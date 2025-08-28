@@ -16,6 +16,9 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<!-- Leaflet.draw (for drawing polygons on the map) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 
 
 <style>
@@ -71,6 +74,10 @@
 // -----------------------------
 // Task 11 Implementation
 // -----------------------------
+// Assumptions:
+// - data/master_data.geojson exists and each feature.properties includes:
+//   Country, Year, EV, CleanElec, CarbonIntensity, Coal_fraction, Oil_fraction, Gas_fraction, Renewables_fraction, WindSolar_fraction
+// - geometry is Point [lon,lat]
 
 // Utility: safe number parse
 const N = v => (v===null||v===undefined||v==="") ? NaN : +v;
@@ -134,6 +141,181 @@ const rScale = d3.scaleSqrt().range([3,16]);
 let rawFeatures = [];   // array of geojson features
 let masterData = [];    // flattened dataset (properties + lat/lon)
 let years = [];         // unique years
+
+// ----------------------
+// Interaction additions
+// ----------------------
+
+// ----- 1) Layer controls: base layers + overlay toggle -----
+const baseLayers = {
+  "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'),
+  "Topographic": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png')
+};
+baseLayers["OpenStreetMap"].addTo(map); // ensure one base is on map
+
+const overlays = {
+  "EV markers": markerCluster
+};
+L.control.layers(baseLayers, overlays, { collapsed: false }).addTo(map);
+
+// ----- 2) Leaflet.draw: allow polygon drawing for spatial selection -----
+const drawnItems = new L.FeatureGroup();
+map.addLayer(drawnItems);
+
+const drawControl = new L.Control.Draw({
+  draw: {
+    polygon: { allowIntersection: false, showArea: true, shapeOptions: { color: '#3388ff' } },
+    polyline: false, rectangle: false, circle: false, circlemarker: false, marker: false
+  },
+  edit: { featureGroup: drawnItems, remove: true }
+});
+map.addControl(drawControl);
+
+// When a polygon is created, filter scatter & markers to points inside it
+map.on(L.Draw.Event.CREATED, function (event) {
+  const layer = event.layer;
+  drawnItems.addLayer(layer);
+  const latlngs = layer.getLatLngs()[0].map(p => [p.lat, p.lng]); // polygon coordinates
+  const filtered = masterData.filter(d => pointInPolygon(d.lat, d.lon, latlngs));
+  applySelectionFilter(filtered);
+});
+
+// When polygon edited or deleted, recompute or reset
+map.on('draw:edited', function(e) {
+  const layers = e.layers;
+  // if multiple polygons, union selection (OR)
+  let unionPolys = [];
+  drawnItems.eachLayer(l => unionPolys.push(l.getLatLngs()[0].map(p => [p.lat, p.lng])));
+  // filter points in any polygon
+  const filtered = masterData.filter(d => unionPolys.some(poly => pointInPolygon(d.lat, d.lon, poly)));
+  applySelectionFilter(filtered);
+});
+map.on('draw:deleted', function(e) {
+  // if no polygon left, reset selection (show all or current year)
+  const val = yearSelect.node().value;
+  const filtered = (val === "ALL") ? masterData : masterData.filter(d => d.Year === +val);
+  applySelectionFilter(filtered);
+});
+
+// ----- 3) D3 Brush for scatter selection -----
+const brush = d3.brush()
+  .extent([[0,0],[innerW, innerH]])
+  .on("end", brushEnded);
+
+g.append("g").attr("class","brush").call(brush);
+
+function brushEnded(event) {
+  if (!event.selection) {
+    // cleared
+    const val = yearSelect.node().value;
+    const filtered = (val === "ALL") ? masterData : masterData.filter(d => d.Year === +val);
+    applySelectionFilter(filtered);
+    return;
+  }
+  const [[x0,y0],[x1,y1]] = event.selection;
+  const selected = [];
+  masterData.forEach(d=>{
+    const cx = xScale(d.CleanElec), cy = yScale(d.EV);
+    if (cx >= x0 && cx <= x1 && cy >= y0 && cy <= y1) selected.push(d);
+  });
+  applySelectionFilter(selected);
+}
+
+// ----- 4) D3 Zoom (pan+zoom) for scatter: update axes & points -----
+const zoom = d3.zoom()
+  .scaleExtent([0.5, 10])
+  .translateExtent([[-100, -100], [innerW + 100, innerH + 100]])
+  .on("zoom", zoomed);
+
+svg.call(zoom);
+
+function zoomed(event) {
+  // note: apply transform to group (g) that contains points & axes
+  const t = event.transform;
+  const newX = t.rescaleX(xScale);
+  const newY = t.rescaleY(yScale);
+
+  // update axes
+  xAxisG.call(d3.axisBottom(newX));
+  yAxisG.call(d3.axisLeft(newY));
+
+  // update points
+  g.selectAll("circle.point")
+    .attr("cx", d => newX(d.CleanElec))
+    .attr("cy", d => newY(d.EV));
+  // also update regression/local lines if present
+  if (regressionLineEl) {
+    regressionLineEl.attr("x1", newX(xScale.domain()[0]))
+                   .attr("x2", newX(xScale.domain()[1]))
+                   .attr("y1", newY(regressionYAt(xScale.domain()[0])))
+                   .attr("y2", newY(regressionYAt(xScale.domain()[1])));
+  }
+  if (localLineEl) {
+    localLineEl.attr("x1", newX(xScale.domain()[0]))
+               .attr("x2", newX(xScale.domain()[1]))
+               .attr("y1", newY(localYAt(xScale.domain()[0])))
+               .attr("y2", newY(localYAt(xScale.domain()[1])));
+  }
+}
+
+// helper closures to allow regression y evaluation after zoom (we store last lrFn)
+let lastGlobalLrFn = null;
+function regressionYAt(x) { return lastGlobalLrFn ? lastGlobalLrFn(x) : 0; }
+let lastLocalLrFn = null;
+function localYAt(x) { return lastLocalLrFn ? lastLocalLrFn(x) : 0; }
+
+// patch drawRegression to set lastGlobalLrFn (we override later)
+// patch runLocalWeightedRegression to set lastLocalLrFn (we override later)
+// see below (we'll update these functions when we paste the rest)
+
+// ----- 5) Utility: point-in-polygon (ray casting) -----
+function pointInPolygon(lat, lon, polygon) {
+  // polygon: array of [lat, lon] points (closed or not)
+  let x = lon, y = lat;
+  let inside = false;
+  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    const xi = polygon[i][1], yi = polygon[i][0];
+    const xj = polygon[j][1], yj = polygon[j][0];
+    const intersect = ((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi + 0.0) + xi);
+    if (intersect) inside = !inside;
+  }
+  return inside;
+}
+
+// ----- 6) applySelectionFilter: central cross-filter function -----
+// highlighted markers and scatter points; also zooms map to selected bounds
+function applySelectionFilter(selectedData) {
+  // selectedData: array of masterData items
+  const set = new Set(selectedData.map(d => d.Country + "_" + d.Year));
+
+  // highlight scatter points: reduce opacity for unselected, highlight selected
+  g.selectAll("circle.point")
+    .attr("opacity", d => set.size === 0 || set.has(d.Country + "_" + d.Year) ? 0.95 : 0.12)
+    .attr("stroke-width", d => set.has(d.Country + "_" + d.Year) ? 1.2 : 0.3)
+    .attr("r", d => (set.has(d.Country + "_" + d.Year) ? (6 + Math.sqrt((d.EV||0))/30) : (3 + Math.sqrt((d.EV||0))/20)));
+
+  // highlight map markers by adjusting style; MarkerCluster doesn't support bulk styling easily so we remove+recreate temporarily
+  markerCluster.clearLayers();
+  masterData.forEach(d => {
+    if(!isFinite(d.lat) || !isFinite(d.lon)) return;
+    const selected = set.size === 0 ? true : set.has(d.Country + "_" + d.Year);
+    const color = selected ? (isOutlierPoint(d, selectedData) ? "red" : colorScale(isFinite(d.CleanElec) ? d.CleanElec : 0)) : "#ccc";
+    const radius = 4 + (isFinite(d.EV) ? rScale(d.EV) : 0) * (selected ? 1 : 0.6);
+    const m = L.circleMarker([d.lat, d.lon], { radius, fillColor: color, color: "#222", weight: 0.6, fillOpacity: selected ? 0.9 : 0.35 });
+    m.bindPopup(`<b>${d.Country}</b> (${d.Year})<br>EV: ${d.EV}<br>CleanElec: ${d.CleanElec}%`);
+    markerCluster.addLayer(m);
+  });
+
+  // fit map to selected bounds if any selection and more than one point
+  if (selectedData.length > 0) {
+    const coords = selectedData.filter(d=>isFinite(d.lat) && isFinite(d.lon)).map(d=>[d.lat,d.lon]);
+    if(coords.length > 1) map.fitBounds(coords, { padding: [20,20] });
+    else if (coords.length === 1) map.setView(coords[0], 5);
+  } else {
+    // if empty selection, optionally zoom out to all
+    // map.fitBounds(masterData.filter(d=>isFinite(d.lat)&&isFinite(d.lon)).map(d=>[d.lat,d.lon]));
+  }
+}
 
 // load GeoJSON
 d3.json("data/master_data.geojson").then(geo => {
@@ -287,7 +469,7 @@ function drawScatter(dataset) {
     });
 
   entered.transition().duration(400).attr("r", d => 3 + Math.sqrt(Math.max(0, d.EV || 0))/20);
-
+  lastGlobalLrFn = lrFn;
   // draw regression line for dataset
   drawRegression(dataset);
 }
@@ -436,6 +618,8 @@ function runLocalWeightedRegression(latlng, dataset) {
   }
   const slope = (Sw * Sxy - Sx * Sy) / denom;
   const intercept = (Sy - slope * Sx) / Sw;
+
+  lastLocalLrFn = x => slope * x + intercept;
 
   // Draw local regression line on scatter (remove previous)
   if(localLineEl) localLineEl.remove();
