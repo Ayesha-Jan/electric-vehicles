@@ -20,57 +20,74 @@
   <style>
     body { font-family: sans-serif; margin:0; padding:0; }
     h1 { text-align: center; margin: 20px 0; }
+    .container { width: 92%; max-width: 1200px; margin: 0 auto; }
     #controls { text-align:center; margin: 15px; }
-    #map { height: 500px; width: 90%; margin: 20px auto; display: block; }
-    #chart svg { display: block; margin: auto; max-width: 100%; height: 500px; width: 100%; }
+    #map { width: 100%; height: 520px; margin: 10px 0; }
+    #chart { width: 100%; height: 480px; margin: 10px 0; display:block; }
     .loading { text-align:center; font-size:18px; padding:20px; }
-    .legend { font-size: 12px; }
+
+
   </style>
 </head>
 <body>
 
   <h1>Task 11: EV Adoption and Clean Electricity</h1>
-  <div id="controls">
-    <label for="yearSelect"><b>Select Year:</b></label>
-    <select id="yearSelect"></select>
-    <div id="legend"></div>
-  </div>
 
-  <div class="loading" id="loading">Loading data...</div>
-  <div id="map"></div>
-  <div id="chart"></div>
-  <div id="legend"></div>
+  <div class = "container">
+    <div id="controls">
+        <label for="yearSelect"><b>Select Year:</b></label>
+        <select id="yearSelect"></select>
+    </div>
+
+    <div class="loading" id="loading">Loading data...</div>
+
+    
+        <div id="map"></div>
+        <div id="chart"></div>
+    
+  </div>
 
   <script>
   // =============================
   // Setup SVG for Scatter Plot
   // =============================
-  const margin = {top: 20, right: 30, bottom: 50, left: 70};
-  const width = 800 - margin.left - margin.right;
-  const height = 500 - margin.top - margin.bottom;
+    const chartDiv = document.getElementById('chart');
+    const chartWidth = chartDiv.clientWidth;
+    const chartHeight = 440;
+    const margin = {top: 30, right: 30, bottom: 60, left: 70};
+    const innerW = chartWidth - margin.left - margin.right;
+    const innerH = chartHeight - margin.top - margin.bottom;
 
   const svg = d3.select("#chart")
     .append("svg")
-    .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+    .attr("width", chartWidth)
+    .attr("height", chartHeight)
     .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
-  const xScale = d3.scaleLinear().range([0, width]);
-  const yScale = d3.scaleLinear().range([height, 0]);
+  const xScale = d3.scaleLinear().range([0, innerW]);
+  const yScale = d3.scaleLinear().range([innerH, 0]);
   const sizeScale = d3.scaleSqrt().range([3, 20]);
   const colorScale = d3.scaleSequential(d3.interpolateRgb("pink", "steelblue"));
 
-  svg.append("g").attr("class","x-axis").attr("transform", `translate(0, ${height})`);
+  // Axes
+  svg.append("g").attr("class","x-axis").attr("transform", `translate(0, ${innerH})`);
   svg.append("g").attr("class","y-axis");
 
-  svg.append("text").attr("class","x-label")
-    .attr("x", width/2).attr("y", height+40)
+  // Labels
+  svg.append("text")
+    .attr("class","x-label")
+    .attr("x", innerW/2)
+    .attr("y", innerH + 48)
     .attr("text-anchor","middle").text("Clean Electricity Share (%)");
 
-  svg.append("text").attr("class","y-label")
-    .attr("transform","rotate(-90)")
-    .attr("x",-height/2).attr("y",-55)
-    .attr("text-anchor","middle").text("EV Sales");
+  svg.append("text")
+    .attr("class","y-label")
+    .attr("x", -innerH / 2)       
+    .attr("y", -50)              
+    .attr("transform", "rotate(-90)")
+    .attr("text-anchor", "middle")
+    .text("Electric Cars Sold");
 
   // =============================
   // Leaflet Map Setup
