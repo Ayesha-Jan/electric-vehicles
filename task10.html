@@ -87,7 +87,7 @@
     // Placeholder for data loading
     // =============================
 
-    d3.csv("data/master_data.geojson").then(data => {
+    d3.json("data/master_data.geojson").then(data => {
         loadingDiv.style("display", "none");
 
         // Update scales
