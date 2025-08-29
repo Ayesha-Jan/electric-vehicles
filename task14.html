@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Task 13: Legends and Annotations</title>
+        <title>Task 14: Responsive Design</title>
 
         <!-- D3.js -->
         <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -44,6 +44,32 @@
             }
             .annotation-note-title { font-size: 10px; font-weight: bold; }
             .annotation-note-label { font-size: 9px; }
+
+            /* Tablet */
+            @media (max-width: 1024px) {
+            #map, #chart { height: 400px; }
+            h1 { font-size: 20px; }
+            }
+
+            /* Mobile */
+            @media (max-width: 600px) {
+            h1 { font-size: 18px; }
+            h2 { font-size: 14px; }
+            #map, #chart { height: 300px; }
+            .container { padding: 10px; }
+            #controls {
+                display: block;   /* stack vertically */
+            }
+            #controls label {
+                display: block;
+                margin-top: 10px;
+            }
+            #controls select {
+                width: 100%;      /* full width on small screens */
+                margin-bottom: 10px;
+            }
+            }
+
         </style>
         
     </head>
@@ -90,8 +116,8 @@
 
             const svg = d3.select("#chart")
                 .append("svg")
-                .attr("width", chartWidth)
-                .attr("height", chartHeight)
+                .attr("viewBox", `0 0 ${chartWidth} ${chartHeight}`)
+                .attr("preserveAspectRatio", "xMidYMid meet")
                 .append("g")
                 .attr("transform", `translate(${margin.left},${margin.top})`);
 
@@ -182,7 +208,7 @@
             // Leaflet Map Setup
             // =============================
 
-            const map = L.map('map').setView([20,0], 2);
+            const map = L.map('map', { center: [20, 0], zoom: window.innerWidth < 768 ? 1.5 : 2, zoomControl: true, dragging: true, tap: true, scrollWheelZoom: false });
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 18,
                 attribution: '&copy; OpenStreetMap contributors'
@@ -494,6 +520,7 @@
 
                         cumulativeY += 2 * r + 5; 
                     });
+
                 }
 
                 // Leaflet Legend
@@ -525,6 +552,19 @@
                 L.control.scale({metric:true, imperial:false}).addTo(map);
 
             });
+
+            // =============================
+            // Responsive Event Handlers
+            // =============================
+            window.addEventListener("resize", () => {
+            // Resize D3 chart
+            chartWidth = chartDiv.clientWidth;
+            innerW = chartWidth - margin.left - margin.right;
+            d3.select("#chart svg").attr("viewBox", `0 0 ${chartWidth} ${chartHeight}`);
+            // Resize Leaflet map
+            map.invalidateSize();
+            });
+            
         </script>
     </body>
 </html>
