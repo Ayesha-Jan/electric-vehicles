@@ -29,7 +29,9 @@
             #map, #chart { border: 2px solid #d27d87; border-radius: 8px; padding: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
             #tooltip { position:absolute; background:white; border:1px solid #ccc; padding:6px; display:none; pointer-events:none; }
             .loading { text-align:center; font-size:18px; padding:20px; }
-            .legend { font-size:12px; }
+            .legend { font-size:10px; }
+            .annotation-note-title { font-size: 10px; font-weight: bold; }
+            .annotation-note-label { font-size: 9px; }
         </style>
         
     </head>
@@ -289,20 +291,34 @@
                     // D3 Annotations
                     // =============================
                     svg.selectAll(".annotation-group").remove();
-                    const annotations = [];
-                    data.filter(d=>d.EV>d3.max(data,d=>d.EV)*0.8).forEach(d=>{
-                        annotations.push({
-                            note:{label:`High EV`, title:d.Country},
-                            x:xScale(d.CleanElec),
-                            y:yScale(d.EV),
-                            dy:-30, dx:20
-                        });
-                    });
-                    if(annotations.length>0){
-                        const makeAnnotations = d3.annotation().annotations(annotations);
+
+                    if (data.length > 0) {
+                        const maxEV = d3.max(data, d => d.EV);
+                        const minEV = d3.min(data, d => d.EV);
+                        const top = data.find(d => d.EV === maxEV);
+                        const low = data.find(d => d.EV === minEV);
+
+                        const annotations = [];
+                        if (top) {
+                            annotations.push({
+                                note: { label:"Highest EV", title: top.Country, wrap: 100, align: "left" },
+                                x: xScale(top.CleanElec),
+                                y: yScale(top.EV),
+                                dy: -20, dx: 20
+                            });
+                        }
+                        if (low) {
+                            annotations.push({
+                                note: { label:"Lowest EV", title: low.Country, wrap: 100, align: "left" },
+                                x: xScale(low.CleanElec),
+                                y: yScale(low.EV),
+                                dy: 20, dx: 20
+                            });
+                        }
+
+                        const makeAnnotations = d3.annotation().annotations(annotations).notePadding(5);;
                         svg.append("g").attr("class","annotation-group").call(makeAnnotations);
                     }
-
                     updateLegends(data);
                 }
 
@@ -362,40 +378,45 @@
                     // Color Legend (top-right)
                     const colorLegend = svg.append("g")
                         .attr("class","color-legend")
-                        .attr("transform",`translate(${innerW - 120},20)`);
+                        .attr("transform",`translate(${innerW - 100},10)`);
 
                     colorLegend.append("text")
                         .attr("x",0).attr("y",-5)
                         .style("font-weight","bold")
+                        .style("font-size","10px")
                         .text("Clean Electricity (%)");
 
                     const legendData = d3.range(0, d3.max(data,d=>d.CleanElec), 20);
                     colorLegend.selectAll("rect").data(legendData).enter()
                         .append("rect")
-                        .attr("x",0).attr("y",(d,i)=> i*20)
-                        .attr("width",15).attr("height",15)
+                        .attr("x",0).attr("y",(d,i)=> i*18)
+                        .attr("width",12).attr("height",12)
                         .attr("fill",d=>colorScale(d));
 
                     colorLegend.selectAll("text.label").data(legendData).enter()
                         .append("text")
                         .attr("class","label")
-                        .attr("x",20).attr("y",(d,i)=> i*20+12)
+                        .attr("x",18).attr("y",(d,i)=> i*18+10)
+                        .style("font-size","10px")
                         .text(d=>d+"%");
 
-                    // Size Legend (below color legend)
+                    // Size Legend
                     const sizeLegend = svg.append("g")
                         .attr("class","size-legend")
-                        .attr("transform",`translate(${innerW - 120},${legendData.length*20 + 50})`);
+                        .attr("transform",`translate(${innerW - 100},${legendData.length*18 + 40})`);
 
                     sizeLegend.append("text")
-                        .attr("x",0).attr("y",-5)
+                        .attr("x",0).attr("y",-10)
                         .style("font-weight","bold")
-                        .text("EV Sales (bubble size)");
+                        .style("font-size","10px")
+                        .text("EV Sales");
 
-                    const sizeValues = [50000,200000,500000];
+                    const sizeValues = [50000, 200000, 500000];
+                    const legendSpacing = 45; // vertical spacing
+
                     sizeLegend.selectAll("circle").data(sizeValues).enter()
                         .append("circle")
-                        .attr("cy",(d,i)=>i*40)
+                        .attr("cy",(d,i)=> i*legendSpacing)
                         .attr("r",d=>sizeScale(d))
                         .attr("fill","steelblue")
                         .attr("opacity",0.5);
@@ -403,8 +424,11 @@
                     sizeLegend.selectAll("text.label").data(sizeValues).enter()
                         .append("text")
                         .attr("class","label")
-                        .attr("x",40).attr("y",(d,i)=>i*40+5)
+                        .attr("x",30)
+                        .attr("y",(d,i)=> i*legendSpacing+4)
+                        .style("font-size","10px")
                         .text(d=>d.toLocaleString());
+
                 }
                 // =============================
                 // Leaflet Map Legend
@@ -414,7 +438,7 @@
                 const legend = L.control({position:"bottomright"});
                 legend.onAdd = function(map){
                     const div = L.DomUtil.create("div","info legend");
-                    div.innerHTML += "<b>Clean Electricity Share</b><br>";
+                    div.innerHTML += "<b>Clean Electricity (%)</b><br>";
                     const grades=[0,20,40,60,80,100];
                     grades.forEach((g,i)=>{
                         div.innerHTML +=
@@ -424,8 +448,8 @@
 
                     div.innerHTML += "<br><b>EV Sales (circle size)</b><br>";
                     div.innerHTML += '<svg width="100" height="60">' +
-                        '<circle cx="20" cy="20" r="5" fill="gray" opacity="0.6"/><text x="40" y="25" font-size="12">50k</text>' +
-                        '<circle cx="20" cy="45" r="15" fill="gray" opacity="0.6"/><text x="40" y="50" font-size="12">500k</text>' +
+                        '<circle cx="20" cy="20" r="5" fill="steelblue" opacity="0.6"/><text x="40" y="25" font-size="12">50k</text>' +
+                        '<circle cx="20" cy="45" r="10" fill="steelblue" opacity="0.6"/><text x="40" y="50" font-size="12">500k</text>' +
                         '</svg>';
 
                     return div;
