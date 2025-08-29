@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Task 12: Main Visualization</title>
+        <title>Task 12: Interactivity</title>
 
         <!-- D3.js -->
         <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -32,7 +32,7 @@
     </head>
     <body>
         <div class = "container">
-            <h1>Task 12: EV Adoption and Clean Electricity</h1>
+            <h1>Does Clean Electricity Drive Electric Vehicle Adoption?</h1>
             <div id="controls">
                 <label for="yearSelect"><b>Select Year:</b></label>
                 <select id="yearSelect"></select>
@@ -90,6 +90,25 @@
                 .attr("text-anchor", "middle")
                 .text("Electric Cars Sold");
 
+                const zoom = d3.zoom()
+                    .scaleExtent([0.5, 10])
+                    .translateExtent([[0, 0], [chartWidth, chartHeight]])
+                    .on("zoom", zoomed);
+
+            d3.select("svg").call(zoom);
+
+            function zoomed({transform}) {
+                const newX = transform.rescaleX(xScale);
+                const newY = transform.rescaleY(yScale);
+
+                svg.selectAll("circle")
+                    .attr("cx", d => newX(d.CleanElec))
+                    .attr("cy", d => newY(d.EV));
+
+                svg.select(".x-axis").call(d3.axisBottom(newX));
+                svg.select(".y-axis").call(d3.axisLeft(newY));
+            }
+
             // Tooltip
             const tooltip = d3.select("#tooltip");
 
@@ -124,32 +143,7 @@
                     };
                 });
 
-                // Brush
-                const brush = d3.brush()
-                    .extent([[0,0], [innerW, innerH]])
-                    .on("end", brushed);
-
-                svg.append("g").attr("class", "brush").call(brush);
-
-                function brushed({selection}) {
-                    if (!selection) {
-                        updateMap(masterData);
-                        return;
-                    }
-                    const [[x0,y0],[x1,y1]] = selection;
-                    const selected = masterData.filter(d => {
-                        const cx = xScale(d.CleanElec);
-                        const cy = yScale(d.EV);
-                        return cx >= x0 && cx <= x1 && cy >= y0 && cy <= y1;
-                    });
-                    updateMap(selected);
-
-                    // Zoom map to selection
-                    if (selected.length > 0) {
-                        const bounds = L.latLngBounds(selected.map(d => [d.lat, d.lon]));
-                        map.fitBounds(bounds, { padding: [30, 30] });
-                    };
-                }
+                let currentData = masterData;
 
                 d3.select("#loading").style("display","none");
 
@@ -181,18 +175,49 @@
                     if (year !== "All years") filtered = filtered.filter(d => d.Year === +year);
                     if (region !== "All regions") filtered = filtered.filter(d => d.Region === region);
 
-                    updateChart(filtered);
-                    updateMap(filtered);
+                    currentData = filtered;
+                    updateChart(currentData);
+                    updateMap(currentData);
+
+                    // Reset zoom on filtering
+                    d3.select("svg").transition().duration(500).call(zoom.transform, d3.zoomIdentity);
                 }
 
                 yearSelect.on("change", filterData);
                 regionSelect.on("change", filterData);
 
+                // Brush
+                const brush = d3.brush()
+                    .extent([[0,0], [innerW, innerH]])
+                    .on("end", brushed);
+
+                svg.append("g").attr("class", "brush").call(brush);
+
+                function brushed({selection}) {
+                    if (!selection) {
+                        updateMap(currentData);
+                        return;
+                    }
+                    const [[x0,y0],[x1,y1]] = selection;
+                    const selected = currentData.filter(d => {
+                        const cx = xScale(d.CleanElec);
+                        const cy = yScale(d.EV);
+                        return cx >= x0 && cx <= x1 && cy >= y0 && cy <= y1;
+                    });
+                    updateMap(selected);
+
+                    // Zoom map to selection
+                    if (selected.length > 0) {
+                        const bounds = L.latLngBounds(selected.map(d => [d.lat, d.lon]));
+                        map.fitBounds(bounds, { padding: [30, 30], maxZoom: 5 });
+                    };
+                }
 
                 // Initial state
                 yearSelect.property("value", "All years");
                 regionSelect.property("value", "All regions");
                 filterData();
+                d3.select("svg").transition().duration(500).call(zoom.transform, d3.zoomIdentity);
 
                 // =============================
                 // Update Scatter Plot
