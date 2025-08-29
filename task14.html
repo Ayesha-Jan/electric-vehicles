@@ -31,43 +31,26 @@
             #tooltip { position:absolute; background:white; border:1px solid #ccc; padding:6px; display:none; pointer-events:none; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);}
             .loading { text-align:center; font-size:18px; padding:20px; }
             .legend { font-size:10px; }
-            .info.legend {
-                background: #f1f6ff;
-                padding: 8px 10px;
-                border-radius: 8px;
-                box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-                font-size: 12px;
-                line-height: 1.4em;
-            }
-            .info.legend i {
-                border: 1px solid #ccc;
-            }
+            .info.legend { background: #f1f6ff; padding: 8px 10px; border-radius: 8px; box-shadow: 0 3px 8px rgba(0,0,0,0.15); font-size: 12px; line-height: 1.4em; }
+            .info.legend i { border: 1px solid #ccc; }
             .annotation-note-title { font-size: 10px; font-weight: bold; }
             .annotation-note-label { font-size: 9px; }
 
             /* Tablet */
-            @media (max-width: 1024px) {
-            #map, #chart { height: 400px; }
-            h1 { font-size: 20px; }
+                @media (max-width: 1024px) {
+                #map, #chart { height: 400px; }
+                h1 { font-size: 20px; }
             }
 
             /* Mobile */
             @media (max-width: 600px) {
-            h1 { font-size: 18px; }
-            h2 { font-size: 14px; }
-            #map, #chart { height: 300px; }
-            .container { padding: 10px; }
-            #controls {
-                display: block;   /* stack vertically */
-            }
-            #controls label {
-                display: block;
-                margin-top: 10px;
-            }
-            #controls select {
-                width: 100%;      /* full width on small screens */
-                margin-bottom: 10px;
-            }
+                h1 { font-size: 18px; }
+                h2 { font-size: 14px; }
+                #map, #chart { height: 300px; }
+                .container { padding: 10px; }
+                #controls { display: block; }
+                #controls label { display: block; margin-top: 10px; }
+                #controls select { width: 100%; margin-bottom: 10px; }
             }
 
         </style>
@@ -237,7 +220,7 @@
 
                 const maxEVOverall = d3.max(masterData, d => d.EV);
                 sizeScale.domain([0, maxEVOverall]);
-                
+
                 let currentData = masterData;
 
                 d3.select("#loading").style("display","none");
@@ -558,6 +541,7 @@
             // =============================
             // Responsive Event Handlers
             // =============================
+            
             window.addEventListener("resize", () => {
             // Resize D3 chart
             chartWidth = chartDiv.clientWidth;
