@@ -129,12 +129,19 @@
                 const newX = transform.rescaleX(xScale);
                 const newY = transform.rescaleY(yScale);
 
-                svg.selectAll("circle")
-                    .attr("cx", d => newX(d.CleanElec))
-                    .attr("cy", d => newY(d.EV));
+                // Update circles
+                svg.selectAll("circle").each((d, i, nodes) => {
+                    if (d) {
+                        d3.select(nodes[i])
+                        .attr("cx", newX(d.CleanElec))
+                        .attr("cy", newY(d.EV));
+                    }
+                });
 
+                // Update axes
                 svg.select(".x-axis").call(d3.axisBottom(newX));
                 svg.select(".y-axis").call(d3.axisLeft(newY));
+
             }
 
             // Tooltip
@@ -258,6 +265,7 @@
                 // =============================
 
                 function updateChart(data) {
+
                     xScale.domain([0, d3.max(data, d => d.CleanElec)]).nice();
                     yScale.domain([0, d3.max(data, d => d.EV)]).nice();
                     sizeScale.domain([0, d3.max(data, d => d.EV)]);
@@ -271,7 +279,6 @@
                     circles.enter().append("circle")
                         .attr("opacity", 0.9)
                         .on("mouseover", (event, d) => {
-                            marker.setStyle({color:"#ff9800", weight:2});
                             tooltip.style("display","block")
                             .html(`<b>${d.Country}</b><br>EV: ${d.EV.toLocaleString()}<br>Clean Elec: ${(d.CleanElec).toFixed(2)}%`);
                             // Highlight map marker
@@ -283,7 +290,6 @@
                                 .style("top", (event.pageY-20)+"px");
                         })
                         .on("mouseout", (event, d) => {
-                            marker.setStyle({color:"#333", weight:1});
                             tooltip.style("display","none");
                             const key = d.Country + d.Year;
                             if (markerMap[key]) markerMap[key].setStyle({color:"#333", weight:1});
@@ -316,14 +322,9 @@
 
                         function safeOffsets(x, y) {
                             let dx = 30, dy = -30;
-
-                            // If too far right, flip to the left
                             if (x > innerW * 0.7) dx = -50;
-                            // If too high, push down
-                            if (y < 40) dy = 40;
-                            // If too low, push up
+                            if (y < 40) dy = 40;    
                             if (y > innerH - 40) dy = -40;
-
                             return {dx, dy};
                         }
     
