@@ -49,7 +49,7 @@
             
             <!-- Map title -->
             <h2>Global Electric Vehicle Adoption & Clean Electricity</h2>
-            <p>Circle color shows clean electricity share, circle size shows EV sales.</p>
+            <p>Some bubbles are clustered—click a cluster to see the individual countries.</p>
             <div id="map"></div>
 
             <!-- Scatter plot title -->
@@ -69,7 +69,7 @@
             const chartDiv = document.getElementById('chart');
             const chartWidth = chartDiv.clientWidth;
             const chartHeight = 440;
-            const margin = {top: 30, right: 30, bottom: 60, left: 70};
+            const margin = {top: 30, right: 30, bottom: 50, left: 80};
             const innerW = chartWidth - margin.left - margin.right;
             const innerH = chartHeight - margin.top - margin.bottom;
 
@@ -94,12 +94,13 @@
                 .attr("class","x-label")
                 .attr("x", innerW/2)
                 .attr("y", innerH + 48)
-                .attr("text-anchor","middle").text("Clean Electricity Share (%)");
+                .attr("text-anchor","middle").
+                text("Clean Electricity Share (%)");
 
             svg.append("text")
                 .attr("class","y-label")
                 .attr("x", -innerH / 2)       
-                .attr("y", -50)              
+                .attr("y", -60)              
                 .attr("transform", "rotate(-90)")
                 .attr("text-anchor", "middle")
                 .text("Electric Cars Sold");
@@ -298,21 +299,38 @@
                         const top = data.find(d => d.EV === maxEV);
                         const low = data.find(d => d.EV === minEV);
 
+                        function safeOffsets(x, y) {
+                            let dx = 30, dy = -30;
+
+                            // If too far right, flip to the left
+                            if (x > innerW * 0.7) dx = -50;
+                            // If too high, push down
+                            if (y < 40) dy = 40;
+                            // If too low, push up
+                            if (y > innerH - 40) dy = -40;
+
+                            return {dx, dy};
+                        }
+    
                         const annotations = [];
+
                         if (top) {
+                            const {dx, dy} = safeOffsets(xScale(top.CleanElec), yScale(top.EV));
                             annotations.push({
-                                note: { label:"Highest EV", title: top.Country, wrap: 100, align: "left" },
+                                note: { title: "Highest EV", label: top.Country, wrap: 120 },
                                 x: xScale(top.CleanElec),
                                 y: yScale(top.EV),
-                                dy: -20, dx: 20
+                                dx, dy
                             });
                         }
+
                         if (low) {
+                            const {dx, dy} = safeOffsets(xScale(low.CleanElec), yScale(low.EV));
                             annotations.push({
-                                note: { label:"Lowest EV", title: low.Country, wrap: 100, align: "left" },
+                                note: { title: "Lowest EV", label: low.Country, wrap: 120 },
                                 x: xScale(low.CleanElec),
                                 y: yScale(low.EV),
-                                dy: 20, dx: 20
+                                dx, dy
                             });
                         }
 
@@ -403,7 +421,7 @@
                     // Size Legend
                     const sizeLegend = svg.append("g")
                         .attr("class","size-legend")
-                        .attr("transform",`translate(${innerW - 100},${legendData.length*18 + 40})`);
+                        .attr("transform", `translate(${innerW - 100}, ${legendData.length * 18 + 40})`);
 
                     sizeLegend.append("text")
                         .attr("x",0).attr("y",-10)
@@ -411,23 +429,28 @@
                         .style("font-size","10px")
                         .text("EV Sales");
 
-                    const sizeValues = [50000, 200000, 500000];
-                    const legendSpacing = 45; // vertical spacing
+                    const sizeValues = [50000, 200000, 500000]; 
 
-                    sizeLegend.selectAll("circle").data(sizeValues).enter()
-                        .append("circle")
-                        .attr("cy",(d,i)=> i*legendSpacing)
-                        .attr("r",d=>sizeScale(d))
-                        .attr("fill","steelblue")
-                        .attr("opacity",0.5);
+                    // Compute cumulative y positions to prevent overlap
+                    let cumulativeY = 0;
+                    sizeValues.forEach((d, i) => {
+                        const r = sizeScale(d);
+                        const cy = cumulativeY + r;
+                        sizeLegend.append("circle")
+                            .attr("cy", cy)
+                            .attr("r", r)
+                            .attr("fill","steelblue")
+                            .attr("opacity",0.5);
+                        
+                        sizeLegend.append("text")
+                            .attr("x", r + 10)
+                            .attr("y", cy)
+                            .attr("alignment-baseline","middle")
+                            .style("font-size","10px")
+                            .text(d.toLocaleString());
 
-                    sizeLegend.selectAll("text.label").data(sizeValues).enter()
-                        .append("text")
-                        .attr("class","label")
-                        .attr("x",30)
-                        .attr("y",(d,i)=> i*legendSpacing+4)
-                        .style("font-size","10px")
-                        .text(d=>d.toLocaleString());
+                        cumulativeY += 2 * r + 5; 
+                    });
 
                 }
                 // =============================
@@ -439,11 +462,17 @@
                 legend.onAdd = function(map){
                     const div = L.DomUtil.create("div","info legend");
                     div.innerHTML += "<b>Clean Electricity (%)</b><br>";
-                    const grades=[0,20,40,60,80,100];
-                    grades.forEach((g,i)=>{
-                        div.innerHTML +=
-                        `<i style="background:${colorScale(g)}; width:18px; height:18px; display:inline-block; margin-right:5px"></i>
-                        ${g}${grades[i+1] ? '&ndash;'+grades[i+1]+'%<br>' : '%+'}`;
+
+                    // Custom ranges
+                    const grades = [0, 20, 40, 60, 80, 100];
+                    const labels = ["0–19", "20–39", "40–59", "60–79", "80–100"];
+
+                    grades.forEach((g, i) => {
+                        if (i < labels.length) {
+                            div.innerHTML +=
+                                `<i style="background:${colorScale(g)}; width:18px; height:18px; display:inline-block; margin-right:5px"></i>
+                                ${labels[i]}%<br>`;
+                        }
                     });
 
                     div.innerHTML += "<br><b>EV Sales (circle size)</b><br>";
@@ -456,6 +485,7 @@
                 };
                 legend.addTo(map);
                 L.control.scale({metric:true, imperial:false}).addTo(map);
+
             });
         </script>
     </body>
