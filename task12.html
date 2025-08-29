@@ -36,6 +36,9 @@
             <div id="controls">
                 <label for="yearSelect"><b>Select Year:</b></label>
                 <select id="yearSelect"></select>
+
+                <label for="regionSelect"><b>Select Region:</b></label>
+                <select id="regionSelect"></select>
             </div>
             <div class="loading" id="loading">Loading data...</div>
             <div id="map"></div>
@@ -112,6 +115,7 @@
                     const p = f.properties;
                     return {
                         Country: p.Country,
+                        Region: p.Region,
                         Year: +p.Year,
                         EV: +p.EV,
                         CleanElec: +p.CleanElec,
@@ -151,24 +155,44 @@
 
                 // Year dropdown
                 const years = ["All years", ...d3.range(2010, 2021)];
-                const select = d3.select("#yearSelect");
-                select.selectAll("option")
+                const yearSelect = d3.select("#yearSelect");
+                yearSelect.selectAll("option")
                     .data(years)
                     .enter().append("option")
                     .text(d => d)
                     .attr("value", d => d);
 
-                select.on("change", function() {
-                const year = this.value;
-                const filtered = (year==="All years") ? masterData : masterData.filter(d => d.Year === +year);
-                updateChart(filtered);
-                updateMap(filtered);
-                });
+                // Region dropdown
+                const regions = ["All regions", ...Array.from(new Set(masterData.map(d => d.Region)))];
+                const regionSelect = d3.select("#regionSelect");
+
+                regionSelect.selectAll("option")
+                    .data(regions)
+                    .enter().append("option")
+                    .text(d => d)
+                    .attr("value", d => d);
+
+                function filterData() {
+                    const year = yearSelect.property("value");
+                    const region = regionSelect.property("value");
+
+                    let filtered = masterData;
+
+                    if (year !== "All years") filtered = filtered.filter(d => d.Year === +year);
+                    if (region !== "All regions") filtered = filtered.filter(d => d.Region === region);
+
+                    updateChart(filtered);
+                    updateMap(filtered);
+                }
+
+                yearSelect.on("change", filterData);
+                regionSelect.on("change", filterData);
+
 
                 // Initial state
-                select.property("value", "All years");
-                updateChart(masterData);
-                updateMap(masterData);
+                yearSelect.property("value", "All years");
+                regionSelect.property("value", "All regions");
+                filterData();
 
                 // =============================
                 // Update Scatter Plot
@@ -189,7 +213,7 @@
                         .attr("opacity", 0.9)
                         .on("mouseover", (event, d) => {
                             tooltip.style("display","block")
-                            .html(`<b>${d.Country}</b><br>EV: ${d.EV.toLocaleString()}<br>Clean Elec: ${d.CleanElec}%`);
+                            .html(`<b>${d.Country}</b><br>EV: ${d.EV.toLocaleString()}<br>Clean Elec: ${(d.CleanElec).toFixed(2)}%`);
                             // Highlight map marker
                             const key = d.Country + d.Year;
                             if (markerMap[key]) markerMap[key].setStyle({color:"yellow", weight:3});
@@ -256,6 +280,12 @@
                     });
 
                     leafletLayer.addTo(map);
+
+                    // Zoom map to fit filtered data
+                    if (data.length > 0) {
+                        const bounds = L.latLngBounds(data.map(d => [d.lat, d.lon]));
+                        map.fitBounds(bounds, { padding: [30, 30] });
+                    }
                 }
             });
         </script>
