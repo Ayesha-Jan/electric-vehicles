@@ -19,17 +19,29 @@
         <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
         <style>
-            body { font-family: sans-serif; margin:0; padding:0; }
-            h1, h2 { text-align: center; margin: 20px 0; }
-            p { text-align:center; font-size:14px; color:gray; }
-            .container { width: 92%; max-width: 1200px; margin: 0 auto; }
+            body { font-family: sans-serif; margin:0; padding:0; background: #fae5e9;}
+            h1 { text-align: center; margin: 20px 0; color: #333; font-weight: 600; }
+            h2 { text-align: center; margin: 20px 0; color: #484851; font-weight: 500; font-size: 20px;}
+            p { text-align:center; font-size:14px; color: #7a7aae; font-size: 14px; margin-bottom: 10px; }
+            .container { width: 92%; max-width: 1200px; margin: 20px auto; background: #faf6f7; border-radius: 12px; padding: 15px 20px; box-shadow: 0 6px 18px rgba(0,0,0,0.1); }
             #controls { text-align:center; margin: 15px; }
             #map { width: 100%; height: 520px; margin: 10px 0; }
             #chart { width: 100%; height: 480px; margin: 10px 0; display:block; }
-            #map, #chart { border: 2px solid #d27d87; border-radius: 8px; padding: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-            #tooltip { position:absolute; background:white; border:1px solid #ccc; padding:6px; display:none; pointer-events:none; }
+            #map, #chart { border: 2px solid #d27d87; border-radius: 8px; padding: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
+            #tooltip { position:absolute; background:white; border:1px solid #ccc; padding:6px; display:none; pointer-events:none; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);}
             .loading { text-align:center; font-size:18px; padding:20px; }
             .legend { font-size:10px; }
+            .info.legend {
+                background: #f1f6ff;
+                padding: 8px 10px;
+                border-radius: 8px;
+                box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+                font-size: 12px;
+                line-height: 1.4em;
+            }
+            .info.legend i {
+                border: 1px solid #ccc;
+            }
             .annotation-note-title { font-size: 10px; font-weight: bold; }
             .annotation-note-label { font-size: 9px; }
         </style>
@@ -46,6 +58,7 @@
                 <select id="regionSelect"></select>
             </div>
             <div class="loading" id="loading">Loading data...</div>
+        </br>
             
             <!-- Map title -->
             <h2>Global Electric Vehicle Adoption & Clean Electricity</h2>
@@ -258,6 +271,7 @@
                     circles.enter().append("circle")
                         .attr("opacity", 0.9)
                         .on("mouseover", (event, d) => {
+                            marker.setStyle({color:"#ff9800", weight:2});
                             tooltip.style("display","block")
                             .html(`<b>${d.Country}</b><br>EV: ${d.EV.toLocaleString()}<br>Clean Elec: ${(d.CleanElec).toFixed(2)}%`);
                             // Highlight map marker
@@ -269,6 +283,7 @@
                                 .style("top", (event.pageY-20)+"px");
                         })
                         .on("mouseout", (event, d) => {
+                            marker.setStyle({color:"#333", weight:1});
                             tooltip.style("display","none");
                             const key = d.Country + d.Year;
                             if (markerMap[key]) markerMap[key].setStyle({color:"#333", weight:1});
@@ -453,17 +468,13 @@
                     });
 
                 }
-                // =============================
-                // Leaflet Map Legend
-                // =============================
 
-                // Leaflet Color Legend
+                // Leaflet Legend
                 const legend = L.control({position:"bottomright"});
                 legend.onAdd = function(map){
                     const div = L.DomUtil.create("div","info legend");
                     div.innerHTML += "<b>Clean Electricity (%)</b><br>";
 
-                    // Custom ranges
                     const grades = [0, 20, 40, 60, 80, 100];
                     const labels = ["0–19", "20–39", "40–59", "60–79", "80–100"];
 
