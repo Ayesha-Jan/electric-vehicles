@@ -86,6 +86,8 @@
             const innerW = chartWidth - margin.left - margin.right;
             const innerH = chartHeight - margin.top - margin.bottom;
 
+            let currentAnnotations = [];
+
             const svg = d3.select("#chart")
                 .append("svg")
                 .attr("width", chartWidth)
@@ -118,7 +120,34 @@
                 .attr("text-anchor", "middle")
                 .text("Electric Cars Sold");
 
-            // Zoom
+            // =============================
+            // Draw Annotations Function
+            // =============================
+            function drawAnnotations(annotations, transform = null) {
+                svg.selectAll(".annotation-group").remove(); // remove old annotations
+
+                if (annotations.length === 0) return;
+
+                const ann = annotations.map(a => {
+                    const x = transform ? transform.applyX(xScale(a.dataPoint.CleanElec)) : xScale(a.dataPoint.CleanElec);
+                    const y = transform ? transform.applyY(yScale(a.dataPoint.EV)) : yScale(a.dataPoint.EV);
+                    return {
+                        note: a.note,
+                        x, y,
+                        dx: a.dx,
+                        dy: a.dy
+                    };
+                });
+
+                const makeAnnotations = d3.annotation().annotations(ann).notePadding(5);
+                svg.append("g").attr("class","annotation-group").call(makeAnnotations);
+            }
+
+
+            // =============================
+            // Zoom function
+            // =============================
+
             const zoom = d3.zoom()
                 .scaleExtent([0.5, 10])
                 .translateExtent([[0, 0], [chartWidth, chartHeight]])
@@ -142,6 +171,8 @@
                 svg.select(".x-axis").call(d3.axisBottom(newX));
                 svg.select(".y-axis").call(d3.axisLeft(newY));
 
+                // Update annotations
+                drawAnnotations(currentAnnotations, transform);
             }
 
             // Tooltip
@@ -314,6 +345,8 @@
                     // =============================
                     svg.selectAll(".annotation-group").remove();
 
+                    currentAnnotations = []; // reset annotations
+
                     if (data.length > 0) {
                         const maxEV = d3.max(data, d => d.EV);
                         const minEV = d3.min(data, d => d.EV);
@@ -327,29 +360,24 @@
                             if (y > innerH - 40) dy = -40;
                             return {dx, dy};
                         }
-    
-                        const annotations = [];
 
                         if (top) {
                             const {dx, dy} = safeOffsets(xScale(top.CleanElec), yScale(top.EV));
-                            annotations.push({
+                            currentAnnotations.push({
                                 note: { title: "Highest EV", label: top.Country, wrap: 120 },
-                                x: xScale(top.CleanElec),
-                                y: yScale(top.EV),
+                                dataPoint: top,
                                 dx, dy
                             });
                         }
-
                         if (low) {
                             const {dx, dy} = safeOffsets(xScale(low.CleanElec), yScale(low.EV));
-                            annotations.push({
+                            currentAnnotations.push({
                                 note: { title: "Lowest EV", label: low.Country, wrap: 120 },
-                                x: xScale(low.CleanElec),
-                                y: yScale(low.EV),
+                                dataPoint: low,
                                 dx, dy
                             });
                         }
-
+                        drawAnnotations(currentAnnotations); 
                         const makeAnnotations = d3.annotation().annotations(annotations).notePadding(5);;
                         svg.append("g").attr("class","annotation-group").call(makeAnnotations);
                     }
