@@ -235,6 +235,9 @@
                     };
                 });
 
+                const maxEVOverall = d3.max(masterData, d => d.EV);
+                sizeScale.domain([0, maxEVOverall]);
+                
                 let currentData = masterData;
 
                 d3.select("#loading").style("display","none");
@@ -325,7 +328,6 @@
 
                     xScale.domain([0, d3.max(data, d => d.CleanElec)]).nice();
                     yScale.domain([0, d3.max(data, d => d.EV)]).nice();
-                    sizeScale.domain([0, d3.max(data, d => d.EV)]);
                     colorScale.domain([0, d3.max(data, d => d.CleanElec)]);
 
                     svg.select(".x-axis").transition().duration(500).call(d3.axisBottom(xScale));
