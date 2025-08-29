@@ -3,10 +3,11 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Task 12: Interactivity</title>
+        <title>Task 13: Legends and Annotations</title>
 
         <!-- D3.js -->
         <script src="https://d3js.org/d3.v7.min.js"></script>
+        <script src="https://unpkg.com/d3-svg-annotation@2.5.1/d3-annotation.min.js"></script>
 
         <!-- Leaflet -->
         <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
@@ -19,7 +20,8 @@
 
         <style>
             body { font-family: sans-serif; margin:0; padding:0; }
-            h1 { text-align: center; margin: 20px 0; }
+            h1, h2 { text-align: center; margin: 20px 0; }
+            p { text-align:center; font-size:14px; color:gray; }
             .container { width: 92%; max-width: 1200px; margin: 0 auto; }
             #controls { text-align:center; margin: 15px; }
             #map { width: 100%; height: 520px; margin: 10px 0; }
@@ -27,6 +29,7 @@
             #map, #chart { border: 2px solid #d27d87; border-radius: 8px; padding: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
             #tooltip { position:absolute; background:white; border:1px solid #ccc; padding:6px; display:none; pointer-events:none; }
             .loading { text-align:center; font-size:18px; padding:20px; }
+            .legend { font-size:12px; }
         </style>
         
     </head>
@@ -41,8 +44,17 @@
                 <select id="regionSelect"></select>
             </div>
             <div class="loading" id="loading">Loading data...</div>
+            
+            <!-- Map title -->
+            <h2>Global Electric Vehicle Adoption & Clean Electricity</h2>
+            <p>Circle color shows clean electricity share, circle size shows EV sales.</p>
             <div id="map"></div>
-            <div id="chart"></div> 
+
+            <!-- Scatter plot title -->
+            <h2>Clean Electricity Share vs. Electric Vehicle Sales</h2>
+            <p>Each bubble represents a country in the selected year/region.</p>
+            <div id="chart"></div>
+
         </div>
         <div id="tooltip"></div>
 
@@ -272,6 +284,26 @@
                         .attr("fill", d => colorScale(d.CleanElec));
 
                     circles.exit().remove();
+
+                    // =============================
+                    // D3 Annotations
+                    // =============================
+                    svg.selectAll(".annotation-group").remove();
+                    const annotations = [];
+                    data.filter(d=>d.EV>d3.max(data,d=>d.EV)*0.8).forEach(d=>{
+                        annotations.push({
+                            note:{label:`High EV`, title:d.Country},
+                            x:xScale(d.CleanElec),
+                            y:yScale(d.EV),
+                            dy:-30, dx:20
+                        });
+                    });
+                    if(annotations.length>0){
+                        const makeAnnotations = d3.annotation().annotations(annotations);
+                        svg.append("g").attr("class","annotation-group").call(makeAnnotations);
+                    }
+
+                    updateLegends(data);
                 }
 
                 // =============================
@@ -318,6 +350,88 @@
                         map.fitBounds(bounds, { padding: [30, 30] });
                     }
                 }
+
+                // =============================
+                // Legends
+                // =============================
+
+                function updateLegends(data){
+                    d3.selectAll(".color-legend").remove();
+                    d3.selectAll(".size-legend").remove();
+
+                    // Color Legend (top-right)
+                    const colorLegend = svg.append("g")
+                        .attr("class","color-legend")
+                        .attr("transform",`translate(${innerW - 120},20)`);
+
+                    colorLegend.append("text")
+                        .attr("x",0).attr("y",-5)
+                        .style("font-weight","bold")
+                        .text("Clean Electricity (%)");
+
+                    const legendData = d3.range(0, d3.max(data,d=>d.CleanElec), 20);
+                    colorLegend.selectAll("rect").data(legendData).enter()
+                        .append("rect")
+                        .attr("x",0).attr("y",(d,i)=> i*20)
+                        .attr("width",15).attr("height",15)
+                        .attr("fill",d=>colorScale(d));
+
+                    colorLegend.selectAll("text.label").data(legendData).enter()
+                        .append("text")
+                        .attr("class","label")
+                        .attr("x",20).attr("y",(d,i)=> i*20+12)
+                        .text(d=>d+"%");
+
+                    // Size Legend (below color legend)
+                    const sizeLegend = svg.append("g")
+                        .attr("class","size-legend")
+                        .attr("transform",`translate(${innerW - 120},${legendData.length*20 + 50})`);
+
+                    sizeLegend.append("text")
+                        .attr("x",0).attr("y",-5)
+                        .style("font-weight","bold")
+                        .text("EV Sales (bubble size)");
+
+                    const sizeValues = [50000,200000,500000];
+                    sizeLegend.selectAll("circle").data(sizeValues).enter()
+                        .append("circle")
+                        .attr("cy",(d,i)=>i*40)
+                        .attr("r",d=>sizeScale(d))
+                        .attr("fill","steelblue")
+                        .attr("opacity",0.5);
+
+                    sizeLegend.selectAll("text.label").data(sizeValues).enter()
+                        .append("text")
+                        .attr("class","label")
+                        .attr("x",40).attr("y",(d,i)=>i*40+5)
+                        .text(d=>d.toLocaleString());
+                }
+                // =============================
+                // Leaflet Map Legend
+                // =============================
+
+                // Leaflet Color Legend
+                const legend = L.control({position:"bottomright"});
+                legend.onAdd = function(map){
+                    const div = L.DomUtil.create("div","info legend");
+                    div.innerHTML += "<b>Clean Electricity Share</b><br>";
+                    const grades=[0,20,40,60,80,100];
+                    grades.forEach((g,i)=>{
+                        div.innerHTML +=
+                        `<i style="background:${colorScale(g)}; width:18px; height:18px; display:inline-block; margin-right:5px"></i>
+                        ${g}${grades[i+1] ? '&ndash;'+grades[i+1]+'%<br>' : '%+'}`;
+                    });
+
+                    div.innerHTML += "<br><b>EV Sales (circle size)</b><br>";
+                    div.innerHTML += '<svg width="100" height="60">' +
+                        '<circle cx="20" cy="20" r="5" fill="gray" opacity="0.6"/><text x="40" y="25" font-size="12">50k</text>' +
+                        '<circle cx="20" cy="45" r="15" fill="gray" opacity="0.6"/><text x="40" y="50" font-size="12">500k</text>' +
+                        '</svg>';
+
+                    return div;
+                };
+                legend.addTo(map);
+                L.control.scale({metric:true, imperial:false}).addTo(map);
             });
         </script>
     </body>
