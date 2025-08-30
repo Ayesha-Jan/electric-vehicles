@@ -28,6 +28,7 @@
             #map { width: 100%; height: 520px; margin: 10px 0; }
             #chart { width: 100%; height: 480px; margin: 10px 0; display:block; }
             #map, #chart { border: 2px solid #d27d87; border-radius: 8px; padding: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
+            #chart svg { width: 100%; height: 100%; display: block; }
             #tooltip { position:absolute; background:white; border:1px solid #ccc; padding:6px; display:none; pointer-events:none; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);}
             .loading { text-align:center; font-size:18px; padding:20px; }
             .info.legend { background: #f1f6ff; padding: 8px 10px; border-radius: 8px; font-size:10px; box-shadow: 0 3px 8px rgba(0,0,0,0.15);  line-height: 1.4em; }
@@ -45,7 +46,7 @@
             @media (max-width: 600px) {
                 h1 { font-size: 18px; }
                 h2 { font-size: 14px; }
-                #map, #chart { height: 300px; }
+                #map, #chart { height: 200px; }
                 .container { padding: 10px; }
                 #controls { display: block; }
                 #controls label { display: block; margin-top: 10px; }
@@ -93,7 +94,7 @@
             // =============================
 
             const chartDiv = document.getElementById('chart');
-            const chartWidth = chartDiv.clientWidth;
+            const chartWidth = 1000;
             const chartHeight = 440;
             const margin = {top: 30, right: 30, bottom: 50, left: 80};
             const innerW = chartWidth - margin.left - margin.right;
@@ -155,7 +156,6 @@
                 const makeAnnotations = d3.annotation().annotations(ann).notePadding(5);
                 svg.append("g").attr("class","annotation-group").call(makeAnnotations);
             }
-
 
             // =============================
             // Zoom function
@@ -421,9 +421,9 @@
 
                         // Link back to chart
                         marker.on("mouseover", () => {
-                        d3.selectAll("circle")
-                            .filter(c => c.Country===d.Country && c.Year===d.Year)
-                            .classed("highlight", true);
+                            d3.selectAll("circle")
+                                .filter(c => c && c.Country === d.Country && c.Year === d.Year)
+                                .classed("highlight", true);
                         });
                         marker.on("mouseout", () => {
                             d3.selectAll("circle").classed("highlight", false);
@@ -451,12 +451,12 @@
                     d3.selectAll(".size-legend").remove();
 
                     const isMobile = window.innerWidth < 600;
-                    const fontSize = isMobile ? "7px" : "10px";
+                    const fontSize = isMobile ? "12px" : "10px";
 
                     // Color Legend (top-right)
                     const colorLegend = svg.append("g")
                         .attr("class","color-legend")
-                        .attr("transform",`translate(${innerW - (isMobile ? 50 : 80)}, 10)`);
+                        .attr("transform",`translate(${innerW - (isMobile ? 90 : 80)}, 10)`);
 
                     
                     colorLegend.append("text")
@@ -483,7 +483,7 @@
                     // Size Legend
                     const sizeLegend = svg.append("g")
                         .attr("class","size-legend")
-                        .attr("transform", `translate(${innerW - (isMobile ? 50 : 80)}, ${legendData.length * 18 + 40})`);
+                        .attr("transform", `translate(${innerW - (isMobile ? 85 : 75)}, ${legendData.length * 18 + 40})`);
 
                     sizeLegend.append("text")
                         .attr("x",0).attr("y",-10)
@@ -552,41 +552,8 @@
             // =============================
             
             window.addEventListener("resize", () => {
-                const newWidth = chartDiv.clientWidth;
-                const newHeight = chartDiv.clientHeight || 440;
-
-                // Recalculate inner dimensions
-                const newInnerW = newWidth - margin.left - margin.right;
-                const newInnerH = newHeight - margin.top - margin.bottom;
-
-                // Update scale ranges
-                xScale.range([0, newInnerW]);
-                yScale.range([newInnerH, 0]);
-
-                // Update SVG viewBox
-                d3.select("#chart svg")
-                    .attr("viewBox", `0 0 ${newWidth} ${newHeight}`);
-
-                // Update axes
-                svg.select(".x-axis")
-                    .attr("transform", `translate(0, ${newInnerH})`)
-                    .call(d3.axisBottom(xScale));
-                svg.select(".y-axis").call(d3.axisLeft(yScale));
-
-                // Update labels
-                svg.select(".x-label")
-                    .attr("x", newInnerW / 2)
-                    .attr("y", newInnerH + 48);
-                svg.select(".y-label")
-                    .attr("x", -newInnerH / 2);
-
-
-                // ✅ Update legends to use new width
-                updateLegends(currentData, newInnerW);
-
-                // ✅ Update annotations
-                drawAnnotations(currentAnnotations);
-
+                // Resize D3 chart
+                d3.select("#chart svg").attr("viewBox", `0 0 ${chartWidth} ${chartHeight}`);
                 // Resize Leaflet map
                 map.invalidateSize();
             });
