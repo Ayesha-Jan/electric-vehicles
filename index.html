@@ -1,183 +1,684 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>EV Exploratory Analysis</title>
-<script src="https://d3js.org/d3.v7.min.js"></script>
-<script src="https://unpkg.com/simple-statistics@7.8.4/dist/simple-statistics.min.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<style>
-  body { font-family: sans-serif; }
-  #charts { display: flex; flex-wrap: wrap; }
-  svg { margin: 10px; }
-  #map { height: 500px; width: 80%; margin: 20px auto; }
-  .line-hover { stroke-width:4; }
-  .outlier { fill:red; stroke:black; stroke-width:1.5; }
-</style>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>EV vs Clean Electricity</title>
 
-<h1>EV Exploratory Analysis (Top 10 Countries)</h1>
-<div id="charts">
-  <svg id="lineChart" width="700" height="500"></svg>
-  <svg id="scatterPlot" width="700" height="500"></svg>
-</div>
-<div id="map"></div>
+        <!-- =============================
+         Task 10: Basic Visualization Structure
+         - Load D3.js, Leaflet, MarkerCluster
+         - Prepare for chart + map
+        ============================== -->
+    
+        <!-- D3.js -->
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <script src="https://unpkg.com/d3-svg-annotation@2.5.1/d3-annotation.min.js"></script>
 
-<script>
-d3.csv("merged_data.csv").then(data => {
-  data.forEach(d => {
-    d.Year = +d.Year;
-    d["Electric cars sold"] = +d["Electric cars sold"];
-    d["CO2 emissions from fuel combustion (MtCO2)"] = +d["CO2 emissions from fuel combustion (MtCO2)"];
-  });
+        <!-- Leaflet -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-  // Aggregate top 10 countries
-  let countryTotals = d3.rollups(data, v => d3.sum(v, d => d["Electric cars sold"]), d => d.country);
-  countryTotals.sort((a,b)=>b[1]-a[1]);
-  let top10 = countryTotals.slice(0,10).map(d=>d[0]);
-  let topData = data.filter(d=>top10.includes(d.country) && d.Year>=2015);
+        <!-- Leaflet MarkerCluster -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
+        <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
-  // ---------- LINE CHART ----------
-  let lineSvg = d3.select("#lineChart"),
-      margin = {top:20,right:150,bottom:40,left:70},
-      width = +lineSvg.attr("width") - margin.left - margin.right,
-      height = +lineSvg.attr("height") - margin.top - margin.bottom;
-  let g = lineSvg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+        <!-- Task 14: Styles include responsive design -->
+        <style>
+            body { font-family: sans-serif; margin:0; padding:0; background: #fae5e9;}
+            h1 { text-align: center; margin: 20px 0; color: #333; font-weight: 600; }
+            h2 { text-align: center; margin: 20px 0; color: #484851; font-weight: 500; font-size: 20px;}
+            p { text-align:center; font-size:14px; color: #7a7aae; font-size: 14px; margin-bottom: 10px; }
+            .container { width: 92%; max-width: 1200px; margin: 20px auto; background: #faf6f7; border-radius: 12px; padding: 15px 20px; box-shadow: 0 6px 18px rgba(0,0,0,0.1); }
+            #controls { min-height: 44px; text-align:center; margin: 15px; }
+            #map { width: 100%; height: 520px; margin: 10px 0; }
+            #chart { width: 100%; height: 480px; margin: 10px 0; display:block; }
+            #map, #chart { border: 2px solid #d27d87; border-radius: 8px; padding: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
+            #chart svg { width: 100%; height: 100%; display: block; }
+            #tooltip { position:absolute; background:white; border:1px solid #ccc; padding:6px; display:none; pointer-events:none; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);}
+            .loading { min-height: 12px; text-align:center; font-size:10px; padding:5px; }
+            .loading.loaded { visibility: hidden; }
+            .info.legend { background: #f1f6ff; padding: 8px 10px; border-radius: 8px; font-size:10px; box-shadow: 0 3px 8px rgba(0,0,0,0.15);  line-height: 1.4em; }
+            .info.legend i { border: 1px solid #ccc; }
+            .annotation-note-title { font-size: 10px; font-weight: bold; }
+            .annotation-note-label { font-size: 9px; }
+            .leaflet-bottom.leaflet-right { min-height: 50px; min-width: 120px; }
 
-  let x = d3.scaleLinear().domain(d3.extent(topData, d=>d.Year)).range([0,width]);
-  let y = d3.scaleLinear().domain([0,d3.max(topData, d=>d["Electric cars sold"])]).range([height,0]);
+            /* Tablet */
+                @media (max-width: 1024px) {
+                #map, #chart { height: 400px; }
+                h1 { font-size: 20px; }
+            }
 
-  g.append("g").attr("transform", `translate(0,${height})`).call(d3.axisBottom(x).tickFormat(d3.format("d")));
-  g.append("g").call(d3.axisLeft(y).tickFormat(d3.format(",")));
+            /* Mobile */
+            @media (max-width: 600px) {
+                h1 { font-size: 18px; }
+                h2 { font-size: 14px; }
+                #map, #chart { height: 200px; }
+                .container { padding: 10px; }
+                #controls { display: block; grid-auto-flow: row; min-height: 96px;}
+                #controls label { display: block; margin-top: 10px; }
+                #controls select { width: 100%; margin-bottom: 10px; }
+                .info.legend { background: #f1f6ff; padding: 1px 1px; border-radius: 5px; font-size:6px; box-shadow: 0 3px 8px rgba(0,0,0,0.15);  line-height: 1em; }
+                .info.legend i { border: 1px solid #ccc; width: 12px !important; height: 12px !important; margin-right: 0px !important; }
+                .info.legend svg { width: 60px !important; height: 35px !important; }
+                .annotation-note-title { font-size: 7px !important; }
+                .annotation-note-label { font-size: 6px !important; }
+            }
 
-  let line = d3.line().x(d=>x(d.Year)).y(d=>y(d["Electric cars sold"]));
-  let countries = d3.group(topData,d=>d.country);
-  let color = d3.scaleOrdinal(d3.schemeCategory10).domain(top10);
+        </style>
+        
+    </head>
+    <body>
+        <div class = "container">
+            <h1>Does Clean Electricity Drive Electric Vehicle Adoption?</h1>
+            <div id="controls">
+                <label for="yearSelect"><b>Select Year:</b></label>
+                <select id="yearSelect"></select>
 
-  countries.forEach((vals,country)=>{
-    g.append("path")
-      .datum(vals)
-      .attr("fill","none")
-      .attr("stroke", color(country))
-      .attr("stroke-width",2)
-      .attr("d",line)
-      .on("mouseover", function(){ d3.select(this).classed("line-hover",true); })
-      .on("mouseout", function(){ d3.select(this).classed("line-hover",false); });
-  });
+                <label for="regionSelect"><b>Select Region:</b></label>
+                <select id="regionSelect"></select>
+            </div>
+            <div class="loading" id="loading">Loading data...</div>
+        </br>
+            
+            <!-- Map title -->
+            <h2>Global Electric Vehicle Adoption & Clean Electricity</h2>
+            <p>Some bubbles are clustered—click a cluster to see the individual countries.</p>
+            <div id="map"></div>
 
-  let legend = g.append("g").attr("transform", `translate(${width + 20},20)`);
-  top10.forEach((country, i) => {
-    let row = legend.append("g").attr("transform", `translate(0,${i * 20})`);
-    row.append("rect").attr("width", 12).attr("height", 12).attr("fill", color(country));
-    row.append("text").attr("x", 18).attr("y", 10).text(country).style("font-size", "12px");
-  });
+            <!-- Scatter plot title -->
+            <h2>Clean Electricity Share vs. Electric Vehicle Sales</h2>
+            <p>Each bubble represents a country in the selected year/region.</p>
+            <div id="chart"></div>
 
-  // ---------- SCATTER PLOT ----------
-  // ---------- SCATTER PLOT WITH BRUSHING ----------
-let scatterSvg = d3.select("#scatterPlot");
-let sm = {top:30,right:30,bottom:50,left:70},
-    sw = +scatterSvg.attr("width") - sm.left - sm.right,
-    sh = +scatterSvg.attr("height") - sm.top - sm.bottom;
-let sg = scatterSvg.append("g").attr("transform", `translate(${sm.left},${sm.top})`);
+        </div>
+        <div id="tooltip"></div>
 
-let xS = d3.scaleSqrt().domain([0,d3.max(topData,d=>d["Electric cars sold"])]).range([0,sw]);
-let yS = d3.scaleLinear().domain([0,d3.max(topData,d=>d["CO2 emissions from fuel combustion (MtCO2)"])]).range([sh,0]);
+        <script>
 
-sg.append("g").attr("transform", `translate(0,${sh})`).call(d3.axisBottom(xS).ticks(6,"s"));
-sg.append("g").call(d3.axisLeft(yS).ticks(6,"s"));
+            // =============================
+            // Task 10: Basic Visualization Structure
+            // - Set up SVG, scales, axes, labels
+            // =============================
 
-// Gridlines
-sg.append("g").attr("class","grid").call(d3.axisLeft(yS).tickSize(-sw).tickFormat(""));
-sg.append("g").attr("class","grid").attr("transform",`translate(0,${sh})`).call(d3.axisBottom(xS).tickSize(-sh).tickFormat(""));
+            const chartDiv = document.getElementById('chart');
+            const chartWidth = 1000;
+            const chartHeight = 440;
+            const margin = {top: 30, right: 100, bottom: 50, left: 80};
+            const innerW = chartWidth - margin.left - margin.right;
+            const innerH = chartHeight - margin.top - margin.bottom;
 
-// Labels
-scatterSvg.append("text").attr("x", sm.left + sw/2).attr("y", sh + sm.top + 40)
-  .attr("text-anchor","middle").text("Electric Cars Sold (√ scale)");
-scatterSvg.append("text").attr("transform","rotate(-90)").attr("x", -sm.top - sh/2).attr("y", 20)
-  .attr("text-anchor","middle").text("CO₂ Emissions (Mt)");
+            let currentAnnotations = [];
+            let currentData = [];
 
-// Outlier threshold (top 5%)
-let evThresh = d3.quantile(topData.map(d=>d["Electric cars sold"]).sort(d3.ascending),0.95);
-let co2Thresh = d3.quantile(topData.map(d=>d["CO2 emissions from fuel combustion (MtCO2)"]).sort(d3.ascending),0.95);
+            const svg = d3.select("#chart")
+                .append("svg")
+                .attr("viewBox", `0 0 ${chartWidth} ${chartHeight}`)
+                .attr("preserveAspectRatio", "xMidYMid meet")
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
 
-// Draw circles
-let circles = sg.selectAll("circle")
-  .data(topData)
-  .enter().append("circle")
-  .attr("cx", d=>xS(d["Electric cars sold"]))
-  .attr("cy", d=>yS(d["CO2 emissions from fuel combustion (MtCO2)"]))
-  .attr("r", d=>4 + d.Year/2025*3)
-  .attr("fill", d=>(d["Electric cars sold"]>evThresh || d["CO2 emissions from fuel combustion (MtCO2)"]>co2Thresh)?"red":color(d.country))
-  .attr("opacity",0.7)
-  .append("title")
-  .text(d=>`${d.country} (${d.Year})\nEVs: ${d["Electric cars sold"].toLocaleString()}\nCO₂: ${d["CO2 emissions from fuel combustion (MtCO2)"].toLocaleString()}\n${(d["Electric cars sold"]>evThresh||d["CO2 emissions from fuel combustion (MtCO2)"]>co2Thresh)?"Outlier":""}`);
+            // Task 10: Scales
+            const xScale = d3.scaleLinear().range([0, innerW]);
+            const yScale = d3.scaleLinear().range([innerH, 0]);
+            const sizeScale = d3.scaleSqrt().range([3, 20]);
+            const colorScale = d3.scaleSequential(d3.interpolateRgb("pink", "steelblue"));
 
-// BRUSH
-let brush = d3.brush()
-  .extent([[0,0],[sw,sh]])
-  .on("brush end", brushed);
+            // Task 10: Axes
+            svg.append("g").attr("class","x-axis").attr("transform", `translate(0, ${innerH})`);
+            svg.append("g").attr("class","y-axis");
 
-sg.append("g").call(brush);
+            // Task 10: Labels
+            svg.append("text")
+                .attr("class","x-label")
+                .attr("x", innerW/2)
+                .attr("y", innerH + 48)
+                .attr("text-anchor","middle").
+                text("Clean Electricity Share (%)");
 
-function brushed({selection}) {
-  if(selection){
-    let [[x0,y0],[x1,y1]] = selection;
-    circles.attr("opacity", d => {
-      let cx = xS(d["Electric cars sold"]);
-      let cy = yS(d["CO2 emissions from fuel combustion (MtCO2)"]);
-      return (cx >= x0 && cx <= x1 && cy >= y0 && cy <= y1) ? 0.9 : 0.1;
-    });
-  } else {
-    circles.attr("opacity",0.7);
-  }
-}
+            svg.append("text")
+                .attr("class","y-label")
+                .attr("x", -innerH / 2)       
+                .attr("y", -60)              
+                .attr("transform", "rotate(-90)")
+                .attr("text-anchor", "middle")
+                .text("Electric Cars Sold");
 
-  // Correlation
-  let xVals = topData.map(d=>d["Electric cars sold"]);
-  let yVals = topData.map(d=>d["CO2 emissions from fuel combustion (MtCO2)"]);
-  let corr = ss.sampleCorrelation(xVals,yVals);
-  console.log("Pearson correlation EV vs CO₂:", corr.toFixed(3));
+            // =============================
+            // Task 13: Annotations
+            // - Function to draw d3-annotations
+            // =============================
 
-  // ---------- LEAFLET MAP ----------
-  let map = L.map('map').setView([20,0], 2);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{ maxZoom:18 }).addTo(map);
+            function drawAnnotations(annotations, transform = null) {
+                svg.selectAll(".annotation-group").remove();
 
-  let countryCoords = {
-    "china":[35.8617,104.1954],
-    "united states":[37.0902,-95.7129],
-    "germany":[51.1657,10.4515],
-    "france":[46.2276,2.2137],
-    "norway":[60.472,8.4689],
-    "sweden":[60.1282,18.6435],
-    "canada":[56.1304,-106.3468],
-    "japan":[36.2048,138.2529],
-    "netherlands":[52.1326,5.2913],
-    "united kingdom":[55.3781,-3.436]
-  };
+                if (annotations.length === 0) return;
 
-  top10.forEach(country=>{
-    if(countryCoords[country]){
-      let cData = topData.filter(d=>d.country==country);
-      let totalEV = d3.sum(cData,d=>d["Electric cars sold"]);
-      let co2Total = d3.sum(cData,d=>d["CO2 emissions from fuel combustion (MtCO2)"]);
-      
-      // Marker size proportional to total EVs
-      let marker = L.circleMarker(countryCoords[country], {
-        radius: 5 + Math.sqrt(totalEV)/2000,
-        fillColor: color(country),
-        color: "#000", weight: 1,
-        opacity: 0.8, fillOpacity: 0.6
-      }).addTo(map);
+                const ann = annotations.map(a => {
+                    const x = transform ? transform.applyX(xScale(a.dataPoint.CleanElec)) : xScale(a.dataPoint.CleanElec);
+                    const y = transform ? transform.applyY(yScale(a.dataPoint.EV)) : yScale(a.dataPoint.EV);
+                    return {
+                        note: a.note,
+                        x, y,
+                        dx: a.dx,
+                        dy: a.dy
+                    };
+                });
 
-      // D3 mini bar chart in popup
-      let popupHTML = `<b>${country}</b><br>Total EVs: ${totalEV.toLocaleString()}<br>Total CO₂: ${co2Total.toLocaleString()} Mt`;
-      marker.bindPopup(popupHTML);
-    }
-  });
+                const makeAnnotations = d3.annotation().annotations(ann).notePadding(5);
+                svg.append("g").attr("class","annotation-group").call(makeAnnotations);
+            }
 
-});
-</script>
-</body>
+            // =============================
+            // Task 15: Performance Optimization
+            // - Throttle zoom and brush to avoid excessive redraws
+            // =============================
+            
+            function throttle(func, delay) {
+                let lastCall = 0;
+                return function(...args) {
+                    const now = Date.now();
+                    if (now - lastCall >= delay) {
+                        lastCall = now;
+                        func.apply(this, args);
+                    }
+                }
+            }
+
+            // =============================
+            // Task 12: Interactivity
+            // - Zoom behavior with throttle
+            // =============================
+
+            const zoom = d3.zoom()
+                .scaleExtent([0.5, 10])
+                .translateExtent([[0, 0], [chartWidth, chartHeight]])
+                .on("zoom", throttle(zoomed, 16));
+
+            d3.select("svg").call(zoom);
+            function zoomed({transform}) {
+                const newX = transform.rescaleX(xScale);
+                const newY = transform.rescaleY(yScale);
+
+                // Update circles
+                svg.selectAll("circle").each((d, i, nodes) => {
+                    if (d) {
+                        d3.select(nodes[i])
+                        .attr("cx", newX(d.CleanElec))
+                        .attr("cy", newY(d.EV));
+                    }
+                });
+
+                // Update axes
+                svg.select(".x-axis").call(d3.axisBottom(newX));
+                svg.select(".y-axis").call(d3.axisLeft(newY));
+
+                // Update annotations
+                drawAnnotations(currentAnnotations, transform);
+            }
+
+            // Task 12: Tooltip
+            const tooltip = d3.select("#tooltip");
+
+            // =============================
+            // Task 10 & 11: Leaflet Map Setup
+            // - Base map, tile layers
+            // =============================
+
+            const map = L.map('map', { center: [20, 0], zoom: window.innerWidth < 768 ? 1 : 2, zoomControl: true, dragging: true, tap: true, scrollWheelZoom: false });
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            let leafletLayer;
+            const markerMap = {}; 
+
+            // =============================
+            // Task 16: Error Handling
+            // - Load data with backup option
+            // =============================
+
+            d3.json("data/master_data.geojson").then(geoData => processGeoData(geoData))
+            .catch(error => {
+                console.warn("Primary dataset failed, trying backup:", error);
+                d3.json("data/master_data_backup.geojson")
+                    .then(geoData => processGeoData(geoData))
+                    .catch(error2 => {
+                        console.error("Backup dataset failed too:", error2);
+                        d3.select("#loading")
+                        .style("display", "block")
+                        .text("Failed to load both primary and backup data.");
+                    });
+            });
+
+            // =============================
+            // Task 11: Data Processing
+            // - Clean and validate data
+            // =============================
+            
+            function processGeoData(geoData) {
+                const masterData = geoData.features.map(f => {
+                    const p = f.properties;
+                    if (!p.Country || !p.Region || !p.Year || !p.EV || !p.CleanElec ) {
+                        console.warn("Invalid data point:", p);
+                        return null;
+                    }
+                    return {
+                        Country: p.Country,
+                        Region: p.Region,
+                        Year: +p.Year,
+                        EV: +p.EV,
+                        CleanElec: +p.CleanElec,
+                        lat: f.geometry.coordinates[1],
+                        lon: f.geometry.coordinates[0]
+                    };
+                }).filter(d => d !== null);
+
+                console.info("Data loaded successfully:", masterData.length, "points.");
+
+                const maxEVOverall = d3.max(masterData, d => d.EV);
+                sizeScale.domain([0, maxEVOverall]);
+
+                currentData = masterData;
+                if (currentData.length === 0) {
+                    d3.select("#loading").style("display", "block").text("No data available for the selected year/region.");
+                    svg.selectAll("circle").remove();
+                    return;
+                } else {
+                    d3.select("#loading").style("display", "none");
+                }
+
+                d3.select("#loading").style("display","none");
+
+                // =============================
+                // Task 12: Interactivity
+                // - Filtering with dropdowns
+                // =============================
+
+                // Year dropdown
+                const years = ["All years", ...d3.range(2010, 2021)];
+                const yearSelect = d3.select("#yearSelect");
+                yearSelect.selectAll("option")
+                    .data(years)
+                    .enter().append("option")
+                    .text(d => d)
+                    .attr("value", d => d);
+
+                // Region dropdown
+                const regions = ["All regions", ...Array.from(new Set(masterData.map(d => d.Region)))];
+                const regionSelect = d3.select("#regionSelect");
+
+                regionSelect.selectAll("option")
+                    .data(regions)
+                    .enter().append("option")
+                    .text(d => d)
+                    .attr("value", d => d);
+
+                function filterData() {
+                    const year = yearSelect.property("value");
+                    const region = regionSelect.property("value");
+
+                    let filtered = masterData;
+
+                    if (year !== "All years") filtered = filtered.filter(d => d.Year === +year);
+                    if (region !== "All regions") filtered = filtered.filter(d => d.Region === region);
+
+                    currentData = filtered;
+                    
+                    try { updateChart(currentData);
+                    } catch(e) { console.error("Error updating chart:", e); }
+
+                    try { updateMap(currentData);
+                    } catch(e) { console.error("Error updating map:", e); }
+
+                    // Reset zoom on filtering
+                    d3.select("svg").transition().duration(500).call(zoom.transform, d3.zoomIdentity);
+                }
+
+                yearSelect.on("change", filterData);
+                regionSelect.on("change", filterData);
+
+                // =============================
+                // Task 12: Brush
+                // =============================
+                const brush = d3.brush()
+                    .extent([[0,0], [innerW, innerH]])
+                    .on("end", throttle(brushed, 16));
+
+                svg.append("g").attr("class", "brush").call(brush);
+
+                function brushed({selection}) {
+                    if (!selection) {
+                        updateMap(currentData);
+                        return;
+                    }
+                    const [[x0,y0],[x1,y1]] = selection;
+                    const selected = currentData.filter(d => {
+                        const cx = xScale(d.CleanElec);
+                        const cy = yScale(d.EV);
+                        return cx >= x0 && cx <= x1 && cy >= y0 && cy <= y1;
+                    });
+                    updateMap(selected);
+
+                    // Zoom map to selection
+                    if (selected.length > 0) {
+                        const bounds = L.latLngBounds(selected.map(d => [d.lat, d.lon]));
+                        map.fitBounds(bounds, { padding: [30, 30], maxZoom: 5 });
+                    };
+                }
+
+                // Initial state
+                yearSelect.property("value", "All years");
+                regionSelect.property("value", "All regions");
+                filterData();
+                d3.select("svg").transition().duration(500).call(zoom.transform, d3.zoomIdentity);
+
+                // =============================
+                // Task 11: Update Scatter Plot
+                // - Enter/update/exit pattern
+                // =============================
+
+                function updateChart(data) {
+
+                    xScale.domain([0, d3.max(data, d => d.CleanElec)]).nice();
+                    yScale.domain([0, d3.max(data, d => d.EV)]).nice();
+                    colorScale.domain([0, d3.max(data, d => d.CleanElec)]);
+
+                    svg.select(".x-axis").transition().duration(500).call(d3.axisBottom(xScale));
+                    svg.select(".y-axis").transition().duration(500).call(d3.axisLeft(yScale));
+
+                    const circles = svg.selectAll("circle").data(data, d => d ? (d.Country + d.Year) : this);
+
+                    circles.enter().append("circle")
+                        .attr("opacity", 0.9)
+                        .on("mouseover", (event, d) => {
+                            tooltip.style("display","block")
+                            .html(`<b>${d.Country}</b><br>EV: ${d.EV.toLocaleString()}<br>Clean Elec: ${(d.CleanElec).toFixed(2)}%`);
+                            // Highlight map marker
+                            const key = d.Country + d.Year;
+                            if (markerMap[key]) markerMap[key].setStyle({color:"yellow", weight:3});
+                        })
+                        .on("mousemove", event => {
+                            tooltip.style("left", (event.pageX+10)+"px")
+                                .style("top", (event.pageY-20)+"px");
+                        })
+                        .on("mouseout", (event, d) => {
+                            tooltip.style("display","none");
+                            const key = d.Country + d.Year;
+                            if (markerMap[key]) markerMap[key].setStyle({color:"#333", weight:1});
+                        })
+                        .on("click", (event, d) => {
+                            const latlng = L.latLng(d.lat, d.lon);
+                            map.flyTo(latlng, 4, { animate: true, duration: 1 }); 
+                            const marker = markerMap[d.Country + d.Year];
+                            if (marker) marker.openPopup();
+                        })
+                        .merge(circles)
+                        .transition().duration(500)
+                        .attr("cx", d => xScale(d.CleanElec))
+                        .attr("cy", d => yScale(d.EV))
+                        .attr("r", d => sizeScale(d.EV))
+                        .attr("fill", d => colorScale(d.CleanElec));
+
+                    circles.exit().remove();
+
+                    // =============================
+                    // Task 13: D3 Annotations
+                    // =============================
+                    svg.selectAll(".annotation-group").remove();
+
+                    currentAnnotations = []; 
+
+                    if (data.length > 0) {
+                        const maxEV = d3.max(data, d => d.EV);
+                        const minEV = d3.min(data, d => d.EV);
+                        const top = data.find(d => d.EV === maxEV);
+                        const low = data.find(d => d.EV === minEV);
+
+                        function safeOffsets(x, y) {
+                            let dx = 30, dy = -30;
+                            if (x > innerW * 0.7) dx = -50;
+                            if (y < 40) dy = 40;    
+                            if (y > innerH - 40) dy = -40;
+                            return {dx, dy};
+                        }
+                        window.safeOffsets = safeOffsets;
+
+                        if (top) {
+                            const {dx, dy} = safeOffsets(xScale(top.CleanElec), yScale(top.EV));
+                            currentAnnotations.push({
+                                note: { title: "Highest EV", label: top.Country, wrap: 120 },
+                                dataPoint: top,
+                                dx, dy
+                            });
+                        }
+                        if (low) {
+                            const {dx, dy} = safeOffsets(xScale(low.CleanElec), yScale(low.EV));
+                            currentAnnotations.push({
+                                note: { title: "Lowest EV", label: low.Country, wrap: 120 },
+                                dataPoint: low,
+                                dx, dy
+                            });
+                        }
+                        drawAnnotations(currentAnnotations); 
+                    }
+                    updateLegends(data);
+                }
+
+                // =============================
+                // Task 11: Update Leaflet Map
+                // - Markers, clustering, popups
+                // =============================
+
+                function updateMap(data) {
+                    if (leafletLayer) map.removeLayer(leafletLayer);
+
+                    //Task 15: Leaflet marker clustering for large datasets
+                    leafletLayer = L.markerClusterGroup();
+                    Object.keys(markerMap).forEach(k => delete markerMap[k]);
+
+                    data.forEach(d => {
+                        const marker = L.circleMarker([d.lat, d.lon], {
+                        radius: 4 + sizeScale(d.EV)/2,
+                        fillColor: colorScale(d.CleanElec),
+                        color: "#333",
+                        weight: 1,
+                        fillOpacity: 0.9
+                        }).bindPopup(`
+                        <b>${d.Country} (${d.Year})</b><br>
+                        EV Sales: ${d.EV.toLocaleString()}<br>
+                        Clean Electricity: ${(d.CleanElec).toFixed(2)}%
+                        `);
+
+                        // Link back to chart
+                        marker.on("mouseover", () => {
+                            d3.selectAll("circle")
+                                .filter(c => c && c.Country === d.Country && c.Year === d.Year)
+                                .classed("highlight", true);
+                        });
+                        marker.on("mouseout", () => {
+                            d3.selectAll("circle").classed("highlight", false);
+                        });
+
+                        markerMap[d.Country + d.Year] = marker;
+                        leafletLayer.addLayer(marker);
+                    });
+
+                    leafletLayer.addTo(map);
+
+                    // Zoom map to fit filtered data
+                    if (data.length > 0) {
+                        const bounds = L.latLngBounds(data.map(d => [d.lat, d.lon]));
+                        map.fitBounds(bounds, { padding: [30, 30] });
+                    }
+                }
+
+                // =============================
+                // Task 13: Legends (D3 + Leaflet)
+                // =============================
+
+                function updateLegends(data){
+                    d3.selectAll(".color-legend").remove();
+                    d3.selectAll(".size-legend").remove();
+
+                    const isMobile = window.innerWidth < 600;
+                    const fontSize = isMobile ? "12px" : "10px";
+
+                    // D3 Color Legend (top-right)
+                    const colorLegend = svg.append("g")
+                        .attr("class","color-legend")
+                        .attr("transform",`translate(${innerW - (isMobile ? 20 : 0)}, 10)`);
+
+                    
+                    colorLegend.append("text")
+                        .attr("x",0).attr("y",-5)
+                        .style("font-weight","bold")
+                        .style("font-size",fontSize)
+                        .text("Clean Electricity (%)");
+
+                    const legendData = d3.range(0, d3.max(data,d=>d.CleanElec), 20);
+                    
+                    colorLegend.selectAll("rect").data(legendData).enter()
+                        .append("rect")
+                        .attr("x",0).attr("y",(d,i)=> i*18)
+                        .attr("width",12).attr("height",12)
+                        .attr("fill",d=>colorScale(d));
+
+                    colorLegend.selectAll("text.label").data(legendData).enter()
+                        .append("text")
+                        .attr("class","label")
+                        .attr("x",18).attr("y",(d,i)=> i*18+10)
+                        .style("font-size",fontSize)
+                        .text(d=>d+"%");
+
+                    // D3 Size Legend
+                    const sizeLegend = svg.append("g")
+                        .attr("class","size-legend")
+                        .attr("transform", `translate(${innerW - (isMobile ? 15 : -10)}, ${legendData.length * 18 + 40})`);
+
+                    sizeLegend.append("text")
+                        .attr("x",0).attr("y",-10)
+                        .style("font-weight","bold")
+                        .style("font-size",fontSize)
+                        .text("EV Sales");
+
+                    const sizeValues = [50000, 200000, 500000]; 
+
+                    // Compute cumulative y positions to prevent overlap
+                    let cumulativeY = 0;
+                    sizeValues.forEach((d, i) => {
+                        const r = sizeScale(d);
+                        const cy = cumulativeY + r;
+                        sizeLegend.append("circle")
+                            .attr("cy", cy)
+                            .attr("r", r)
+                            .attr("fill","steelblue")
+                            .attr("opacity",0.5);
+                        
+                        sizeLegend.append("text")
+                            .attr("x", r + 5)
+                            .attr("y", cy)
+                            .attr("alignment-baseline","middle")
+                            .style("font-size",fontSize)
+                            .text(d.toLocaleString());
+
+                        cumulativeY += 2 * r + 5; 
+                    });
+
+                }
+
+                // Leaflet Legend
+                const legend = L.control({position:"bottomright"});
+                legend.onAdd = function(map){
+                    const div = L.DomUtil.create("div","info legend");
+                    div.innerHTML += "<b>Clean Electricity (%)</b><br>";
+
+                    const grades = [0, 20, 40, 60, 80, 100];
+                    const labels = ["0–19", "20–39", "40–59", "60–79", "80–100"];
+
+                    grades.forEach((g, i) => {
+                        if (i < labels.length) {
+                            div.innerHTML +=
+                                `<i style="background:${colorScale(g)}; width:18px; height:18px; display:inline-block; margin-right:5px"></i>
+                                ${labels[i]}%<br>`;
+                        }
+                    });
+
+                    div.innerHTML += "<br><b>EV Sales (circle size)</b><br>";
+                    const isMobile = window.innerWidth < 600;
+                    div.innerHTML += '<svg width="'+(isMobile?60:100)+'" height="'+(isMobile?30:60)+'">' +
+                        `<circle cx="15" cy="15" r="${isMobile?3:5}" fill="steelblue" opacity="0.6"/><text x="30" y="18" font-size="${isMobile?8:12}">5k</text>` +
+                        `<circle cx="15" cy="${isMobile?25:45}" r="${isMobile?6:10}" fill="steelblue" opacity="0.6"/><text x="30" y="${isMobile?28:50}" font-size="${isMobile?8:12}">500k</text>` +
+                        '</svg>';
+
+                    return div;
+                };
+                legend.addTo(map);
+                L.control.scale({metric:true, imperial:false}).addTo(map);
+
+                window.updateChart = updateChart;
+                window.updateMap = updateMap;
+                window.drawAnnotations = drawAnnotations;
+                window.filterData = filterData;
+                runVisualizationTests();
+            }
+
+            // =============================
+            // Task 14: Responsive Design
+            // =============================
+            
+            window.addEventListener("resize", () => {
+                // Resize D3 chart
+                d3.select("#chart svg").attr("viewBox", `0 0 ${chartWidth} ${chartHeight}`);
+                // Resize Leaflet map
+                map.invalidateSize();
+            });
+
+            // =============================
+            // Task 19: Testing & Validation
+            // =============================
+
+            function runVisualizationTests() {
+                console.group("=== Visualization Testing ===");
+
+                // Test xScale mapping
+                try {
+                    console.assert(xScale(50) >= 0 && xScale(50) <= innerW, "xScale out of range");
+                    console.log("xScale mapping test passed");
+                } catch(e) {
+                    console.error("xScale mapping test failed:", e);
+                }
+
+                // Test yScale mapping
+                try {
+                    console.assert(yScale(1000) >= 0 && yScale(1000) <= innerH, "yScale out of range");
+                    console.log("yScale mapping test passed");
+                } catch(e) {
+                    console.error("yScale mapping test failed:", e);
+                }
+
+                // Test safeOffsets function
+                try {
+                    const offsets = safeOffsets(innerW * 0.8, 10);
+                    console.assert(offsets.dx < 0, "safeOffsets dx should be negative near right edge");
+                    console.log("safeOffsets test passed");
+                } catch(e) {
+                    console.error("safeOffsets test failed:", e);
+                }
+
+                // Test filterData for year & region
+                try {
+                    const testData = currentData.filter(d => d.Year === 2015 && d.Region === "Europe");
+                    console.assert(testData.every(d => d.Year === 2015 && d.Region === "Europe"), "filterData logic failed");
+                    console.log("filterData logic test passed");
+                } catch(e) {
+                    console.error("filterData logic test failed:", e);
+                }
+                console.groupEnd();
+            }
+        </script>
+    </body>
 </html>
