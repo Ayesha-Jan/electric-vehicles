@@ -30,8 +30,7 @@
             #map, #chart { border: 2px solid #d27d87; border-radius: 8px; padding: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
             #tooltip { position:absolute; background:white; border:1px solid #ccc; padding:6px; display:none; pointer-events:none; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);}
             .loading { text-align:center; font-size:18px; padding:20px; }
-            .legend { font-size:10px; }
-            .info.legend { background: #f1f6ff; padding: 8px 10px; border-radius: 8px; box-shadow: 0 3px 8px rgba(0,0,0,0.15); font-size: 12px; line-height: 1.4em; }
+            .info.legend { background: #f1f6ff; padding: 8px 10px; border-radius: 8px; font-size:10px; box-shadow: 0 3px 8px rgba(0,0,0,0.15);  line-height: 1.4em; }
             .info.legend i { border: 1px solid #ccc; }
             .annotation-note-title { font-size: 10px; font-weight: bold; }
             .annotation-note-label { font-size: 9px; }
@@ -51,6 +50,11 @@
                 #controls { display: block; }
                 #controls label { display: block; margin-top: 10px; }
                 #controls select { width: 100%; margin-bottom: 10px; }
+                .info.legend { background: #f1f6ff; padding: 4px 6px; border-radius: 4px; font-size:8px; box-shadow: 0 3px 8px rgba(0,0,0,0.15);  line-height: 1.4em; }
+                .info.legend i { border: 1px solid #ccc; width: 12px !important; height: 12px !important; margin-right: 3px !important; }
+                .info.legend svg { width: 80px !important; height: 40px !important; }
+                .annotation-note-title { font-size: 7px !important; }
+                .annotation-note-label { font-size: 6px !important; }
             }
 
         </style>
@@ -446,15 +450,19 @@
                     d3.selectAll(".color-legend").remove();
                     d3.selectAll(".size-legend").remove();
 
+                    const isMobile = window.innerWidth < 600;
+                    const fontSize = isMobile ? "7px" : "10px";
+
                     // Color Legend (top-right)
                     const colorLegend = svg.append("g")
                         .attr("class","color-legend")
-                        .attr("transform",`translate(${innerW - 100},10)`);
+                        .attr("transform",`translate(${innerW - (isMobile ? 50 : 80)}, 10)`);
 
+                    
                     colorLegend.append("text")
                         .attr("x",0).attr("y",-5)
                         .style("font-weight","bold")
-                        .style("font-size","10px")
+                        .style("font-size",fontSize)
                         .text("Clean Electricity (%)");
 
                     const legendData = d3.range(0, d3.max(data,d=>d.CleanElec), 20);
@@ -469,18 +477,18 @@
                         .append("text")
                         .attr("class","label")
                         .attr("x",18).attr("y",(d,i)=> i*18+10)
-                        .style("font-size","10px")
+                        .style("font-size",fontSize)
                         .text(d=>d+"%");
 
                     // Size Legend
                     const sizeLegend = svg.append("g")
                         .attr("class","size-legend")
-                        .attr("transform", `translate(${innerW - 100}, ${legendData.length * 18 + 40})`);
+                        .attr("transform", `translate(${innerW - (isMobile ? 50 : 80)}, ${legendData.length * 18 + 40})`);
 
                     sizeLegend.append("text")
                         .attr("x",0).attr("y",-10)
                         .style("font-weight","bold")
-                        .style("font-size","10px")
+                        .style("font-size",fontSize)
                         .text("EV Sales");
 
                     const sizeValues = [50000, 200000, 500000]; 
@@ -497,10 +505,10 @@
                             .attr("opacity",0.5);
                         
                         sizeLegend.append("text")
-                            .attr("x", r + 10)
+                            .attr("x", r + 5)
                             .attr("y", cy)
                             .attr("alignment-baseline","middle")
-                            .style("font-size","10px")
+                            .style("font-size",fontSize)
                             .text(d.toLocaleString());
 
                         cumulativeY += 2 * r + 5; 
@@ -526,9 +534,10 @@
                     });
 
                     div.innerHTML += "<br><b>EV Sales (circle size)</b><br>";
-                    div.innerHTML += '<svg width="100" height="60">' +
-                        '<circle cx="20" cy="20" r="5" fill="steelblue" opacity="0.6"/><text x="40" y="25" font-size="12">50k</text>' +
-                        '<circle cx="20" cy="45" r="10" fill="steelblue" opacity="0.6"/><text x="40" y="50" font-size="12">500k</text>' +
+                    const isMobile = window.innerWidth < 600;
+                    div.innerHTML += '<svg width="'+(isMobile?60:100)+'" height="'+(isMobile?30:60)+'">' +
+                        `<circle cx="15" cy="15" r="${isMobile?3:5}" fill="steelblue" opacity="0.6"/><text x="30" y="18" font-size="${isMobile?8:12}">50k</text>` +
+                        `<circle cx="15" cy="${isMobile?25:45}" r="${isMobile?6:10}" fill="steelblue" opacity="0.6"/><text x="30" y="${isMobile?28:50}" font-size="${isMobile?8:12}">500k</text>` +
                         '</svg>';
 
                     return div;
@@ -543,12 +552,43 @@
             // =============================
             
             window.addEventListener("resize", () => {
-            // Resize D3 chart
-            chartWidth = chartDiv.clientWidth;
-            innerW = chartWidth - margin.left - margin.right;
-            d3.select("#chart svg").attr("viewBox", `0 0 ${chartWidth} ${chartHeight}`);
-            // Resize Leaflet map
-            map.invalidateSize();
+                const newWidth = chartDiv.clientWidth;
+                const newHeight = chartDiv.clientHeight || 440;
+
+                // Recalculate inner dimensions
+                const newInnerW = newWidth - margin.left - margin.right;
+                const newInnerH = newHeight - margin.top - margin.bottom;
+
+                // Update scale ranges
+                xScale.range([0, newInnerW]);
+                yScale.range([newInnerH, 0]);
+
+                // Update SVG viewBox
+                d3.select("#chart svg")
+                    .attr("viewBox", `0 0 ${newWidth} ${newHeight}`);
+
+                // Update axes
+                svg.select(".x-axis")
+                    .attr("transform", `translate(0, ${newInnerH})`)
+                    .call(d3.axisBottom(xScale));
+                svg.select(".y-axis").call(d3.axisLeft(yScale));
+
+                // Update labels
+                svg.select(".x-label")
+                    .attr("x", newInnerW / 2)
+                    .attr("y", newInnerH + 48);
+                svg.select(".y-label")
+                    .attr("x", -newInnerH / 2);
+
+
+                // ✅ Update legends to use new width
+                updateLegends(currentData, newInnerW);
+
+                // ✅ Update annotations
+                drawAnnotations(currentAnnotations);
+
+                // Resize Leaflet map
+                map.invalidateSize();
             });
             
         </script>
