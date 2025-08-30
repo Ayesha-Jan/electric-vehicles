@@ -53,9 +53,9 @@
                 #controls { display: block; grid-auto-flow: row; min-height: 96px;}
                 #controls label { display: block; margin-top: 10px; }
                 #controls select { width: 100%; margin-bottom: 10px; }
-                .info.legend { background: #f1f6ff; padding: 4px 6px; border-radius: 4px; font-size:8px; box-shadow: 0 3px 8px rgba(0,0,0,0.15);  line-height: 1.4em; }
-                .info.legend i { border: 1px solid #ccc; width: 12px !important; height: 12px !important; margin-right: 3px !important; }
-                .info.legend svg { width: 80px !important; height: 40px !important; }
+                .info.legend { background: #f1f6ff; padding: 1px 1px; border-radius: 5px; font-size:6px; box-shadow: 0 3px 8px rgba(0,0,0,0.15);  line-height: 1em; }
+                .info.legend i { border: 1px solid #ccc; width: 12px !important; height: 12px !important; margin-right: 0px !important; }
+                .info.legend svg { width: 60px !important; height: 35px !important; }
                 .annotation-note-title { font-size: 7px !important; }
                 .annotation-note-label { font-size: 6px !important; }
             }
@@ -98,7 +98,7 @@
             const chartDiv = document.getElementById('chart');
             const chartWidth = 1000;
             const chartHeight = 440;
-            const margin = {top: 30, right: 30, bottom: 50, left: 80};
+            const margin = {top: 30, right: 100, bottom: 50, left: 80};
             const innerW = chartWidth - margin.left - margin.right;
             const innerH = chartHeight - margin.top - margin.bottom;
 
@@ -506,7 +506,7 @@
                     // Color Legend (top-right)
                     const colorLegend = svg.append("g")
                         .attr("class","color-legend")
-                        .attr("transform",`translate(${innerW - (isMobile ? 90 : 80)}, 10)`);
+                        .attr("transform",`translate(${innerW - (isMobile ? 20 : 0)}, 10)`);
 
                     
                     colorLegend.append("text")
@@ -533,7 +533,7 @@
                     // Size Legend
                     const sizeLegend = svg.append("g")
                         .attr("class","size-legend")
-                        .attr("transform", `translate(${innerW - (isMobile ? 85 : 75)}, ${legendData.length * 18 + 40})`);
+                        .attr("transform", `translate(${innerW - (isMobile ? 15 : -10)}, ${legendData.length * 18 + 40})`);
 
                     sizeLegend.append("text")
                         .attr("x",0).attr("y",-10)
@@ -613,7 +613,7 @@
             });
 
             // =============================
-            // Task 17: Testing & Validation
+            // Testing & Validation
             // =============================
 
             function runVisualizationTests() {
