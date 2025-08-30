@@ -23,19 +23,20 @@
             h1 { text-align: center; margin: 20px 0; color: #333; font-weight: 600; }
             h2 { text-align: center; margin: 20px 0; color: #484851; font-weight: 500; font-size: 20px;}
             p { text-align:center; font-size:14px; color: #7a7aae; font-size: 14px; margin-bottom: 10px; }
-            h2, p { line-height: 1.3; margin-top: 20px; margin-bottom: 10px; }
             .container { width: 92%; max-width: 1200px; margin: 20px auto; background: #faf6f7; border-radius: 12px; padding: 15px 20px; box-shadow: 0 6px 18px rgba(0,0,0,0.1); }
-            #controls { text-align:center; margin: 15px; }
+            #controls { min-height: 44px; text-align:center; margin: 15px; }
             #map { width: 100%; height: 520px; margin: 10px 0; }
             #chart { width: 100%; height: 480px; margin: 10px 0; display:block; }
-            #map, #chart { min-height: 200px; border: 2px solid #d27d87; border-radius: 8px; padding: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
+            #map, #chart { border: 2px solid #d27d87; border-radius: 8px; padding: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
             #chart svg { width: 100%; height: 100%; display: block; }
             #tooltip { position:absolute; background:white; border:1px solid #ccc; padding:6px; display:none; pointer-events:none; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);}
-            .loading { text-align:center; font-size:18px; padding:20px; }
-            .info.legend { background: #f1f6ff; padding: 8px 10px; border-radius: 8px; font-size:10px; box-shadow: 0 3px 8px rgba(0,0,0,0.15);  line-height: 1.4em; min-width: 120px; }
+            .loading { min-height: 12px; text-align:center; font-size:10px; padding:5px; }
+            .loading.loaded { visibility: hidden; }
+            .info.legend { background: #f1f6ff; padding: 8px 10px; border-radius: 8px; font-size:10px; box-shadow: 0 3px 8px rgba(0,0,0,0.15);  line-height: 1.4em; }
             .info.legend i { border: 1px solid #ccc; }
             .annotation-note-title { font-size: 10px; font-weight: bold; }
             .annotation-note-label { font-size: 9px; }
+            .leaflet-bottom.leaflet-right { min-height: 50px; min-width: 120px; }
 
             /* Tablet */
                 @media (max-width: 1024px) {
@@ -47,9 +48,9 @@
             @media (max-width: 600px) {
                 h1 { font-size: 18px; }
                 h2 { font-size: 14px; }
-                #map, #chart { height: 200px; min-height: 200px; }
+                #map, #chart { height: 200px; }
                 .container { padding: 10px; }
-                #controls { display: block; }
+                #controls { display: block; grid-auto-flow: row; min-height: 96px;}
                 #controls label { display: block; margin-top: 10px; }
                 #controls select { width: 100%; margin-bottom: 10px; }
                 .info.legend { background: #f1f6ff; padding: 4px 6px; border-radius: 4px; font-size:8px; box-shadow: 0 3px 8px rgba(0,0,0,0.15);  line-height: 1.4em; }
@@ -73,17 +74,16 @@
                 <select id="regionSelect"></select>
             </div>
             <div class="loading" id="loading">Loading data...</div>
-        </br>
             
             <!-- Map title -->
             <h2>Global Electric Vehicle Adoption & Clean Electricity</h2>
             <p>Some bubbles are clustered—click a cluster to see the individual countries.</p>
-            <div id="map" style="height:520px; min-height:520px;"></div>
+            <div id="map"></div>
 
             <!-- Scatter plot title -->
             <h2>Clean Electricity Share vs. Electric Vehicle Sales</h2>
             <p>Each bubble represents a country in the selected year/region.</p>
-            <div id="chart" style="height:480px; min-height:480px;"></div>
+            <div id="chart"></div>
 
         </div>
         <div id="tooltip"></div>
@@ -159,7 +159,7 @@
             }
 
             // =============================
-            // Zoom
+            // Zoom function
             // =============================
 
             // Throttle helper
@@ -240,7 +240,7 @@
 
                 let currentData = masterData;
 
-                d3.select("#loading").style("display","none");
+                document.getElementById('loading').classList.add('loaded');
 
                 // Year dropdown
                 const years = ["All years", ...d3.range(2010, 2021)];
@@ -419,13 +419,8 @@
                     leafletLayer = L.markerClusterGroup();
                     Object.keys(markerMap).forEach(k => delete markerMap[k]);
 
-                    const bounds = map.getBounds();
-
                     data.forEach(d => {
-                        const latlng = L.latLng(d.lat, d.lon);
-                        if (!bounds.contains(latlng)) return;
-
-                        const marker = L.circleMarker(latlng, {
+                        const marker = L.circleMarker([d.lat, d.lon], {
                         radius: 4 + sizeScale(d.EV)/2,
                         fillColor: colorScale(d.CleanElec),
                         color: "#333",
