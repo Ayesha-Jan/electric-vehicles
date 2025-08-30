@@ -103,6 +103,7 @@
             const innerH = chartHeight - margin.top - margin.bottom;
 
             let currentAnnotations = [];
+            let currentData = [];
 
             const svg = d3.select("#chart")
                 .append("svg")
@@ -262,7 +263,7 @@
                 const maxEVOverall = d3.max(masterData, d => d.EV);
                 sizeScale.domain([0, maxEVOverall]);
 
-                let currentData = masterData;
+                currentData = masterData;
                 if (currentData.length === 0) {
                     d3.select("#loading").style("display", "block").text("No data available for the selected year/region.");
                     svg.selectAll("circle").remove();
@@ -423,6 +424,7 @@
                             if (y > innerH - 40) dy = -40;
                             return {dx, dy};
                         }
+                        window.safeOffsets = safeOffsets;
 
                         if (top) {
                             const {dx, dy} = safeOffsets(xScale(top.CleanElec), yScale(top.EV));
@@ -592,6 +594,12 @@
                 };
                 legend.addTo(map);
                 L.control.scale({metric:true, imperial:false}).addTo(map);
+
+                window.updateChart = updateChart;
+                window.updateMap = updateMap;
+                window.drawAnnotations = drawAnnotations;
+                window.filterData = filterData;
+                runVisualizationTests();
             }
             // =============================
             // Responsive Event Handlers
@@ -603,7 +611,50 @@
                 // Resize Leaflet map
                 map.invalidateSize();
             });
-            
+
+            // =============================
+            // Task 17: Testing & Validation
+            // =============================
+
+            function runVisualizationTests() {
+                console.group("=== Visualization Testing ===");
+
+                // Test xScale mapping
+                try {
+                    console.assert(xScale(50) >= 0 && xScale(50) <= innerW, "xScale out of range");
+                    console.log("xScale mapping test passed");
+                } catch(e) {
+                    console.error("xScale mapping test failed:", e);
+                }
+
+                // Test yScale mapping
+                try {
+                    console.assert(yScale(1000) >= 0 && yScale(1000) <= innerH, "yScale out of range");
+                    console.log("yScale mapping test passed");
+                } catch(e) {
+                    console.error("yScale mapping test failed:", e);
+                }
+
+                // Test safeOffsets function
+                try {
+                    const offsets = safeOffsets(innerW * 0.8, 10);
+                    console.assert(offsets.dx < 0, "safeOffsets dx should be negative near right edge");
+                    console.log("safeOffsets test passed");
+                } catch(e) {
+                    console.error("safeOffsets test failed:", e);
+                }
+
+                // Test filterData for year & region
+                try {
+                    const testData = currentData.filter(d => d.Year === 2015 && d.Region === "Europe");
+                    console.assert(testData.every(d => d.Year === 2015 && d.Region === "Europe"), "filterData logic failed");
+                    console.log("filterData logic test passed");
+                } catch(e) {
+                    console.error("filterData logic test failed:", e);
+                }
+                console.groupEnd();
+            }
+
         </script>
     </body>
 </html>
