@@ -3,8 +3,14 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Task 15:  Error Handling</title>
+        <title>EV vs Clean Electricity</title>
 
+        <!-- =============================
+         Task 10: Basic Visualization Structure
+         - Load D3.js, Leaflet, MarkerCluster
+         - Prepare for chart + map
+        ============================== -->
+    
         <!-- D3.js -->
         <script src="https://d3js.org/d3.v7.min.js"></script>
         <script src="https://unpkg.com/d3-svg-annotation@2.5.1/d3-annotation.min.js"></script>
@@ -18,6 +24,7 @@
         <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
         <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
+        <!-- Task 14: Styles include responsive design -->
         <style>
             body { font-family: sans-serif; margin:0; padding:0; background: #fae5e9;}
             h1 { text-align: center; margin: 20px 0; color: #333; font-weight: 600; }
@@ -92,7 +99,8 @@
         <script>
 
             // =============================
-            // Setup SVG for Scatter Plot
+            // Task 10: Basic Visualization Structure
+            // - Set up SVG, scales, axes, labels
             // =============================
 
             const chartDiv = document.getElementById('chart');
@@ -112,16 +120,17 @@
                 .append("g")
                 .attr("transform", `translate(${margin.left},${margin.top})`);
 
+            // Task 10: Scales
             const xScale = d3.scaleLinear().range([0, innerW]);
             const yScale = d3.scaleLinear().range([innerH, 0]);
             const sizeScale = d3.scaleSqrt().range([3, 20]);
             const colorScale = d3.scaleSequential(d3.interpolateRgb("pink", "steelblue"));
 
-            // Axes
+            // Task 10: Axes
             svg.append("g").attr("class","x-axis").attr("transform", `translate(0, ${innerH})`);
             svg.append("g").attr("class","y-axis");
 
-            // Labels
+            // Task 10: Labels
             svg.append("text")
                 .attr("class","x-label")
                 .attr("x", innerW/2)
@@ -138,10 +147,12 @@
                 .text("Electric Cars Sold");
 
             // =============================
-            // Draw Annotations Function
+            // Task 13: Annotations
+            // - Function to draw d3-annotations
             // =============================
+
             function drawAnnotations(annotations, transform = null) {
-                svg.selectAll(".annotation-group").remove(); // remove old annotations
+                svg.selectAll(".annotation-group").remove();
 
                 if (annotations.length === 0) return;
 
@@ -161,10 +172,10 @@
             }
 
             // =============================
-            // Zoom
+            // Task 15: Performance Optimization
+            // - Throttle zoom and brush to avoid excessive redraws
             // =============================
-
-            // Throttle helper
+            
             function throttle(func, delay) {
                 let lastCall = 0;
                 return function(...args) {
@@ -175,6 +186,11 @@
                     }
                 }
             }
+
+            // =============================
+            // Task 12: Interactivity
+            // - Zoom behavior with throttle
+            // =============================
 
             const zoom = d3.zoom()
                 .scaleExtent([0.5, 10])
@@ -203,11 +219,12 @@
                 drawAnnotations(currentAnnotations, transform);
             }
 
-            // Tooltip
+            // Task 12: Tooltip
             const tooltip = d3.select("#tooltip");
 
             // =============================
-            // Leaflet Map Setup
+            // Task 10 & 11: Leaflet Map Setup
+            // - Base map, tile layers
             // =============================
 
             const map = L.map('map', { center: [20, 0], zoom: window.innerWidth < 768 ? 1 : 2, zoomControl: true, dragging: true, tap: true, scrollWheelZoom: false });
@@ -220,7 +237,8 @@
             const markerMap = {}; 
 
             // =============================
-            // Data Loading with Backup
+            // Task 16: Error Handling
+            // - Load data with backup option
             // =============================
 
             d3.json("data/master_data.geojson").then(geoData => processGeoData(geoData))
@@ -237,7 +255,8 @@
             });
 
             // =============================
-            // Processing Data
+            // Task 11: Data Processing
+            // - Clean and validate data
             // =============================
             
             function processGeoData(geoData) {
@@ -274,6 +293,11 @@
 
                 d3.select("#loading").style("display","none");
 
+                // =============================
+                // Task 12: Interactivity
+                // - Filtering with dropdowns
+                // =============================
+
                 // Year dropdown
                 const years = ["All years", ...d3.range(2010, 2021)];
                 const yearSelect = d3.select("#yearSelect");
@@ -292,10 +316,6 @@
                     .enter().append("option")
                     .text(d => d)
                     .attr("value", d => d);
-
-                // =============================
-                // Filter Function
-                // =============================
 
                 function filterData() {
                     const year = yearSelect.property("value");
@@ -322,7 +342,7 @@
                 regionSelect.on("change", filterData);
 
                 // =============================
-                // Brush
+                // Task 12: Brush
                 // =============================
                 const brush = d3.brush()
                     .extent([[0,0], [innerW, innerH]])
@@ -357,7 +377,8 @@
                 d3.select("svg").transition().duration(500).call(zoom.transform, d3.zoomIdentity);
 
                 // =============================
-                // Update Scatter Plot
+                // Task 11: Update Scatter Plot
+                // - Enter/update/exit pattern
                 // =============================
 
                 function updateChart(data) {
@@ -405,11 +426,11 @@
                     circles.exit().remove();
 
                     // =============================
-                    // D3 Annotations
+                    // Task 13: D3 Annotations
                     // =============================
                     svg.selectAll(".annotation-group").remove();
 
-                    currentAnnotations = []; // reset annotations
+                    currentAnnotations = []; 
 
                     if (data.length > 0) {
                         const maxEV = d3.max(data, d => d.EV);
@@ -448,11 +469,14 @@
                 }
 
                 // =============================
-                // Update Leaflet Map
+                // Task 11: Update Leaflet Map
+                // - Markers, clustering, popups
                 // =============================
 
                 function updateMap(data) {
                     if (leafletLayer) map.removeLayer(leafletLayer);
+
+                    //Task 15: Leaflet marker clustering for large datasets
                     leafletLayer = L.markerClusterGroup();
                     Object.keys(markerMap).forEach(k => delete markerMap[k]);
 
@@ -493,7 +517,7 @@
                 }
 
                 // =============================
-                // Legends
+                // Task 13: Legends (D3 + Leaflet)
                 // =============================
 
                 function updateLegends(data){
@@ -503,7 +527,7 @@
                     const isMobile = window.innerWidth < 600;
                     const fontSize = isMobile ? "12px" : "10px";
 
-                    // Color Legend (top-right)
+                    // D3 Color Legend (top-right)
                     const colorLegend = svg.append("g")
                         .attr("class","color-legend")
                         .attr("transform",`translate(${innerW - (isMobile ? 20 : 0)}, 10)`);
@@ -530,7 +554,7 @@
                         .style("font-size",fontSize)
                         .text(d=>d+"%");
 
-                    // Size Legend
+                    // D3 Size Legend
                     const sizeLegend = svg.append("g")
                         .attr("class","size-legend")
                         .attr("transform", `translate(${innerW - (isMobile ? 15 : -10)}, ${legendData.length * 18 + 40})`);
@@ -586,7 +610,7 @@
                     div.innerHTML += "<br><b>EV Sales (circle size)</b><br>";
                     const isMobile = window.innerWidth < 600;
                     div.innerHTML += '<svg width="'+(isMobile?60:100)+'" height="'+(isMobile?30:60)+'">' +
-                        `<circle cx="15" cy="15" r="${isMobile?3:5}" fill="steelblue" opacity="0.6"/><text x="30" y="18" font-size="${isMobile?8:12}">50k</text>` +
+                        `<circle cx="15" cy="15" r="${isMobile?3:5}" fill="steelblue" opacity="0.6"/><text x="30" y="18" font-size="${isMobile?8:12}">5k</text>` +
                         `<circle cx="15" cy="${isMobile?25:45}" r="${isMobile?6:10}" fill="steelblue" opacity="0.6"/><text x="30" y="${isMobile?28:50}" font-size="${isMobile?8:12}">500k</text>` +
                         '</svg>';
 
@@ -601,8 +625,9 @@
                 window.filterData = filterData;
                 runVisualizationTests();
             }
+
             // =============================
-            // Responsive Event Handlers
+            // Task 14: Responsive Design
             // =============================
             
             window.addEventListener("resize", () => {
@@ -613,7 +638,7 @@
             });
 
             // =============================
-            // Testing & Validation
+            // Task 19: Testing & Validation
             // =============================
 
             function runVisualizationTests() {
@@ -654,7 +679,6 @@
                 }
                 console.groupEnd();
             }
-
         </script>
     </body>
 </html>
