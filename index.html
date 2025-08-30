@@ -30,7 +30,10 @@
             h1 { text-align: center; margin: 20px 0; color: #333; font-weight: 600; }
             h2 { text-align: center; margin: 20px 0; color: #484851; font-weight: 500; font-size: 20px;}
             p { text-align:center; font-size:14px; color: #7a7aae; font-size: 14px; margin-bottom: 10px; }
-            .container { width: 92%; max-width: 1200px; margin: 20px auto; background: #faf6f7; border-radius: 12px; padding: 15px 20px; box-shadow: 0 6px 18px rgba(0,0,0,0.1); }
+            .dashboard-container { display: flex;
+                width: 92%;
+                height: 90vh; /* or whatever fits your viewport */
+                gap: 20px;}
             #controls { min-height: 44px; text-align:center; margin: 15px; }
             #map { width: 100%; height: 520px; margin: 10px 0; }
             #chart { width: 100%; height: 480px; margin: 10px 0; display:block; }
@@ -44,6 +47,30 @@
             .annotation-note-title { font-size: 10px; font-weight: bold; }
             .annotation-note-label { font-size: 9px; }
             .leaflet-bottom.leaflet-right { min-height: 50px; min-width: 120px; }
+
+            #story-panel {
+                width: 25%;
+                height: 1275px;
+                overflow-y: auto; /* scrollable */
+                padding: 15px;
+                background: #fffaf6;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+                position: sticky;
+            }
+
+            #visuals-panel {
+                width: 75%;
+                overflow-y: auto;
+            }
+
+            /* Story container */
+            #story { max-width: 900px; margin: 10px auto 30px auto; }
+            .step { margin: 30px 0; padding: 18px; background: white; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+            .step h3 { margin: 0 0 8px 0; color:#333; }
+            .step p { text-align:left; color:#555; }
+            .step.is-active { border-left: 6px solid #d27d87; background: linear-gradient(90deg, #fff, #fffaf6); }
+
 
             /* Tablet */
                 @media (max-width: 1024px) {
@@ -71,28 +98,74 @@
         
     </head>
     <body>
-        <div class = "container">
-            <h1>Does Clean Electricity Drive Electric Vehicle Adoption?</h1>
-            <div id="controls">
-                <label for="yearSelect"><b>Select Year:</b></label>
-                <select id="yearSelect"></select>
-
-                <label for="regionSelect"><b>Select Region:</b></label>
-                <select id="regionSelect"></select>
+        <div class="dashboard-container">
+            <!-- Storytelling container (Task 18) -->
+             <div id="story-panel">
+                <div id="story">
+                    <div class="step" data-step="intro">
+                        <h2>Introduction</h2>
+                        <p>Hypothesis: Cleaner electricity → more EV adoption. Let’s see if the data supports it.</p>
+                    </div>
+                    <div class="step" data-step="global">
+                        <h2>No Strong Global Link</h2>
+                        <p>Globally, correlations are weak or contradictory. Grid cleanliness alone does not explain EV adoption.</p>
+                    </div>
+                    <div class="step" data-step="europe">
+                        <h2>Regional Differences: Europe</h2>
+                        <p>Europe trends slightly negative: cleaner grids correlate with more EV adoption, but weakly.</p>
+                    </div>
+                    <div class="step" data-step="northamerica">
+                        <h2>Regional Differences: North America</h2>
+                        <p>Here, the link is actually positive: more carbon-intensive grids see higher EV adoption — reflecting strong policy and incentives.</p>
+                    </div>
+                    <div class="step" data-step="asiapacific">
+                        <h2>Regional Differences: Asia & Pacific</h2>
+                        <p>Mixed picture: large EV markets like China coexist with fossil-heavy grids.</p>
+                    </div>
+                    <div class="step" data-step="clusters">
+                        <h2>Spatial Clustering</h2>
+                        <p>EV adoption hubs are concentrated in Europe, China/East Asia, and North America — driven by policy, supply chains, and incentives.</p>
+                    </div>
+                    <div class="step" data-step="local">
+                        <h2>Local Relationships</h2>
+                        <p>Local regressions differ: Nordics show negative slopes, while North America/East Asia tilt positive. Global averages blur these differences.</p>
+                    </div>
+                    <div class="step" data-step="anomalies">
+                        <h2>Patterns & Anomalies</h2>
+                        <p>Outliers like Norway (clean + high EVs) or China/US (high EVs despite dirtier grids) illustrate how market and policy dominate.</p>
+                    </div>
+                    <div class="step" data-step="cautions">
+                        <h2>Cautions</h2>
+                        <p>Beware scale effects, lags, omitted variables, and pooled data. Correlation ≠ causation.</p>
+                    </div>
+                    <div class="step" data-step="conclusion">
+                        <h2>Conclusion</h2>
+                        <p>No universal global link. Regional and local factors matter most. Policies, incentives, and market size shape EV adoption more than grid cleanliness.</p>
+                    </div>
+                </div>
             </div>
-            <div class="loading" id="loading">Loading data...</div>
-        </br>
-            
-            <!-- Map title -->
-            <h2>Global Electric Vehicle Adoption & Clean Electricity</h2>
-            <p>Some bubbles are clustered—click a cluster to see the individual countries.</p>
-            <div id="map"></div>
 
-            <!-- Scatter plot title -->
-            <h2>Clean Electricity Share vs. Electric Vehicle Sales</h2>
-            <p>Each bubble represents a country in the selected year/region.</p>
-            <div id="chart"></div>
+            <div class = "visuals-panel">
+                <h1>Does Clean Electricity Drive Electric Vehicle Adoption?</h1>
+                <div id="controls">
+                    <label for="yearSelect"><b>Select Year:</b></label>
+                    <select id="yearSelect"></select>
 
+                    <label for="regionSelect"><b>Select Region:</b></label>
+                    <select id="regionSelect"></select>
+                </div>
+                <div class="loading" id="loading">Loading data...</div>
+
+                <!-- Map title -->
+                <h2>Global Electric Vehicle Adoption & Clean Electricity</h2>
+                <p>Some bubbles are clustered—click a cluster to see the individual countries.</p>
+                <div id="map"></div>
+
+                <!-- Scatter plot title -->
+                <h2>Clean Electricity Share vs. Electric Vehicle Sales</h2>
+                <p>Each bubble represents a country in the selected year/region.</p>
+                <div id="chart"></div>
+            </div>
         </div>
         <div id="tooltip"></div>
 
@@ -625,6 +698,64 @@
                 window.filterData = filterData;
                 runVisualizationTests();
             }
+
+            // =============================
+            // Task 18: Storytelling — scroll-driven activation
+            // - Uses IntersectionObserver to trigger map + chart transitions
+            // =============================
+
+            function findLatestForCountry(country){
+                const c = currentData.filter(d=>d.Country===country);
+                if(!c.length) return null;
+                return c.sort((a,b)=>b.Year-a.Year)[0];
+            }
+
+            function resetHighlights(){
+                svg.selectAll("circle").transition().duration(400).style("opacity",0.9).attr("r",d=>sizeScale(d.EV));
+            }
+
+            function highlightCountry(d){
+                if(!d) return;
+                svg.selectAll("circle").transition().duration(500)
+                    .style("opacity",c=>(c.Country===d.Country?1:0.1))
+                    .attr("r",c=>(c.Country===d.Country?sizeScale(c.EV)*1.5:sizeScale(c.EV)));
+                if(d.lat&&d.lon) map.flyTo([d.lat,d.lon],4,{animate:true,duration:1.2});
+                const marker = markerMap[d.Country+d.Year];
+                if(marker) marker.openPopup();
+            }
+
+            function activateStep(stepId){
+                d3.selectAll('.step').classed('is-active',false);
+                d3.selectAll('.step').filter(function(){ return this.getAttribute('data-step')===stepId; }).classed('is-active',true);
+                resetHighlights();
+
+                switch(stepId){
+                    case "intro": map.flyTo([20,0],2,{animate:true,duration:1}); break;
+                    case "global": map.flyTo([20,0],1.5,{animate:true,duration:1.2}); break;
+                    case "europe": highlightCountry(findLatestForCountry("Germany")); break;
+                    case "northamerica": highlightCountry(findLatestForCountry("United States")); break;
+                    case "asiapacific": highlightCountry(findLatestForCountry("China")); break;
+                    case "clusters": map.flyTo([54,15],3,{animate:true,duration:1.2}); break;
+                    case "local": highlightCountry(findLatestForCountry("Norway")); setTimeout(()=>highlightCountry(findLatestForCountry("United States")),1200); break;
+                    case "anomalies": highlightCountry(findLatestForCountry("Norway")); break;
+                    case "cautions": resetHighlights(); break;
+                    case "conclusion": map.flyTo([20,0],2,{animate:true,duration:1}); break;
+                }
+            }
+
+            // IntersectionObserver for storytelling
+            const storyPanel = document.querySelector('#story-panel');
+            const steps = storyPanel.querySelectorAll('.step');
+            const observerOptions = { root: storyPanel, threshold: 0.5 };
+            const stepObserver = new IntersectionObserver((entries)=>{
+                entries.forEach(entry=>{
+                    if(entry.isIntersecting){
+                        const stepId = entry.target.getAttribute('data-step');
+                        activateStep(stepId);
+                    }
+                });
+            },observerOptions);
+            steps.forEach(step=>stepObserver.observe(step));
 
             // =============================
             // Task 14: Responsive Design
