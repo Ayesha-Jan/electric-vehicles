@@ -27,17 +27,14 @@
         <!-- Task 14: Styles include responsive design -->
         <style>
             body { font-family: sans-serif; margin:0; padding:0; background: #fae5e9;}
-            h1 { text-align: center; margin: 20px 0; color: #333; font-weight: 600; }
-            h2 { text-align: center; margin: 20px 0; color: #484851; font-weight: 500; font-size: 20px;}
+            h1 { text-align: center; margin: 20px 0; color: #864b69; font-weight: 600; }
+            h2 { text-align: center; margin: 20px 0; color: #864b69; font-weight: 500; font-size: 20px;}
             p { text-align:center; font-size:14px; color: #7a7aae; font-size: 14px; margin-bottom: 10px; }
-            .dashboard-container { display: flex;
-                width: 92%;
-                height: 90vh; /* or whatever fits your viewport */
-                gap: 20px;}
-            #controls { min-height: 44px; text-align:center; margin: 15px; }
+            .dashboard-container { display: flex; width: 92%; height: 90vh; gap: 20px;}
+            #controls { color: #7a7aae; min-height: 44px; text-align:center; margin: 15px; }
             #map { width: 100%; height: 520px; margin: 10px 0; }
             #chart { width: 100%; height: 480px; margin: 10px 0; display:block; }
-            #map, #chart { border: 2px solid #d27d87; border-radius: 8px; padding: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
+            #map, #chart { background: #ffffff; border: 2px solid #f6b8bf; border-radius: 8px; padding: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
             #chart svg { width: 100%; height: 100%; display: block; }
             #tooltip { position:absolute; background:white; border:1px solid #ccc; padding:6px; display:none; pointer-events:none; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);}
             .loading { min-height: 12px; text-align:center; font-size:10px; padding:5px; }
@@ -48,28 +45,12 @@
             .annotation-note-label { font-size: 9px; }
             .leaflet-bottom.leaflet-right { min-height: 50px; min-width: 120px; }
 
-            #story-panel {
-                width: 25%;
-                height: 1275px;
-                overflow-y: auto; /* scrollable */
-                padding: 15px;
-                background: #fffaf6;
-                border-radius: 12px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-                position: sticky;
-            }
-
-            #visuals-panel {
-                width: 75%;
-                overflow-y: auto;
-            }
-
-            /* Story container */
+            #story-panel { width: 25%; height: 1275px; overflow-y: auto; padding: 15px; background: #fff6fa; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); position: relative; }
+            #visuals-panel { width: 75%; overflow-y: auto; }
             #story { max-width: 900px; margin: 10px auto 30px auto; }
             .step { margin: 30px 0; padding: 18px; background: white; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
-            .step h3 { margin: 0 0 8px 0; color:#333; }
             .step p { text-align:left; color:#555; }
-            .step.is-active { border-left: 6px solid #d27d87; background: linear-gradient(90deg, #fff, #fffaf6); }
+            .step.is-active { border-left: 6px solid #fddde1; background: linear-gradient(90deg, #fff, #fff6f9); }
 
 
             /* Tablet */
@@ -82,16 +63,21 @@
             @media (max-width: 600px) {
                 h1 { font-size: 18px; }
                 h2 { font-size: 14px; }
-                #map, #chart { height: 200px; }
-                .container { padding: 10px; }
+                p { font-size: 10px; }
+                #map, #chart { height: 150px; }
+                .dashboard-container { padding: 10px; }
                 #controls { display: block; grid-auto-flow: row; min-height: 96px;}
-                #controls label { display: block; margin-top: 10px; }
-                #controls select { width: 100%; margin-bottom: 10px; }
-                .info.legend { background: #f1f6ff; padding: 1px 1px; border-radius: 5px; font-size:6px; box-shadow: 0 3px 8px rgba(0,0,0,0.15);  line-height: 1em; }
+                #controls label { font-size: 12px; display: block; margin-top: 10px; }
+                #controls select { font-size: 10px; width: 100%; margin-bottom: 10px; }
+                .info.legend { background: #f1f6ff; padding: 1px 1px; border-radius: 5px; font-size:5px; box-shadow: 0 3px 8px rgba(0,0,0,0.15);  line-height: 1em; }
                 .info.legend i { border: 1px solid #ccc; width: 12px !important; height: 12px !important; margin-right: 0px !important; }
-                .info.legend svg { width: 60px !important; height: 35px !important; }
+                .info.legend svg { width: 60px !important; height: 20px !important; }
                 .annotation-note-title { font-size: 7px !important; }
                 .annotation-note-label { font-size: 6px !important; }
+                .step { margin: 15px 0; padding: 10px; font-size: 10px; }
+                .step h2 { font-size: 10px; margin-bottom: 4px; }
+                .step p { font-size: 8px; }
+                #story-panel { width: 50%; height: 700px; }
             }
 
         </style>
@@ -185,6 +171,7 @@
 
             let currentAnnotations = [];
             let currentData = [];
+            let fullData = [];
 
             const svg = d3.select("#chart")
                 .append("svg")
@@ -336,7 +323,7 @@
                 const masterData = geoData.features.map(f => {
                     const p = f.properties;
                     if (!p.Country || !p.Region || !p.Year || !p.EV || !p.CleanElec ) {
-                        console.warn("Invalid data point:", p);
+                        console.warn("Invalid data point skipped:", p);
                         return null;
                     }
                     return {
@@ -351,11 +338,12 @@
                 }).filter(d => d !== null);
 
                 console.info("Data loaded successfully:", masterData.length, "points.");
+                fullData = masterData;
 
                 const maxEVOverall = d3.max(masterData, d => d.EV);
                 sizeScale.domain([0, maxEVOverall]);
 
-                currentData = masterData;
+                currentData = masterData.slice();
                 if (currentData.length === 0) {
                     d3.select("#loading").style("display", "block").text("No data available for the selected year/region.");
                     svg.selectAll("circle").remove();
@@ -363,8 +351,6 @@
                 } else {
                     d3.select("#loading").style("display", "none");
                 }
-
-                d3.select("#loading").style("display","none");
 
                 // =============================
                 // Task 12: Interactivity
@@ -442,6 +428,9 @@
                         map.fitBounds(bounds, { padding: [30, 30], maxZoom: 5 });
                     };
                 }
+
+                window.masterData = masterData;
+                window.fullData = fullData;
 
                 // Initial state
                 yearSelect.property("value", "All years");
@@ -546,11 +535,14 @@
                 // - Markers, clustering, popups
                 // =============================
 
-                function updateMap(data) {
+                function updateMap(data, options = {}) {
                     if (leafletLayer) map.removeLayer(leafletLayer);
 
-                    //Task 15: Leaflet marker clustering for large datasets
-                    leafletLayer = L.markerClusterGroup();
+                    const suppressFitBounds = options.suppressFitBounds || false;
+
+                    leafletLayer = L.markerClusterGroup({
+                        removeOutsideVisibleBounds: false
+                    });
                     Object.keys(markerMap).forEach(k => delete markerMap[k]);
 
                     data.forEach(d => {
@@ -583,7 +575,7 @@
                     leafletLayer.addTo(map);
 
                     // Zoom map to fit filtered data
-                    if (data.length > 0) {
+                    if (!suppressFitBounds && data.length > 0) {
                         const bounds = L.latLngBounds(data.map(d => [d.lat, d.lon]));
                         map.fitBounds(bounds, { padding: [30, 30] });
                     }
@@ -667,7 +659,15 @@
                 const legend = L.control({position:"bottomright"});
                 legend.onAdd = function(map){
                     const div = L.DomUtil.create("div","info legend");
-                    div.innerHTML += "<b>Clean Electricity (%)</b><br>";
+
+                    const isMobile = window.innerWidth < 600;
+
+                    // Adjust font and box size for mobile
+                    const labelFontSize = isMobile ? "5px" : "12px";
+                    const boxSize = isMobile ? 8 : 18;
+                    const marginRight = isMobile ? 3 : 5;
+
+                    div.innerHTML += `<b style="font-size:${labelFontSize}">Clean Electricity (%)</b><br>`;
 
                     const grades = [0, 20, 40, 60, 80, 100];
                     const labels = ["0–19", "20–39", "40–59", "60–79", "80–100"];
@@ -675,20 +675,28 @@
                     grades.forEach((g, i) => {
                         if (i < labels.length) {
                             div.innerHTML +=
-                                `<i style="background:${colorScale(g)}; width:18px; height:18px; display:inline-block; margin-right:5px"></i>
+                                `<i style="background:${colorScale(g)}; width:${boxSize}px; height:${boxSize}px; display:inline-block; margin-right:${marginRight}px"></i>
                                 ${labels[i]}%<br>`;
                         }
                     });
 
-                    div.innerHTML += "<br><b>EV Sales (circle size)</b><br>";
-                    const isMobile = window.innerWidth < 600;
-                    div.innerHTML += '<svg width="'+(isMobile?60:100)+'" height="'+(isMobile?30:60)+'">' +
-                        `<circle cx="15" cy="15" r="${isMobile?3:5}" fill="steelblue" opacity="0.6"/><text x="30" y="18" font-size="${isMobile?8:12}">5k</text>` +
-                        `<circle cx="15" cy="${isMobile?25:45}" r="${isMobile?6:10}" fill="steelblue" opacity="0.6"/><text x="30" y="${isMobile?28:50}" font-size="${isMobile?8:12}">500k</text>` +
-                        '</svg>';
+                    div.innerHTML += `<br><b style="font-size:${labelFontSize}">EV Sales (circle size)</b><br>`;
+                    const svgWidth = isMobile ? 60 : 100;
+                    const svgHeight = isMobile ? 30 : 60;
+                    const smallCircleR = isMobile ? 2 : 5;
+                    const largeCircleR = isMobile ? 5 : 10;
+                    const textFont = isMobile ? 6 : 12;
+
+                    div.innerHTML += `<svg width="${svgWidth}" height="${svgHeight}">
+                        <circle cx="15" cy="${isMobile?4:15}" r="${smallCircleR}" fill="steelblue" opacity="0.6"/>
+                        <text x="30" y="${isMobile?6:18}"  font-size="${textFont}">5k</text>
+                        <circle cx="15" cy="${isMobile?15:45}" r="${largeCircleR}" fill="steelblue" opacity="0.6"/>
+                        <text x="30" y="${isMobile?16:50}" font-size="${textFont}">500k</text>
+                    </svg>`;
 
                     return div;
                 };
+
                 legend.addTo(map);
                 L.control.scale({metric:true, imperial:false}).addTo(map);
 
@@ -704,24 +712,25 @@
             // - Uses IntersectionObserver to trigger map + chart transitions
             // =============================
 
-            function findLatestForCountry(country){
-                const c = currentData.filter(d=>d.Country===country);
-                if(!c.length) return null;
-                return c.sort((a,b)=>b.Year-a.Year)[0];
+            function findLatestForCountry(country) {
+                if (!window.fullData || window.fullData.length === 0) return null;
+                const arr = window.fullData.filter(d=>d.Country === country);
+                if (!arr || arr.length === 0) return null;
+                return arr.sort((a,b)=>b.Year - a.Year)[0];
             }
 
             function resetHighlights(){
-                svg.selectAll("circle").transition().duration(400).style("opacity",0.9).attr("r",d=>sizeScale(d.EV));
+                svg.selectAll("circle").transition().duration(400).style("opacity",0.9).attr("r",d=>d? sizeScale(d.EV) : 3);
             }
 
             function highlightCountry(d){
                 if(!d) return;
                 svg.selectAll("circle").transition().duration(500)
                     .style("opacity",c=>(c.Country===d.Country?1:0.1))
-                    .attr("r",c=>(c.Country===d.Country?sizeScale(c.EV)*1.5:sizeScale(c.EV)));
+                    .attr("r", c => (c && c.Country === d.Country ? sizeScale(c.EV)*1.5 : (c? sizeScale(c.EV) : 3)));
                 if(d.lat&&d.lon) map.flyTo([d.lat,d.lon],4,{animate:true,duration:1.2});
-                const marker = markerMap[d.Country+d.Year];
-                if(marker) marker.openPopup();
+                const key = d.Country + "|" + d.Year;
+                if (markerMap[key]) markerMap[key].openPopup();
             }
 
             function activateStep(stepId){
@@ -729,43 +738,74 @@
                 d3.selectAll('.step').filter(function(){ return this.getAttribute('data-step')===stepId; }).classed('is-active',true);
                 resetHighlights();
 
-                switch(stepId){
-                    case "intro": map.flyTo([20,0],2,{animate:true,duration:1}); break;
-                    case "global": map.flyTo([20,0],1.5,{animate:true,duration:1.2}); break;
-                    case "europe": highlightCountry(findLatestForCountry("Germany")); break;
-                    case "northamerica": highlightCountry(findLatestForCountry("United States")); break;
-                    case "asiapacific": highlightCountry(findLatestForCountry("China")); break;
-                    case "clusters": map.flyTo([54,15],3,{animate:true,duration:1.2}); break;
-                    case "local": highlightCountry(findLatestForCountry("Norway")); setTimeout(()=>highlightCountry(findLatestForCountry("United States")),1200); break;
-                    case "anomalies": highlightCountry(findLatestForCountry("Norway")); break;
-                    case "cautions": resetHighlights(); break;
-                    case "conclusion": map.flyTo([20,0],2,{animate:true,duration:1}); break;
+                // If the controls exist, perform filter actions
+                const regionSelectEl = document.querySelector('#regionSelect');
+                const yearSelectEl = document.querySelector('#yearSelect');
+
+                switch(stepId) {
+                    case "intro":
+                        if (map) map.flyTo([20,0],3,{animate:true,duration:1});
+                        if (regionSelectEl) { regionSelectEl.value = "All regions"; regionSelectEl.dispatchEvent(new Event('change')); }
+                        if (yearSelectEl) { yearSelectEl.value = "All years"; yearSelectEl.dispatchEvent(new Event('change')); }
+                        break;
+                    case "global":
+                        if (map) map.flyTo([20,0],3,{animate:true,duration:1.2});
+                        if (regionSelectEl) { regionSelectEl.value = "All regions"; regionSelectEl.dispatchEvent(new Event('change')); }
+                        break;
+                    case "europe":
+                        if (regionSelectEl) { regionSelectEl.value = "Europe"; regionSelectEl.dispatchEvent(new Event('change')); }
+                        break;
+                    case "northamerica":
+                        if (regionSelectEl) { regionSelectEl.value = "North America"; regionSelectEl.dispatchEvent(new Event('change')); }
+                        break;
+                    case "asiapacific":
+                        if (regionSelectEl) { regionSelectEl.value = "Asia & Pacific"; regionSelectEl.dispatchEvent(new Event('change')); }
+                        break;
+                    case "clusters":
+                        if (map) map.flyTo([54, 15], 3, { animate: true, duration: 1.2 });
+                        if (regionSelectEl) {
+                            regionSelectEl.value = "Europe";
+                            regionSelectEl.dispatchEvent(new Event('change'));
+                        }
+                        updateMap(currentData, { suppressFitBounds: true });
+                        break;
+
+                    case "local":
+                        if (regionSelectEl) {
+                            regionSelectEl.value = "North America";
+                            regionSelectEl.dispatchEvent(new Event('change'));
+                        }
+                        updateMap(currentData, { suppressFitBounds: true });
+                        break;
+
+                    case "anomalies":
+                        if (map) map.flyTo([35, 103], 3, { animate: true, duration: 1.5 });
+                        if (regionSelectEl) {
+                            regionSelectEl.value = "Asia & Pacific";
+                            regionSelectEl.dispatchEvent(new Event('change'));
+                        }
+                        updateMap(currentData, { suppressFitBounds: true });
+                        break;
+                    case "cautions":
+                        if (regionSelectEl) { regionSelectEl.value = "All regions"; regionSelectEl.dispatchEvent(new Event('change')); }
+                        break;
+                    case "conclusion":
+                        if (map) map.flyTo([20,0],2,{animate:true,duration:1});
+                        if (regionSelectEl) { regionSelectEl.value = "All regions"; regionSelectEl.dispatchEvent(new Event('change')); }
+                        break;
                 }
             }
 
             // IntersectionObserver for storytelling
             const storyPanel = document.querySelector('#story-panel');
             const steps = storyPanel.querySelectorAll('.step');
-            const observerOptions = { root: storyPanel, threshold: 0.5 };
-            const stepObserver = new IntersectionObserver((entries)=>{
-                entries.forEach(entry=>{
-                    if(entry.isIntersecting){
-                        const stepId = entry.target.getAttribute('data-step');
-                        activateStep(stepId);
-                    }
-                });
-            },observerOptions);
-            steps.forEach(step=>stepObserver.observe(step));
-
-            // =============================
-            // Task 14: Responsive Design
-            // =============================
             
-            window.addEventListener("resize", () => {
-                // Resize D3 chart
-                d3.select("#chart svg").attr("viewBox", `0 0 ${chartWidth} ${chartHeight}`);
-                // Resize Leaflet map
-                map.invalidateSize();
+            // Make cards clickable by user
+            steps.forEach(step => {
+                step.addEventListener('click', () => {
+                    const id = step.getAttribute('data-step');
+                    activateStep(id);
+                });
             });
 
             // =============================
