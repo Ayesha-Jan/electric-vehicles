@@ -26,7 +26,8 @@ The visualization combines a **Leaflet map** (for spatial distribution) and a **
 ## File Structure  
 
 ### Main Deliverable
-- **`index.html`** – Final main visualization page, includes map + scatter plot.
+- **`index.html`** – Final main visualization page, includes map + scatter plot + storytelling cards.  
+- **`Final_Report.pdf`** – Full written report covering all 20 tasks, results, and reflection.  
 
 ### Supporting Tasks
 
@@ -65,7 +66,11 @@ The visualization combines a **Leaflet map** (for spatial distribution) and a **
   - Circle color = Clean electricity share.  
   - Hover to see country details.  
   - Brush a region to highlight corresponding map markers.  
-  - Zoom & pan with mouse wheel or drag.  
+  - Zoom & pan with mouse wheel or drag.
+- **Storytelling Cards:**  
+  - Step through key findings with click-based navigation.  
+  - Provide context and explanations for interpreting the charts.  
+  - Highlight regional differences, clustering, and correlation insights. 
 - **Legends**:  
   - Both map and chart include color and size legends for interpretation.  
 
