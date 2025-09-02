@@ -1,4 +1,4 @@
-# 🚗⚡ EV vs Clean Electricity  
+# 🚗⚡ Electric vehicle Adoption vs Clean Electricity  
 
 ## Description  
 This project explores the relationship between **electric vehicle (EV) adoption** (measured by cars sold annually) and the **cleanliness of national electricity systems** (measured as share of electricity from low-carbon sources).  
@@ -56,7 +56,8 @@ The visualization combines a **Leaflet map** (for spatial distribution) and a **
   - Bubble size = EV sales.  
   - Bubble color = Clean electricity share.  
   - Click a cluster to expand into individual countries.  
-  - Hover for country details; click a country to zoom/focus.  
+  - Click a country to see all the markers for different years.
+  - Click a marker to view popup. 
 - **Scatter Plot (D3):**  
   - X-axis = Clean electricity share (%).  
   - Y-axis = EV sales.  
@@ -85,16 +86,8 @@ The visualization combines a **Leaflet map** (for spatial distribution) and a **
 ---
 
 ## Known Issues & Limitations  
-- Some countries/years are be missing due to gaps in datasets.  
+- Some countries/years are missing due to gaps in datasets.  
 - EV adoption data varies in reporting accuracy between countries.
-
----
-
-## Contributors
-
-- [Ayesha Jan](https://github.com/Ayesha-Jan)
-- [Anunitha K.U](https://github.com/anunithak)
-- [Maha Ibrahim](https://github.com/mahaibrahim26)
 
 ---
 
