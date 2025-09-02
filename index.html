@@ -323,7 +323,7 @@
             });
 
             // =============================
-            // Task 11: Data Processing
+            // Task 11: Main Visualizations
             // - Clean and validate data
             // =============================
             
@@ -350,15 +350,6 @@
 
                 const maxEVOverall = d3.max(masterData, d => d.EV);
                 sizeScale.domain([0, maxEVOverall]);
-
-                currentData = masterData.slice();
-                if (currentData.length === 0) {
-                    d3.select("#loading").style("display", "block").text("No data available for the selected year/region.");
-                    svg.selectAll("circle").remove();
-                    return;
-                } else {
-                    d3.select("#loading").style("display", "none");
-                }
 
                 // =============================
                 // Task 12: Interactivity
@@ -394,6 +385,14 @@
                     if (region !== "All regions") filtered = filtered.filter(d => d.Region === region);
 
                     currentData = filtered;
+                    
+                    if (currentData.length === 0) {
+                        d3.select("#loading").style("display", "block").text("No data available for the selected year/region.");
+                        svg.selectAll("circle").remove();
+                        return;
+                    } else {
+                        d3.select("#loading").style("display", "none");
+                    }
                     
                     try { updateChart(currentData);
                     } catch(e) { console.error("Error updating chart:", e); }
@@ -554,12 +553,12 @@
                     Object.keys(markerMap).forEach(k => delete markerMap[k]);
 
                     data.forEach(d => {
-                        const marker = L.circleMarker([d.lat, d.lon], {
-                        radius: 4 + sizeScale(d.EV)/2,
-                        fillColor: colorScale(d.CleanElec),
-                        color: "#333",
-                        weight: 1,
-                        fillOpacity: 0.9
+                            const marker = L.circleMarker([d.lat, d.lon], {
+                            radius: 4 + sizeScale(d.EV)/2,
+                            fillColor: colorScale(d.CleanElec),
+                            color: "#333",
+                            weight: 1,
+                            fillOpacity: 0.9
                         }).bindPopup(`
                         <b>${d.Country} (${d.Year})</b><br>
                         EV Sales: ${d.EV.toLocaleString()}<br>
@@ -716,8 +715,7 @@
             }
 
             // =============================
-            // Task 18: Storytelling — scroll-driven activation
-            // - Uses IntersectionObserver to trigger map + chart transitions
+            // Task 18: Storytelling — click-driven activation
             // =============================
 
             function findLatestForCountry(country) {
@@ -804,7 +802,6 @@
                 }
             }
 
-            // IntersectionObserver for storytelling
             const storyPanel = document.querySelector('#story-panel');
             const steps = storyPanel.querySelectorAll('.step');
             

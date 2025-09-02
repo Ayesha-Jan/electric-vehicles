@@ -222,7 +222,7 @@
             // Data Loading with Backup
             // =============================
 
-            d3.json("data/master_data.geojson").then(geoData => processGeoData(geoData))
+            d3.json("/data/master_data.geojson").then(geoData => processGeoData(geoData))
             .catch(error => {
                 console.warn("Primary dataset failed, trying backup:", error);
                 d3.json("data/master_data_backup.geojson")

@@ -221,7 +221,7 @@
             // Data Load
             // =============================
 
-            d3.json("data/master_data.geojson").then(geoData => {
+            d3.json("/data/master_data.geojson").then(geoData => {
                 const masterData = geoData.features.map(f => {
                     const p = f.properties;
                     return {
